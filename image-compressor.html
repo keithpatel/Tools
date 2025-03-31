@@ -1,1 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Image Compressor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Hide file input */
+        #upload { display: none; }
+    </style>
+</head>
+<body class="bg-gray-900 text-white flex flex-col items-center justify-center min-h-screen transition duration-300">
+    <!-- Dark Mode Toggle -->
+    <button id="toggleDarkMode" class="absolute top-5 right-5 bg-gray-700 px-4 py-2 rounded text-white">🌙 Dark Mode</button>
 
+    <div class="bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md text-center">
+        <h2 class="text-2xl font-bold mb-4">Image Compressor</h2>
+
+        <!-- Drag & Drop Area -->
+        <div id="drop-area" class="border-2 border-dashed border-gray-500 p-6 rounded-lg cursor-pointer">
+            <p class="text-sm">Drag & Drop Images Here or</p>
+            <label for="upload" class="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded inline-block mt-2">
+                Upload Images
+            </label>
+            <input type="file" id="upload" accept="image/*" multiple>
+        </div>
+
+        <!-- Preview & Controls -->
+        <div id="preview-container" class="mt-4 hidden">
+            <div id="preview-wrapper" class="grid grid-cols-2 gap-2"></div>
+
+            <label class="block mt-4">Quality</label>
+            <input type="range" id="quality" min="0.1" max="1" step="0.1" value="0.8" class="mt-2 w-full">
+            <p class="text-sm mt-2">Compression Quality: <span id="qualityValue">80%</span></p>
+
+            <label class="block mt-4">Format</label>
+            <select id="format" class="bg-gray-700 px-4 py-2 rounded text-white w-full">
+                <option value="jpeg">JPEG</option>
+                <option value="png">PNG</option>
+                <option value="webp">WebP</option>
+            </select>
+
+            <label class="block mt-4">Resize Image</label>
+            <div class="flex gap-2">
+                <input type="number" id="width" placeholder="Width" class="bg-gray-700 px-4 py-2 rounded text-white w-1/2">
+                <input type="number" id="height" placeholder="Height" class="bg-gray-700 px-4 py-2 rounded text-white w-1/2">
+            </div>
+            <label class="flex items-center gap-2 mt-2">
+                <input type="checkbox" id="aspectRatio" checked>
+                Maintain Aspect Ratio
+            </label>
+
+            <button id="downloadAll" class="mt-4 bg-green-600 hover:bg-green-700 px-4 py-2 rounded">Download All</button>
+        </div>
+    </div>
+
+    <script>
+        const uploadInput = document.getElementById("upload");
+        const dropArea = document.getElementById("drop-area");
+        const previewContainer = document.getElementById("preview-container");
+        const previewWrapper = document.getElementById("preview-wrapper");
+        const qualityInput = document.getElementById("quality");
+        const qualityValue = document.getElementById("qualityValue");
+        const formatSelect = document.getElementById("format");
+        const widthInput = document.getElementById("width");
+        const heightInput = document.getElementById("height");
+        const aspectRatioCheckbox = document.getElementById("aspectRatio");
+        const downloadAllButton = document.getElementById("downloadAll");
+        const toggleDarkMode = document.getElementById("toggleDarkMode");
+
+        let images = [];
+
+        uploadInput.addEventListener("change", handleFiles);
+        dropArea.addEventListener("dragover", (e) => e.preventDefault());
+        dropArea.addEventListener("drop", function (e) {
+            e.preventDefault();
+            if (e.dataTransfer.files.length > 0) {
+                uploadInput.files = e.dataTransfer.files;
+                handleFiles();
+            }
+        });
+
+        function handleFiles() {
+            const files = uploadInput.files;
+            if (!files.length) return;
+
+            images = []; 
+            previewWrapper.innerHTML = "";
+            previewContainer.classList.remove("hidden");
+
+            Array.from(files).forEach((file) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function (e) {
+                    const img = new Image();
+                    img.src = e.target.result;
+                    img.onload = function () {
+                        images.push(img);
+                        const imgPreview = document.createElement("img");
+                        imgPreview.src = img.src;
+                        imgPreview.className = "w-full h-24 object-cover rounded";
+                        previewWrapper.appendChild(imgPreview);
+                        compressImages();
+                    };
+                };
+            });
+        }
+
+        qualityInput.addEventListener("input", function () {
+            qualityValue.innerText = Math.round(this.value * 100) + "%";
+            compressImages();
+        });
+
+        formatSelect.addEventListener("change", compressImages);
+        widthInput.addEventListener("input", compressImages);
+        heightInput.addEventListener("input", compressImages);
+
+        function compressImages() {
+            previewWrapper.querySelectorAll("img").forEach((img, index) => {
+                if (!images[index]) return;
+                compressImage(images[index], img, index);
+            });
+        }
+
+        function compressImage(img, imgPreview, index) {
+            const quality = parseFloat(qualityInput.value);
+            const format = formatSelect.value;
+            const aspectRatio = img.width / img.height;
+
+            let newWidth = parseInt(widthInput.value) || img.width;
+            let newHeight = parseInt(heightInput.value) || img.height;
+
+            if (aspectRatioCheckbox.checked && widthInput.value) {
+                newHeight = Math.round(newWidth / aspectRatio);
+            } else if (aspectRatioCheckbox.checked && heightInput.value) {
+                newWidth = Math.round(newHeight * aspectRatio);
+            }
+
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+            canvas.width = newWidth;
+            canvas.height = newHeight;
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+            imgPreview.src = canvas.toDataURL(`image/${format}`, quality);
+        }
+
+        downloadAllButton.onclick = function () {
+            previewWrapper.querySelectorAll("img").forEach((img, index) => {
+                const a = document.createElement("a");
+                a.href = img.src;
+                a.download = `compressed_${index + 1}.${formatSelect.value}`;
+                a.click();
+            });
+        };
+
+        // Dark Mode Toggle
+        toggleDarkMode.addEventListener("click", function () {
+            document.body.classList.toggle("bg-gray-900");
+            document.body.classList.toggle("bg-white");
+            document.body.classList.toggle("text-white");
+            document.body.classList.toggle("text-black");
+        });
+    </script>
+</body>
+</html>
