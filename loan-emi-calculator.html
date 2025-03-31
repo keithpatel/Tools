@@ -1,1 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan EMI Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <style>
+        .transition-all {
+            transition: all 0.3s ease-in-out;
+        }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-r from-blue-100 to-purple-100 dark:bg-gradient-to-r dark:from-gray-800 dark:to-gray-900 text-gray-800 dark:text-gray-200">
 
+<div class="min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-lg bg-white dark:bg-gray-800 p-8 rounded-xl shadow-2xl">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-2xl font-bold text-blue-600 dark:text-purple-400 text-center w-full">EMI Calculator</h1>
+            <button id="darkModeToggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 absolute top-4 right-4">
+                <i id="darkModeIcon" class="fas fa-moon"></i>
+            </button>
+        </div>
+
+        <div class="mb-6">
+            <label for="loanAmount" class="block text-sm font-medium mb-2 text-blue-500 dark:text-purple-300">
+                <i class="fas fa-money-bill-wave mr-2"></i> Loan Amount ($)
+            </label>
+            <input type="number" id="loanAmount" value="100000" class="w-full p-3 border rounded-lg dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg">
+        </div>
+
+        <div class="mb-6">
+            <label for="interestRate" class="block text-sm font-medium mb-2 text-blue-500 dark:text-purple-300">
+                <i class="fas fa-percent mr-2"></i> Annual Interest Rate (%)
+            </label>
+            <input type="number" id="interestRate" value="10" class="w-full p-3 border rounded-lg dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg">
+        </div>
+
+        <div class="mb-6">
+            <label for="loanTenure" class="block text-sm font-medium mb-2 text-blue-500 dark:text-purple-300">
+                <i class="fas fa-calendar-alt mr-2"></i> Loan Tenure
+            </label>
+            <div class="flex items-center">
+                <input type="number" id="loanTenure" value="5" class="w-1/2 p-3 border rounded-lg dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg">
+                <select id="tenureUnit" class="w-1/2 ml-2 p-3 border rounded-lg dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 text-blue-600 dark:text-purple-400 text-lg">
+                    <option value="years">Years</option>
+                    <option value="months">Months</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="result" class="mt-8">
+            <div class="bg-blue-50 dark:bg-gray-700 p-6 rounded-xl">
+                <h2 class="text-lg font-semibold mb-4 text-center text-blue-600 dark:text-purple-400">Calculation Results</h2>
+                <p class="text-3xl font-bold mb-2 text-center text-green-700 dark:text-green-300">EMI: $<span id="emiAmount"></span></p>
+                <p class="text-center text-yellow-700 dark:text-yellow-300">Total Interest: $<span id="totalInterest"></span></p>
+                <p class="text-center text-red-700 dark:text-red-300">Total Payment: $<span id="totalPayment"></span></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ... (rest of the JavaScript code remains the same)
+    const loanAmountInput = document.getElementById('loanAmount');
+    const interestRateInput = document.getElementById('interestRate');
+    const loanTenureInput = document.getElementById('loanTenure');
+    const tenureUnitSelect = document.getElementById('tenureUnit');
+    const resultDiv = document.getElementById('result');
+    const emiAmountSpan = document.getElementById('emiAmount');
+    const totalInterestSpan = document.getElementById('totalInterest');
+    const totalPaymentSpan = document.getElementById('totalPayment');
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const darkModeIcon = document.getElementById('darkModeIcon');
+
+    function calculateAndDisplay() {
+        const principal = parseFloat(loanAmountInput.value);
+        const annualInterestRate = parseFloat(interestRateInput.value);
+        let tenure = parseFloat(loanTenureInput.value);
+        const tenureUnit = tenureUnitSelect.value;
+
+        if (tenureUnit === 'years') {
+            tenure *= 12;
+        }
+
+        const monthlyInterestRate = annualInterestRate / 12 / 100;
+        const emi = calculateEMI(principal, monthlyInterestRate, tenure);
+        const totalInterest = (emi * tenure) - principal;
+        const totalPayment = principal + totalInterest;
+
+        emiAmountSpan.textContent = emi.toFixed(2);
+        totalInterestSpan.textContent = totalInterest.toFixed(2);
+        totalPaymentSpan.textContent = totalPayment.toFixed(2);
+    }
+
+    function calculateEMI(principal, monthlyInterestRate, tenure) {
+        const numerator = principal * monthlyInterestRate * Math.pow(1 + monthlyInterestRate, tenure);
+        const denominator = Math.pow(1 + monthlyInterestRate, tenure) - 1;
+        return numerator / denominator;
+    }
+
+    loanAmountInput.addEventListener('input', calculateAndDisplay);
+    interestRateInput.addEventListener('input', calculateAndDisplay);
+    loanTenureInput.addEventListener('input', calculateAndDisplay);
+    tenureUnitSelect.addEventListener('change', calculateAndDisplay);
+
+    calculateAndDisplay();
+
+    darkModeToggle.addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark');
+        if (document.documentElement.classList.contains('dark')) {
+            darkModeIcon.classList.remove('fa-moon');
+            darkModeIcon.classList.add('fa-sun');
+        } else {
+            darkModeIcon.classList.remove('fa-sun');
+            darkModeIcon.classList.add('fa-moon');
+        }
+    });
+
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.classList.add('dark');
+        darkModeIcon.classList.remove('fa-moon');
+        darkModeIcon.classList.add('fa-sun');
+    }
+</script>
+
+</body>
+</html>
