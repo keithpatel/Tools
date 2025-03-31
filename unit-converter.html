@@ -1,1 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit Converter</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white flex items-center justify-center min-h-screen">
+    <div class="bg-gray-800 p-6 rounded-lg shadow-lg w-96">
+        <h2 class="text-2xl font-semibold text-center mb-4">🔄 Unit Converter</h2>
+        
+        <label class="block font-medium mb-1">Select Category:</label>
+        <select id="category" class="w-full p-2 border rounded bg-gray-700 text-white mb-4" onchange="populateUnits()">
+            <option value="length">Length</option>
+            <option value="weight">Weight</option>
+            <option value="temperature">Temperature</option>
+            <option value="speed">Speed</option>
+            <option value="volume">Volume</option>
+        </select>
+        
+        <label class="block font-medium mb-1">From:</label>
+        <select id="fromUnit" class="w-full p-2 border rounded bg-gray-700 text-white mb-4" onchange="convert()"></select>
+        
+        <label class="block font-medium mb-1">To:</label>
+        <select id="toUnit" class="w-full p-2 border rounded bg-gray-700 text-white mb-4" onchange="convert()"></select>
+        
+        <label class="block font-medium mb-1">Value:</label>
+        <input type="number" id="inputValue" class="w-full p-2 border rounded bg-gray-700 text-white mb-4" placeholder="Enter value" oninput="convert()">
+        
+        <p id="result" class="text-center font-semibold text-lg mt-4 text-blue-400"></p>
+    </div>
+    
+    <script>
+        const units = {
+            length: { meter: 1, kilometer: 0.001, mile: 0.000621371, foot: 3.28084 },
+            weight: { gram: 1, kilogram: 0.001, pound: 0.00220462, ounce: 0.035274 },
+            temperature: {},
+            speed: { 'm/s': 1, 'km/h': 3.6, 'mph': 2.23694 },
+            volume: { liter: 1, milliliter: 1000, gallon: 0.264172, cup: 4.22675 }
+        };
+        
+        function populateUnits() {
+            let category = document.getElementById("category").value;
+            let fromUnit = document.getElementById("fromUnit");
+            let toUnit = document.getElementById("toUnit");
+            fromUnit.innerHTML = "";
+            toUnit.innerHTML = "";
+            
+            if (category === "temperature") {
+                fromUnit.innerHTML = `<option value="celsius">Celsius</option>
+                                      <option value="fahrenheit">Fahrenheit</option>
+                                      <option value="kelvin">Kelvin</option>`;
+                toUnit.innerHTML = fromUnit.innerHTML;
+            } else {
+                Object.keys(units[category]).forEach(unit => {
+                    fromUnit.innerHTML += `<option value="${unit}">${unit}</option>`;
+                    toUnit.innerHTML += `<option value="${unit}">${unit}</option>`;
+                });
+            }
+            convert();
+        }
+        
+        function convert() {
+            let category = document.getElementById("category").value;
+            let from = document.getElementById("fromUnit").value;
+            let to = document.getElementById("toUnit").value;
+            let value = parseFloat(document.getElementById("inputValue").value);
+            let result = document.getElementById("result");
+            
+            if (isNaN(value)) {
+                result.textContent = "Please enter a valid number.";
+                return;
+            }
+            
+            if (category === "temperature") {
+                if (from === to) {
+                    result.textContent = `${value} ${from} = ${value} ${to}`;
+                    return;
+                }
+                let tempValue = value;
+                if (from === "celsius") tempValue = to === "fahrenheit" ? (value * 9/5) + 32 : value + 273.15;
+                else if (from === "fahrenheit") tempValue = to === "celsius" ? (value - 32) * 5/9 : ((value - 32) * 5/9) + 273.15;
+                else if (from === "kelvin") tempValue = to === "celsius" ? value - 273.15 : (value - 273.15) * 9/5 + 32;
+                result.textContent = `${value} ${from} = ${tempValue.toFixed(2)} ${to}`;
+            } else {
+                let convertedValue = (value / units[category][from]) * units[category][to];
+                result.textContent = `${value} ${from} = ${convertedValue.toFixed(2)} ${to}`;
+            }
+        }
+        
+        populateUnits();
+    </script>
+</body>
+</html>
 
