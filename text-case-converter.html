@@ -1,1 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Case Converter</title>
+    <style>
+        :root {
+            --primary-color: #2196F3;
+            --background-color: #f5f5f5;
+            --text-color: #333;
+        }
 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+        }
+
+        .converter-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            margin: 10px 0;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        select {
+            flex: 1;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            min-width: 200px;
+        }
+
+        button {
+            padding: 8px 16px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .counts {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        @media (max-width: 600px) {
+            .controls {
+                flex-direction: column;
+            }
+            
+            select, button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Text Case Converter</h1>
+        <div class="converter-section">
+            <textarea id="input" placeholder="Enter your text here..."></textarea>
+            
+            <div class="controls">
+                <select id="caseType">
+                    <option value="upper">UPPERCASE</option>
+                    <option value="lower">lowercase</option>
+                    <option value="title">Title Case</option>
+                    <option value="sentence">Sentence case</option>
+                    <option value="toggle">tOGGLE cASE</option>
+                    <option value="capitalize">Capitalize Each Word</option>
+                </select>
+                <button onclick="copyToClipboard()">Copy</button>
+                <button onclick="clearText()">Clear</button>
+            </div>
+
+            <textarea id="output" readonly></textarea>
+            
+            <div class="counts">
+                <span id="charCount">0 characters</span> • 
+                <span id="wordCount">0 words</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const input = document.getElementById('input');
+        const output = document.getElementById('output');
+        const caseType = document.getElementById('caseType');
+        const charCount = document.getElementById('charCount');
+        const wordCount = document.getElementById('wordCount');
+        
+        // Small words list for title case
+        const SMALL_WORDS = new Set(['a', 'an', 'and', 'as', 'at', 'but', 'by', 'for', 
+                                   'if', 'in', 'nor', 'of', 'on', 'or', 'so', 'the', 
+                                   'to', 'up', 'yet', 'via']);
+
+        // Conversion functions
+        const converters = {
+            upper: text => text.toUpperCase(),
+            lower: text => text.toLowerCase(),
+            toggle: text => text.split('').map(c => 
+                c === c.toLowerCase() ? c.toUpperCase() : c.toLowerCase()).join(''),
+            capitalize: text => text.replace(/\b\w/g, c => c.toUpperCase()),
+            title: text => text.toLowerCase().split(' ').map((word, index) => 
+                (index > 0 && SMALL_WORDS.has(word)) ? word : 
+                word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
+            sentence: text => text.toLowerCase().split(/([.!?] )/).map((sentence, i) => 
+                (i % 2 === 0) ? sentence.charAt(0).toUpperCase() + sentence.slice(1) : 
+                sentence).join('')
+        };
+
+        // Update output and counts
+        function convertText() {
+            const text = input.value;
+            const converted = converters[caseType.value](text);
+            output.value = converted;
+            
+            // Update counts
+            charCount.textContent = `${text.length} characters`;
+            wordCount.textContent = `${text.trim().split(/\s+/).filter(w => w).length} words`;
+        }
+
+        // Event listeners
+        input.addEventListener('input', convertText);
+        caseType.addEventListener('change', convertText);
+
+        // Clipboard function
+        function copyToClipboard() {
+            output.select();
+            navigator.clipboard.writeText(output.value);
+        }
+
+        // Clear function
+        function clearText() {
+            input.value = '';
+            output.value = '';
+            charCount.textContent = '0 characters';
+            wordCount.textContent = '0 words';
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.shiftKey) {
+                const key = e.key.toLowerCase();
+                const options = {
+                    'u': 'upper',
+                    'l': 'lower',
+                    't': 'title',
+                    's': 'sentence',
+                    'c': 'toggle',
+                    'k': 'capitalize'
+                };
+                if (options[key]) {
+                    caseType.value = options[key];
+                    convertText();
+                    e.preventDefault();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
