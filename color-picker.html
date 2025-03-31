@@ -1,1 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Color Picker</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --background: #f8f9fa;
+        }
 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: var(--background);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .color-picker {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .main-area {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 2rem;
+        }
+
+        .color-selector {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: crosshair;
+        }
+
+        #color-canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .hue-slider {
+            height: 20px;
+            border-radius: 10px;
+            margin-top: 1rem;
+            background: linear-gradient(to right, 
+                #ff0000, #ff0080, #ff00ff, #8000ff, 
+                #0000ff, #0080ff, #00ffff, #00ff80, 
+                #00ff00, #80ff00, #ffff00, #ff8000, #ff0000);
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .color-preview {
+            width: 100%;
+            height: 100px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+        }
+
+        .color-formats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .format-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        input[type="text"], input[type="number"] {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        .color-history {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .history-color {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid #ddd;
+        }
+
+        .palette {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .palette-color {
+            height: 80px;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .palette-color span {
+            position: absolute;
+            bottom: 5px;
+            left: 5px;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+
+        button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            background: var(--secondary);
+            color: white;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="color-picker">
+            <div class="main-area">
+                <div class="color-section">
+                    <div class="color-selector">
+                        <canvas id="color-canvas"></canvas>
+                    </div>
+                    <div class="hue-slider">
+                        <input type="range" id="hue-slider" min="0" max="360" step="1">
+                    </div>
+                </div>
+                <div class="controls">
+                    <div class="color-preview" id="color-preview"></div>
+                    <div class="color-formats">
+                        <div class="format-group">
+                            <label>HEX</label>
+                            <input type="text" id="hex" readonly>
+                            <button onclick="copyHex()">Copy</button>
+                        </div>
+                        <div class="format-group">
+                            <label>RGB</label>
+                            <input type="text" id="rgb" readonly>
+                            <button onclick="copyRGB()">Copy</button>
+                        </div>
+                        <div class="format-group">
+                            <label>HSL</label>
+                            <input type="text" id="hsl" readonly>
+                            <button onclick="copyHSL()">Copy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="color-history" id="color-history"></div>
+            
+            <h3 style="margin: 2rem 0 1rem;">Color Palette</h3>
+            <div class="palette" id="palette"></div>
+        </div>
+    </div>
+
+    <script>
+        const colorCanvas = document.getElementById('color-canvas');
+        const hueSlider = document.getElementById('hue-slider');
+        const ctx = colorCanvas.getContext('2d');
+        let currentHue = 0;
+        let currentColor = '#ff0000';
+        const history = [];
+        
+        // Initialize color canvas
+        function initColorCanvas() {
+            const width = colorCanvas.width = colorCanvas.offsetWidth;
+            const height = colorCanvas.height = colorCanvas.offsetHeight;
+            
+            ctx.fillStyle = `hsl(${currentHue}, 100%, 50%)`;
+            ctx.fillRect(0, 0, width, height);
+            
+            const whiteGrad = ctx.createLinearGradient(0, 0, width, 0);
+            whiteGrad.addColorStop(0, 'rgba(255,255,255,1)');
+            whiteGrad.addColorStop(1, 'rgba(255,255,255,0)');
+            ctx.fillStyle = whiteGrad;
+            ctx.fillRect(0, 0, width, height);
+            
+            const blackGrad = ctx.createLinearGradient(0, 0, 0, height);
+            blackGrad.addColorStop(0, 'rgba(0,0,0,0)');
+            blackGrad.addColorStop(1, 'rgba(0,0,0,1)');
+            ctx.fillStyle = blackGrad;
+            ctx.fillRect(0, 0, width, height);
+        }
+        
+        // Update color preview and values
+        function updateColor(x, y) {
+            const pixel = ctx.getImageData(x, y, 1, 1).data;
+            const rgb = `rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`;
+            currentColor = rgb;
+            
+            document.getElementById('color-preview').style.backgroundColor = rgb;
+            updateColorValues(rgb);
+            updateHistory(rgb);
+            generatePalette(rgb);
+        }
+        
+        // Convert RGB to HEX
+        function rgbToHex(rgb) {
+            const [r, g, b] = rgb.match(/\d+/g);
+            return '#' + [r, g, b].map(x => 
+                parseInt(x).toString(16).padStart(2, '0')).join('');
+        }
+        
+        // Convert RGB to HSL
+        function rgbToHsl(rgb) {
+            const [r, g, b] = rgb.match(/\d+/g).map(Number);
+            const r1 = r / 255;
+            const g1 = g / 255;
+            const b1 = b / 255;
+            
+            const max = Math.max(r1, g1, b1);
+            const min = Math.min(r1, g1, b1);
+            let h, s, l = (max + min) / 2;
+            
+            if (max === min) {
+                h = s = 0;
+            } else {
+                const d = max - min;
+                s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                switch(max) {
+                    case r1: h = (g1 - b1) / d + (g1 < b1 ? 6 : 0); break;
+                    case g1: h = (b1 - r1) / d + 2; break;
+                    case b1: h = (r1 - g1) / d + 4; break;
+                }
+                h = Math.round(h * 60);
+            }
+            
+            s = Math.round(s * 100);
+            l = Math.round(l * 100);
+            return `hsl(${h}, ${s}%, ${l}%)`;
+        }
+        
+        // Update all color values
+        function updateColorValues(rgb) {
+            document.getElementById('hex').value = rgbToHex(rgb);
+            document.getElementById('rgb').value = rgb;
+            document.getElementById('hsl').value = rgbToHsl(rgb);
+        }
+        
+        // Color History
+        function updateHistory(color) {
+            if (!history.includes(color)) {
+                history.unshift(color);
+                if (history.length > 10) history.pop();
+                
+                const historyHTML = history.map(c => `
+                    <div class="history-color" 
+                         style="background: ${c}" 
+                         onclick="selectFromHistory('${c}')">
+                    </div>
+                `).join('');
+                document.getElementById('color-history').innerHTML = historyHTML;
+            }
+        }
+        
+        // Generate color palette
+        function generatePalette(baseColor) {
+            // Simple palette generation logic
+            const colors = [];
+            const [r, g, b] = baseColor.match(/\d+/g).map(Number);
+            
+            for (let i = 0; i < 5; i++) {
+                const newColor = `rgb(${
+                    Math.min(r + (i * 30), 255)}, ${
+                    Math.min(g + (i * 30), 255)}, ${
+                    Math.min(b + (i * 30), 255)})`;
+                colors.push(newColor);
+            }
+            
+            const paletteHTML = colors.map(c => `
+                <div class="palette-color" style="background: ${c}">
+                    <span>${rgbToHex(c)}</span>
+                </div>
+            `).join('');
+            document.getElementById('palette').innerHTML = paletteHTML;
+        }
+        
+        // Event Listeners
+        colorCanvas.addEventListener('click', (e) => {
+            const rect = colorCanvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            updateColor(x, y);
+        });
+        
+        hueSlider.addEventListener('input', (e) => {
+            currentHue = e.target.value;
+            initColorCanvas();
+        });
+        
+        // Copy functions
+        function copyHex() { navigator.clipboard.writeText(document.getElementById('hex').value); }
+        function copyRGB() { navigator.clipboard.writeText(document.getElementById('rgb').value); }
+        function copyHSL() { navigator.clipboard.writeText(document.getElementById('hsl').value); }
+        
+        // Initialize
+        initColorCanvas();
+        updateColor(colorCanvas.width/2, colorCanvas.height/2);
+    </script>
+</body>
+</html>
