@@ -1,1 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Percentage Calculator</title>
+    <meta name="description" content="A versatile percentage calculator tool with multiple calculation options. Calculate percentages, increases, decreases, and more.">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gradient-to-r from-blue-100 to-purple-100 dark:bg-gradient-to-r dark:from-gray-800 dark:to-gray-900 text-gray-800 dark:text-gray-200">
+    <div class="container mx-auto p-6 max-w-lg rounded-xl shadow-lg bg-white dark:bg-gray-800">
+        <h1 class="text-3xl font-semibold mb-6 text-center text-blue-600 dark:text-purple-400">Percentage Calculator</h1>
 
+        <div class="flex justify-end mb-4">
+            <button id="darkModeToggle" class="p-2 rounded-full focus:outline-none hover:bg-gray-200 dark:hover:bg-gray-700 transition duration-300">
+                <i id="darkModeIcon" class="fas fa-sun text-yellow-500 dark:text-gray-400"></i>
+            </button>
+        </div>
+
+        <div class="mb-4">
+            <label for="calculationType" class="block mb-2 font-medium text-blue-500 dark:text-purple-300">Calculation Type:</label>
+            <select id="calculationType" class="w-full p-3 border rounded-md dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring focus:ring-blue-300 transition duration-300 text-blue-800 dark:text-purple-200">
+                <option value="percentageOf">What is X% of Y?</option>
+                <option value="percentageChange">Percentage Increase/Decrease</option>
+                <option value="xIsPercentageOf">X is what percentage of Y?</option>
+            </select>
+        </div>
+
+        <div id="inputFields">
+            <div class="mb-4" id="percentageOfFields">
+                <input type="number" id="percentageOfX" placeholder="X (Percentage)" class="w-full p-3 border rounded-md dark:bg-gray-700 dark:border-gray-600 mb-2 focus:outline-none focus:ring focus:ring-blue-300 transition duration-300 text-blue-800 dark:text-purple-200">
+                <input type="number" id="percentageOfY" placeholder="Y (Total)" class="w-full p-3 border rounded-md dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring focus:ring-blue-300 transition duration-300 text-blue-800 dark:text-purple-200">
+            </div>
+            <div class="mb-4 hidden" id="percentageChangeFields">
+                <input type="number" id="percentageChangeA" placeholder="A (From)" class="w-full p-3 border rounded-md dark:bg-gray-700 dark:border-gray-600 mb-2 focus:outline-none focus:ring focus:ring-blue-300 transition duration-300 text-blue-800 dark:text-purple-200">
+                <input type="number" id="percentageChangeB" placeholder="B (To)" class="w-full p-3 border rounded-md dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring focus:ring-blue-300 transition duration-300 text-blue-800 dark:text-purple-200">
+            </div>
+            <div class="mb-4 hidden" id="xIsPercentageOfFields">
+                <input type="number" id="xIsPercentageOfX" placeholder="X (Value)" class="w-full p-3 border rounded-md dark:bg-gray-700 dark:border-gray-600 mb-2 focus:outline-none focus:ring focus:ring-blue-300 transition duration-300 text-blue-800 dark:text-purple-200">
+                <input type="number" id="xIsPercentageOfY" placeholder="Y (Total)" class="w-full p-3 border rounded-md dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring focus:ring-blue-300 transition duration-300 text-blue-800 dark:text-purple-200">
+            </div>
+        </div>
+
+        <div id="result" class="mb-4 p-4 border rounded-md dark:border-gray-600 bg-blue-50 dark:bg-gray-700 transition duration-300">
+            <p id="resultText" class="font-bold text-blue-700 dark:text-purple-300"></p>
+        </div>
+
+        <div class="mt-4">
+            <button id="copyButton" class="w-full p-3 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-300 hidden">
+                <i class="fas fa-copy mr-2"></i>Copy Result
+            </button>
+        </div>
+
+        <div class="mt-6">
+            <p class="text-sm text-gray-500 dark:text-gray-400">Examples:</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400">What is 20% of 100? Result: 20</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Increase from 50 to 75? Result: 50% increase</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400">30 is what percentage of 60? Result: 50%</p>
+        </div>
+
+    </div>
+
+    <script>
+        const calculationType = document.getElementById('calculationType');
+        const inputFields = document.getElementById('inputFields');
+        const percentageOfFields = document.getElementById('percentageOfFields');
+        const percentageChangeFields = document.getElementById('percentageChangeFields');
+        const xIsPercentageOfFields = document.getElementById('xIsPercentageOfFields');
+        const result = document.getElementById('result');
+        const resultText = document.getElementById('resultText');
+        const copyButton = document.getElementById('copyButton');
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const darkModeIcon = document.getElementById('darkModeIcon');
+
+        function updateFields() {
+            percentageOfFields.classList.add('hidden');
+            percentageChangeFields.classList.add('hidden');
+            xIsPercentageOfFields.classList.add('hidden');
+
+            if (calculationType.value === 'percentageOf') {
+                percentageOfFields.classList.remove('hidden');
+            } else if (calculationType.value === 'percentageChange') {
+                percentageChangeFields.classList.remove('hidden');
+            } else if (calculationType.value === 'xIsPercentageOf') {
+                xIsPercentageOfFields.classList.remove('hidden');
+            }
+            calculate();
+        }
+
+        function calculate() {
+            let calculationResult = '';
+            let x, y, a, b;
+
+            if (calculationType.value === 'percentageOf') {
+                x = parseFloat(document.getElementById('percentageOfX').value);
+                y = parseFloat(document.getElementById('percentageOfY').value);
+                calculationResult = (x / 100) * y;
+            } else if (calculationType.value === 'percentageChange') {
+                a = parseFloat(document.getElementById('percentageChangeA').value);
+                b = parseFloat(document.getElementById('percentageChangeB').value);
+                calculationResult = ((b - a) / a) * 100;
+                if(calculationResult > 0){
+                    calculationResult = calculationResult.toFixed(2) + "% increase";
+                } else{
+                    calculationResult = Math.abs(calculationResult.toFixed(2)) + "% decrease";
+                }
+            } else if (calculationType.value === 'xIsPercentageOf') {
+                x = parseFloat(document.getElementById('xIsPercentageOfX').value);
+                y = parseFloat(document.getElementById('xIsPercentageOfY').value);
+                calculationResult = (x / y) * 100;
+            }
+
+            resultText.textContent = calculationResult;
+            if (calculationResult !== ''){
+                copyButton.classList.remove('hidden');
+            } else {
+                copyButton.classList.add('hidden');
+            }
+
+        }
+
+        function copyResult() {
+            navigator.clipboard.writeText(resultText.textContent);
+            alert('Result copied to clipboard!');
+        }
+
+        function toggleDarkMode() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                darkModeIcon.classList.remove('fa-moon');
+                darkModeIcon.classList.add('fa-sun');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                darkModeIcon.classList.remove('fa-sun');
+                darkModeIcon.classList.add('fa-moon');
+            }
+        }
+
+        // Dark mode persistence
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            darkModeIcon.classList.remove('fa-sun');
+            darkModeIcon.classList.add('fa-moon');
+        }
+
+        calculationType.addEventListener('change', updateFields);
+        inputFields.addEventListener('input', calculate);
+        copyButton.addEventListener('click', copyResult);
+        darkModeToggle.addEventListener('click', toggleDarkMode);
+
+        updateFields();
+    </script>
+</body>
+</html>
