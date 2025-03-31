@@ -1,1 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stopwatch & Timer</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
 
+        .dark-mode {
+            background-color: #333;
+            color: #f4f4f4;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .display {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .controls button {
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+        }
+
+        .controls button.reset-button{
+            background-color: #dc3545;
+        }
+
+        .controls button.pause-button{
+            background-color: #ffc107;
+            color: black;
+        }
+
+        .controls button.start-button{
+            background-color: #28a745;
+        }
+
+        .lap-times {
+            margin-top: 10px;
+            list-style: none;
+            padding: 0;
+        }
+
+        .lap-times li {
+            margin-bottom: 5px;
+        }
+
+        .timer-input {
+            margin-bottom: 10px;
+        }
+
+        .timer-input input {
+            padding: 5px;
+            margin-right: 5px;
+        }
+
+        .dark-mode-toggle {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+    </style>
+</head>
+<body class="">
+
+    <button id="darkModeToggle" class="dark-mode-toggle">Toggle Dark Mode</button>
+
+    <div class="container">
+        <h2>Stopwatch</h2>
+        <div id="stopwatchDisplay" class="display">00:00:00.000</div>
+        <div class="controls">
+            <button id="startStopStopwatch" class="start-button">Start</button>
+            <button id="resetStopwatch" class="reset-button">Reset</button>
+            <button id="lapStopwatch">Lap</button>
+        </div>
+        <ul id="lapTimes" class="lap-times"></ul>
+    </div>
+
+    <div class="container">
+        <h2>Timer</h2>
+        <div class="timer-input">
+            <input type="number" id="hours" placeholder="Hours" min="0" value="0">
+            <input type="number" id="minutes" placeholder="Minutes" min="0" max="59" value="0">
+            <input type="number" id="seconds" placeholder="Seconds" min="0" max="59" value="0">
+        </div>
+        <div id="timerDisplay" class="display">00:00:00</div>
+        <div class="controls">
+            <button id="startStopTimer" class="start-button">Start</button>
+            <button id="resetTimer" class="reset-button">Reset</button>
+            <button id="pauseTimer" class="pause-button">Pause</button>
+        </div>
+    </div>
+
+    <script>
+        // Dark Mode Toggle
+        const body = document.body;
+        const darkModeToggle = document.getElementById('darkModeToggle');
+
+        darkModeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+        });
+
+        // Stopwatch
+        const stopwatchDisplay = document.getElementById('stopwatchDisplay');
+        const startStopStopwatch = document.getElementById('startStopStopwatch');
+        const resetStopwatch = document.getElementById('resetStopwatch');
+        const lapStopwatch = document.getElementById('lapStopwatch');
+        const lapTimesList = document.getElementById('lapTimes');
+
+        let stopwatchStartTime;
+        let stopwatchElapsedTime = 0;
+        let stopwatchInterval;
+        let stopwatchLapTimes = [];
+
+        function formatTime(milliseconds) {
+            let hours = Math.floor(milliseconds / 3600000);
+            milliseconds %= 3600000;
+            let minutes = Math.floor(milliseconds / 60000);
+            milliseconds %= 60000;
+            let seconds = Math.floor(milliseconds / 1000);
+            milliseconds %= 1000;
+            return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}.${String(milliseconds).padStart(3, '0')}`;
+        }
+
+        function startStopStopwatchFunc() {
+            if (!stopwatchInterval) {
+                stopwatchStartTime = Date.now() - stopwatchElapsedTime;
+                stopwatchInterval = setInterval(updateStopwatchDisplay, 10);
+                startStopStopwatch.textContent = 'Stop';
+                startStopStopwatch.classList.remove('start-button');
+                startStopStopwatch.classList.add('reset-button');
+            } else {
+                clearInterval(stopwatchInterval);
+                stopwatchInterval = null;
+                stopwatchElapsedTime = Date.now() - stopwatchStartTime;
+                startStopStopwatch.textContent = 'Start';
+                startStopStopwatch.classList.remove('reset-button');
+                startStopStopwatch.classList.add('start-button');
+            }
+        }
+
+        function resetStopwatchFunc() {
+            clearInterval(stopwatchInterval);
+            stopwatchInterval = null;
+            stopwatchElapsedTime = 0;
+            stopwatchLapTimes = [];
+            stopwatchDisplay.textContent = '00:00:00.000';
+            lapTimesList.innerHTML = '';
+            startStopStopwatch.textContent = 'Start';
+            startStopStopwatch.classList.remove('reset-button');
+            startStopStopwatch.classList.add('start-button');
+        }
+
+        function lapStopwatchFunc() {
+            if (stopwatchInterval) {
+                stopwatchLapTimes.push(stopwatchElapsedTime);
+                const lapTimeItem = document.createElement('li');
+                lapTimeItem.textContent = formatTime(stopwatchElapsedTime);
+                lapTimesList.appendChild(lapTimeItem);
+            }
+        }
+
+        function updateStopwatchDisplay() {
+            stopwatchElapsedTime = Date.now() - stopwatchStartTime;
+            stopwatchDisplay.textContent = formatTime(stopwatchElapsedTime);
+        }
+
+        startStopStopwatch.addEventListener('click', startStopStopwatchFunc);
+        resetStopwatch.addEventListener('click', resetStopwatchFunc);
+        lapStopwatch.addEventListener('click', lapStopwatchFunc);
+
+        // Timer
+        const timerDisplay = document.getElementById('timerDisplay');
+        const startStopTimer = document.getElementById('startStopTimer');
+        const resetTimer = document.getElementById('resetTimer');
+        const pauseTimer = document.getElementById('pauseTimer');
+        const hoursInput = document.getElementById('hours');
+        const minutesInput = document.getElementById('minutes');
+        const secondsInput = document.getElementById('seconds');
+
+        let timerCountdownTime;
+        let timerRemainingTime;
+        let timerInterval;
+
+        function setTimerTime() {
+            timerCountdownTime = (parseInt(hoursInput.value) || 0) * 3600000 +
+                (parseInt(minutesInput.value) || 0) * 60000 +
+                (parseInt(secondsInput.value) || 0) * 1000;
+            timerRemainingTime = timerCountdownTime;
+        }
+
+        function startStopTimerFunc() {
+            if (!timerInterval) {
+                setTimerTime();
+
+                if (timerRemainingTime > 0) {
+                    timerInterval = setInterval(updateTimerDisplay, 1000);
+                    startStopTimer.textContent = 'Stop';
+                    startStopTimer.classList.remove('start-button');
+                    startStopTimer.classList.add('reset-button');
+                }
+            } else {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                startStopTimer.textContent = 'Start';
+                startStopTimer.classList.remove('reset-button');
+                startStopTimer.classList.add('start-button');
+            }
+        }
+
+        function resetTimerFunc() {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            timerRemainingTime = timerCountdownTime;
+            updateTimerDisplay();
+            startStopTimer.textContent = 'Start';
+            startStopTimer.classList.remove('reset-button');
+            startStopTimer.classList.add('start-button');
+        }
+
+        function pauseTimerFunc() {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            startStopTimer.textContent = 'Start';
+            startStopTimer.classList.remove('reset-button');
+            startStopTimer.classList.add('start-button');
+        }
+
+        function updateTimerDisplay() {
+            if (timerRemainingTime >= 0) {
+                const hours = Math.floor(timerRemainingTime / 3600000);
+                const minutes = Math.floor((timerRemainingTime % 3600000) / 60000);
+                const seconds = Math.floor((timerRemainingTime % 60000) / 1000);
+                timerDisplay.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                timerRemainingTime -= 1000;
+            } else {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                timerDisplay.textContent = '00:00:00';
+                // Add alarm/notification logic here
+                startStopTimer.textContent = 'Start';
+                startStopTimer.classList.remove('reset-button');
+                startStopTimer.classList.add('start-button');
+            }
+        }
+
+        startStopTimer.addEventListener('click', startStopTimerFunc);
+        resetTimer.addEventListener('click', resetTimerFunc);
+        pauseTimer.addEventListener('click', pauseTimerFunc);
+    </script>
+</body>
+</html>
