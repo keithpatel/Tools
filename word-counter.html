@@ -1,1 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word & Character Counter</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+    <div class="container mx-auto p-4">
+        <h1 class="text-2xl font-bold mb-4">Word & Character Counter</h1>
+        <textarea
+            id="textInput"
+            placeholder="Paste or type your text here..."
+            class="w-full h-64 p-2 border rounded resize-vertical bg-white dark:bg-gray-800 dark:border-gray-700"
+            oninput="updateCounts()"
+        ></textarea>
+        <div class="mt-4 flex flex-wrap gap-2">
+            <div class="p-2 border rounded dark:border-gray-700">
+                <span id="wordCount">Words: 0</span>
+            </div>
+            <div class="p-2 border rounded dark:border-gray-700">
+                <span id="charCountWithoutSpaces">Characters (without spaces): 0</span>
+            </div>
+            <div class="p-2 border rounded dark:border-gray-700">
+                <span id="charCountWithSpaces">Characters (with spaces): 0</span>
+            </div>
+            <div class="p-2 border rounded dark:border-gray-700">
+                <span id="lineCount">Lines: 0</span>
+            </div>
+            <div class="p-2 border rounded dark:border-gray-700">
+                <span id="paragraphCount">Paragraphs: 0</span>
+            </div>
+            <button onclick="resetCounts()" class="p-2 bg-blue-500 text-white rounded hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800">Reset</button>
+            <button onclick="copyResults()" class="p-2 bg-green-500 text-white rounded hover:bg-green-600 dark:bg-green-700 dark:hover:bg-green-800">Copy Results</button>
+        </div>
+    </div>
 
+    <script>
+        function updateCounts() {
+            const text = document.getElementById('textInput').value;
+            const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+            const charsWithoutSpaces = text.replace(/\s/g, '').length;
+            const charsWithSpaces = text.length;
+            const lines = text === '' ? 0 : text.split('\n').length;
+            const paragraphs = text === '' ? 0 : text.split('\n\n').filter(p => p.trim() !== '').length;
+
+            document.getElementById('wordCount').textContent = `Words: ${words}`;
+            document.getElementById('charCountWithoutSpaces').textContent = `Characters (without spaces): ${charsWithoutSpaces}`;
+            document.getElementById('charCountWithSpaces').textContent = `Characters (with spaces): ${charsWithSpaces}`;
+            document.getElementById('lineCount').textContent = `Lines: ${lines}`;
+            document.getElementById('paragraphCount').textContent = `Paragraphs: ${paragraphs}`;
+        }
+
+        function resetCounts() {
+            document.getElementById('textInput').value = '';
+            updateCounts();
+        }
+
+        function copyResults() {
+            const wordCount = document.getElementById('wordCount').textContent;
+            const charCountWithoutSpaces = document.getElementById('charCountWithoutSpaces').textContent;
+            const charCountWithSpaces = document.getElementById('charCountWithSpaces').textContent;
+            const lineCount = document.getElementById('lineCount').textContent;
+            const paragraphCount = document.getElementById('paragraphCount').textContent;
+
+            const results = `${wordCount}\n${charCountWithoutSpaces}\n${charCountWithSpaces}\n${lineCount}\n${paragraphCount}`;
+
+            navigator.clipboard.writeText(results)
+                .then(() => alert('Results copied to clipboard!'))
+                .catch(err => console.error('Could not copy text: ', err));
+        }
+
+        updateCounts(); // Initial update
+    </script>
+</body>
+</html>
