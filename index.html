@@ -5,98 +5,128 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Multi-Tools Website</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #ADD8E6, #9370DB);
+            color: black; /* Changed default text color to black */
+            min-height: 100vh;
+            transition: background 0.3s ease, color 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        .tool-card {
+            backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            color: black; /* Ensure tool card text is also black */
+        }
+        nav {
+            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            color: black; /* Ensure nav text is also black */
+        }
+        footer{
+             backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            color: black; /* Ensure footer text is also black */
+        }
+        #toggleDarkMode {
+            backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.5);
+            color: black; /* Ensure button text is also black */
+        }
+    </style>
 </head>
-<body class="bg-gray-900 text-white min-h-screen transition duration-300">
+<body class="transition duration-300">
     
-    <!-- Navbar -->
-    <nav class="bg-gray-800 p-4 flex justify-between items-center shadow-lg">
+    <nav class="p-4 flex justify-between items-center shadow-lg">
         <h1 class="text-2xl font-bold">⚡ Ketan-Tools</h1>
-        <button id="toggleDarkMode" class="bg-gray-700 px-4 py-2 rounded">🌙 Dark Mode</button>
+        <button id="toggleDarkMode" class="px-4 py-2 rounded">🌙 Dark Mode</button>
     </nav>
 
-    <!-- Hero Section -->
     <section class="text-center py-12">
         <h2 class="text-3xl font-bold">All-in-One Tool Hub</h2>
-        <p class="mt-2 text-gray-400">Simplify tasks with our powerful tools</p>
+        <p class="mt-2 text-gray-600">Simplify tasks with our powerful tools</p>
     </section>
 
-    <!-- Tools Grid -->
     <section class="max-w-4xl mx-auto p-6">
         <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
             <a href="image-compressor.html" class="tool-card">
-                <div class="p-4 bg-gray-800 rounded-lg flex flex-col items-center hover:bg-gray-700 transition">
+                <div class="p-4 flex flex-col items-center hover:bg-gray-700 transition">
                     <span class="text-4xl">🖼️</span>
                     <p class="mt-2">Image Compressor</p>
                 </div>
             </a>
             <a href="random-number.html" class="tool-card">
-                <div class="p-4 bg-gray-800 rounded-lg flex flex-col items-center hover:bg-gray-700 transition">
+                <div class="p-4 flex flex-col items-center hover:bg-gray-700 transition">
                     <span class="text-4xl">🔢</span>
                     <p class="mt-2">Random Number Generator</p>
                 </div>
             </a>
             <a href="password-generator.html" class="tool-card">
-                <div class="p-4 bg-gray-800 rounded-lg flex flex-col items-center hover:bg-gray-700 transition">
+                <div class="p-4 flex flex-col items-center hover:bg-gray-700 transition">
                     <span class="text-4xl">🔐</span>
                     <p class="mt-2">Password Generator</p>
                 </div>
             </a>
             <a href="unit-converter.html" class="tool-card">
-                <div class="p-4 bg-gray-800 rounded-lg flex flex-col items-center hover:bg-gray-700 transition">
+                <div class="p-4 flex flex-col items-center hover:bg-gray-700 transition">
                     <span class="text-4xl">📏</span>
                     <p class="mt-2">Unit Converter</p>
                 </div>
             </a>
             <a href="age-calculator.html" class="tool-card">
-                <div class="p-4 bg-gray-800 rounded-lg flex flex-col items-center hover:bg-gray-700 transition">
+                <div class="p-4 flex flex-col items-center hover:bg-gray-700 transition">
                     <span class="text-4xl">📅</span>
                     <p class="mt-2">Age Calculator</p>
                 </div>
             </a>
             <a href="color-picker.html" class="tool-card">
-                <div class="p-4 bg-gray-800 rounded-lg flex flex-col items-center hover:bg-gray-700 transition">
+                <div class="p-4 flex flex-col items-center hover:bg-gray-700 transition">
                     <span class="text-4xl">🎨</span>
                     <p class="mt-2">Color Picker</p>
                 </div>
             </a>
             <a href="qr-code-generator.html" class="tool-card">
-                <div class="p-4 bg-gray-800 rounded-lg flex flex-col items-center hover:bg-gray-700 transition">
+                <div class="p-4 flex flex-col items-center hover:bg-gray-700 transition">
                     <span class="text-4xl">📷</span>
                     <p class="mt-2">QR Code Generator</p>
                 </div>
             </a>
             <a href="text-case-converter.html" class="tool-card">
-                <div class="p-4 bg-gray-800 rounded-lg flex flex-col items-center hover:bg-gray-700 transition">
+                <div class="p-4 flex flex-col items-center hover:bg-gray-700 transition">
                     <span class="text-4xl">🔠</span>
                     <p class="mt-2">Text Case Converter</p>
                 </div>
             </a>
             <a href="word-counter.html" class="tool-card">
-                <div class="p-4 bg-gray-800 rounded-lg flex flex-col items-center hover:bg-gray-700 transition">
+                <div class="p-4 flex flex-col items-center hover:bg-gray-700 transition">
                     <span class="text-4xl">🔢</span>
                     <p class="mt-2">Word & Character Counter</p>
                 </div>
             </a>
             <a href="loan-emi-calculator.html" class="tool-card">
-                <div class="p-4 bg-gray-800 rounded-lg flex flex-col items-center hover:bg-gray-700 transition">
+                <div class="p-4 flex flex-col items-center hover:bg-gray-700 transition">
                     <span class="text-4xl">💰</span>
                     <p class="mt-2">Loan EMI Calculator</p>
                 </div>
             </a>
             <a href="percentage-calculator.html" class="tool-card">
-                <div class="p-4 bg-gray-800 rounded-lg flex flex-col items-center hover:bg-gray-700 transition">
+                <div class="p-4 flex flex-col items-center hover:bg-gray-700 transition">
                     <span class="text-4xl">📊</span>
                     <p class="mt-2">Percentage Calculator</p>
                 </div>
             </a>
             <a href="stopwatch-timer.html" class="tool-card">
-                <div class="p-4 bg-gray-800 rounded-lg flex flex-col items-center hover:bg-gray-700 transition">
+                <div class="p-4 flex flex-col items-center hover:bg-gray-700 transition">
                     <span class="text-4xl">⏱️</span>
                     <p class="mt-2">Stopwatch & Timer</p>
                 </div>
             </a>
             <a href="base64-encoder.html" class="tool-card">
-                <div class="p-4 bg-gray-800 rounded-lg flex flex-col items-center hover:bg-gray-700 transition">
+                <div class="p-4 flex flex-col items-center hover:bg-gray-700 transition">
                     <span class="text-4xl">🔢</span>
                     <p class="mt-2">Base64 Encoder & Decoder</p>
                 </div>
@@ -104,19 +134,21 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="text-center py-4 text-gray-400">
+    <footer class="text-center py-4 text-gray-600">
         © 2025 Multi-Tools - All Rights Reserved
-                 Create by Ketankumar
+        Create by Ketankumar
     </footer>
 
     <script>
         // Dark Mode Toggle
         document.getElementById("toggleDarkMode").addEventListener("click", function () {
-            document.body.classList.toggle("bg-gray-900");
             document.body.classList.toggle("bg-white");
-            document.body.classList.toggle("text-white");
             document.body.classList.toggle("text-black");
+            document.body.style.background = document.body.classList.contains("bg-white") ? "white" : "linear-gradient(135deg, #ADD8E6, #9370DB)";
+            document.body.style.color = document.body.classList.contains("text-black") ? "black" : "white";
+            document.querySelectorAll('.tool-card, nav, footer, #toggleDarkMode').forEach(element => {
+                element.style.color = document.body.classList.contains("text-black") ? "black" : "black";
+            });
         });
     </script>
 </body>
