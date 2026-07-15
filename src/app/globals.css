@@ -1,26 +1,97 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ─── Tokens ─── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Fonts (from next/font) */
+  --font-heading: var(--font-geist-heading), "Inter", sans-serif;
+  --font-body: var(--font-geist-body), "Inter", sans-serif;
+
+  /* Primary accent */
+  --accent: #5555e6;
+  --accent-light: #8888f0;
+  --accent-dark: #4444cc;
+
+  /* Surface tokens — light */
+  --surface: #ffffff;
+  --surface-raised: #ffffff;
+  --surface-hover: #f6f6f9;
+  --border-default: rgba(0, 0, 0, 0.1);
+  --border-soft: rgba(0, 0, 0, 0.06);
+  --text-primary: #18181c;
+  --text-secondary: #6b6b7a;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.dark {
+  --surface: #0f0f13;
+  --surface-raised: #1a1a20;
+  --surface-hover: #24242d;
+  --border-default: rgba(255, 255, 255, 0.1);
+  --border-soft: rgba(255, 255, 255, 0.06);
+  --text-primary: #efeff0;
+  --text-secondary: #9292a0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ─── Theme Block (Tailwind utility tokens) ─── */
+@theme {
+  --font-heading: var(--font-geist-heading);
+  --font-body: var(--font-geist-body);
+  --font-sans: var(--font-geist-body);
+
+  --color-accent: var(--accent);
+  --color-accent-light: var(--accent-light);
+  --color-accent-dark: var(--accent-dark);
+
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-hover: var(--surface-hover);
+  --color-border: var(--border-default);
+  --color-border-soft: var(--border-soft);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+
+  --shadow-xs: 0 0 0 1px rgba(0,0,0,0.04);
+  --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.04), 0 0 0 1px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 12px 0 rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04);
+  --shadow-lg: 0 8px 24px 0 rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04);
+  --shadow-xl: 0 12px 40px 0 rgba(0,0,0,0.10), 0 0 0 1px rgba(0,0,0,0.05);
 }
 
+/* ─── Base ─── */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  @apply bg-surface text-text-primary font-body antialiased;
+  font-size: 16px;
+  line-height: 1.6;
 }
+
+h1, h2, h3, h4, h5, h6,
+.font-heading {
+  font-family: var(--font-heading);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+/* ─── Hero mesh gradient ─── */
+.hero-mesh { position: relative; }
+.hero-mesh::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 600px 300px at 20% 50%, rgba(85,85,230,0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 500px 400px at 80% 20%, rgba(136,136,240,0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 400px 300px at 50% 80%, rgba(85,85,230,0.04) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* ─── Fade-up ─── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-up    { animation: fade-up 0.5s ease-out both; }
+.animate-fade-up-d1 { animation-delay: 0.1s; }
+.animate-fade-up-d2 { animation-delay: 0.15s; }
+.animate-fade-up-d3 { animation-delay: 0.2s; }
+.animate-fade-up-d4 { animation-delay: 0.25s; }
