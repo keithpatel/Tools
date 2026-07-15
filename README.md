@@ -1,36 +1,135 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Mahant Tools
+
+A free, fast, and powerful collection of 50+ browser-based developer and productivity tools. No uploads required — everything runs locally in your browser.
+
+🌐 **Live Site:** [https://mahant-tools.vercel.app/](https://mahant-tools.vercel.app/)
+
+## Features
+
+- 🔒 **100% Private** — All processing happens in your browser. No files are uploaded to any server.
+- ⚡ **No Installation** — Works directly in your browser, no downloads needed.
+- 📱 **Responsive Design** — Works on desktop, tablet, and mobile devices.
+- 🌙 **Dark Mode** — Easy on the eyes with built-in dark theme support.
+- 🔍 **Search & Command Palette** — Quickly find tools using the search bar or `Ctrl+K`.
+- ⭐ **Favorites** — Mark your most-used tools for quick access.
+- 📜 **History** — Keep track of your recent tool usage.
+
+## Tool Categories
+
+### 📄 PDF Tools (10)
+- Merge PDF — Combine multiple PDFs into one
+- Split PDF — Split a PDF into separate pages
+- Compress PDF — Reduce PDF file size
+- PDF to Images — Convert PDF pages to JPG/PNG
+- Images to PDF — Combine images into a single PDF
+- Rotate PDF — Rotate individual pages
+- Reorder PDF — Reorder or delete pages
+- Add Watermark — Add text or image watermark
+- Add Page Numbers — Add page numbers to PDFs
+- Extract Text — Extract text from PDFs
+
+### 🖼️ Image Tools (13)
+- Image Compressor — Compress without losing quality
+- Image Resizer — Resize to exact dimensions
+- Image Converter — Convert between PNG, JPG, WebP, AVIF
+- Image Cropper — Crop to any aspect ratio
+- Image Rotator — Rotate or flip images
+- Image to Base64 — Convert to Base64 data URI
+- Base64 to Image — Convert Base64 back to image
+- Watermark Adder — Add text/logo watermark to images
+- EXIF Viewer — View and remove image metadata
+- Color Picker — Pick colors from an image
+- Collage Maker — Create photo collages
+- Favicon Generator — Generate favicons in multiple sizes
+- Image to PDF — Convert images to PDF
+
+### ✍️ Text Tools (11)
+- Word Counter — Count words, characters, sentences
+- Case Converter — Upper, lower, title, sentence case
+- Text Diff Checker — Compare two texts
+- Lorem Ipsum — Generate placeholder text
+- Find & Replace — With regex support
+- Slug Generator — URL-friendly slugs
+- Remove Duplicates — Remove duplicate lines
+- Text Reverser — Reverse text, words, or lines
+- Markdown to HTML — Convert Markdown to HTML
+- HTML to Markdown — Convert HTML to Markdown
+- Line Sorter — Sort lines A-Z, Z-A, or randomly
+
+### 💻 Developer Tools (11)
+- JSON Formatter — Format, validate, and minify
+- JSON to CSV — Convert between JSON and CSV
+- Base64 Encode/Decode — Encode or decode strings
+- URL Encode/Decode — Encode or decode URLs
+- Hash Generator — MD5, SHA-1, SHA-256
+- UUID Generator — Generate random UUIDs (v4)
+- QR Code Generator — Generate QR codes
+- Barcode Generator — Generate barcodes
+- Color Converter — HEX, RGB, HSL conversion
+- Regex Tester — Test regular expressions
+- Code Minifier — Minify or beautify HTML/CSS/JS
+
+### 🔧 Utility Tools (5)
+- Password Generator — Strong random passwords
+- Random Number Generator — Numbers within a range
+- Unit Converter — Length, weight, temperature
+- Age Calculator — Calculate exact age
+- BMI Calculator — Calculate Body Mass Index
+
+## Tech Stack
+
+- **Framework:** Next.js 15
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
+- **Icons:** Lucide React
+- **PDF Processing:** pdf-lib
+- **Image Processing:** Canvas API
+- **Deployment:** Vercel
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+ (recommended: 20+)
+- npm, yarn, pnpm, or bun
+
+### Installation
+
+```bash
+git clone https://github.com/keithpatel/Tools.git
+cd Tools
+npm install
+```
+
+### Development
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to see the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Production Build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm run start
+```
 
-## Learn More
+## Deployment
 
-To learn more about Next.js, take a look at the following resources:
+This project is deployed on [Vercel](https://vercel.app). To deploy your own instance:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npx vercel
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Or connect your GitHub repository to Vercel for automatic deployments.
 
-## Deploy on Vercel
+## Contributing
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Contributions are welcome! Feel free to open issues or submit pull requests.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+
+MIT
