@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { ToolLayout } from "@/components/ToolLayout";
 import { DropZone } from "@/components/DropZone";
 import { FilePreview } from "@/components/FilePreview";
 import { ResultPanel } from "@/components/ResultPanel";
 import { PDFDocument } from "pdf-lib";
 import { useWorkflowStore } from "@/lib/useWorkflowStore";
+import { useChainInput } from "@/components/ToolPageLayout";
 
 export default function ImagesToPDF() {
   const [files, setFiles] = useState<File[]>([]);
@@ -17,6 +18,7 @@ export default function ImagesToPDF() {
   const [resultUrl, setResultUrl] = useState("");
   const dropzoneRef = useRef<HTMLDivElement>(null);
   const { sendOutput } = useWorkflowStore();
+  const chainInput = useChainInput();
 
   const onFiles = useCallback((incoming: File[]) => {
     const images = incoming.filter((f) => f.type.startsWith("image/"));
@@ -28,6 +30,21 @@ export default function ImagesToPDF() {
       };
       reader.readAsDataURL(f);
     }
+  }, []);
+
+  // Auto-load files from workflow chain input on mount
+  useEffect(() => {
+    if (!chainInput) return;
+    if ("items" in chainInput) {
+      const fileList = chainInput.items.map((item) =>
+        item.data instanceof File ? item.data : new File([item.data], item.filename)
+      );
+      if (fileList.length > 0) onFiles(fileList);
+    } else if (chainInput.type === "image" && chainInput.data) {
+      const file = chainInput.data instanceof File ? chainInput.data : new File([chainInput.data], chainInput.filename);
+      onFiles([file]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleReorder = useCallback((newFiles: File[], newPreviews: string[]) => {

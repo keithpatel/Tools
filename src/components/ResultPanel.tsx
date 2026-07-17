@@ -153,7 +153,7 @@ export function ResultPanel({
                         return (
                           <Link
                             key={slug}
-                            href={`/tool/${slug}`}
+                            href={`/tools/${slug}`}
                             onClick={handleSendOutput}
                             className="flex items-center gap-2 px-4 py-2 text-sm text-text-primary hover:bg-surface-hover transition-colors"
                           >
@@ -189,7 +189,7 @@ export function ResultPanel({
                   return (
                     <Link
                       key={slug}
-                      href={`/tool/${slug}`}
+                      href={`/tools/${slug}`}
                       onClick={handleSendOutput}
                       className="inline-flex items-center gap-1 px-3 py-1 bg-surface-hover rounded-full hover:bg-border text-xs text-text-secondary transition-colors"
                     >

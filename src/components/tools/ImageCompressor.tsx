@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { ToolLayout } from "@/components/ToolLayout";
 import { DropZone } from "@/components/DropZone";
 import { ResultPanel } from "@/components/ResultPanel";
 import imageCompression from "browser-image-compression";
 import { Image as ImageIcon } from "lucide-react";
 import { useWorkflowStore } from "@/lib/useWorkflowStore";
+import { useChainInput } from "@/components/ToolPageLayout";
 
 export default function ImageCompressor() {
   const [original, setOriginal] = useState<File | null>(null);
@@ -17,6 +18,23 @@ export default function ImageCompressor() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const { sendOutput } = useWorkflowStore();
+  const chainInput = useChainInput();
+
+  // Auto-load file from workflow chain input on mount
+  useEffect(() => {
+    if (!chainInput) return;
+    if ("items" in chainInput) {
+      const first = chainInput.items[0];
+      if (first) {
+        const file = first.data instanceof File ? first.data : new File([first.data], first.filename);
+        handleFiles([file]);
+      }
+    } else if (chainInput.type === "image" && chainInput.data) {
+      const file = chainInput.data instanceof File ? chainInput.data : new File([chainInput.data], chainInput.filename);
+      handleFiles([file]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleFiles = useCallback((files: File[]) => {
     const file = files[0];
