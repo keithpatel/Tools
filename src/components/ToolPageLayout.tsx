@@ -21,7 +21,8 @@ function InfoSection({ slug }: { slug: string }) {
 
   useEffect(() => {
     const seen = localStorage.getItem(`seen_tool_info_${slug}`);
-    setOpen(seen !== "true");
+    const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+    setOpen(seen !== "true" && !isMobile);
     setInit(true);
   }, [slug]);
 
@@ -33,10 +34,10 @@ function InfoSection({ slug }: { slug: string }) {
   if (!tm) return null;
 
   return (
-    <section className="mt-12 border-t border-border pt-8">
+    <section className="mt-6 md:mt-12 border-t border-border pt-4 md:pt-8">
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-2 text-sm text-text-secondary hover:text-text-primary transition-colors mb-1"
+        className="flex items-center gap-2 text-sm text-text-secondary hover:text-text-primary transition-colors mb-1 w-full"
       >
         <LucideIcons.ChevronDown className={`w-4 h-4 transition-transform ${open ? "rotate-0" : "-rotate-90"}`} />
         <span>About This Tool &middot; How to Use &middot; FAQ</span>
@@ -121,7 +122,7 @@ export function ToolPageLayout({ slug, children }: { slug: string; children: Rea
   const sourceTool = chainInput ? getTool(chainInput.sourceToolSlug) : null;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6">
+    <div className="max-w-7xl mx-auto px-4 py-4 md:py-6">
       <Breadcrumbs category={tool.category} toolName={tool.name} />
 
       {chainInput && sourceTool && (
@@ -140,11 +141,11 @@ export function ToolPageLayout({ slug, children }: { slug: string; children: Rea
         </div>
       )}
 
-      <div className="flex gap-8">
+      <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
         <CategorySidebar currentSlug={slug} />
 
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-3 mb-2">
+        <div className="flex-1 min-w-0 pb-20 md:pb-0">
+          <div className="hidden md:flex items-center gap-3 mb-2">
             <div className="p-2 rounded-xl shrink-0" style={{ backgroundColor: `${cat?.color}12` }}>
               <Icon className="w-5 h-5" style={{ color: cat?.color }} />
             </div>
@@ -169,7 +170,7 @@ export function ToolPageLayout({ slug, children }: { slug: string; children: Rea
             </div>
           </div>
 
-          <div className="flex items-center gap-1.5 text-xs text-green-600 dark:text-green-400 mb-6 bg-green-50 dark:bg-green-950/30 px-3 py-1.5 rounded-full w-fit">
+          <div className="flex items-center gap-1.5 text-xs text-green-600 dark:text-green-400 mb-3 md:mb-6 bg-green-50 dark:bg-green-950/30 px-3 py-1.5 rounded-full w-fit">
             <LucideIcons.Shield className="w-3.5 h-3.5" />
             Runs entirely in your browser — files are never uploaded
           </div>

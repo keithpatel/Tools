@@ -54,7 +54,7 @@ export default function ExifViewer() {
       description="View and remove EXIF metadata from images."
     >
       {!file ? (
-        <DropZone onFiles={handleFiles} accept="image/*" />
+        <DropZone onFiles={handleFiles} accept="image/*" enableCamera />
       ) : (
         <div className="space-y-4">
           <img src={imageUrl} alt="Uploaded" className="max-h-48 rounded-lg object-contain bg-gray-100 dark:bg-gray-800" />

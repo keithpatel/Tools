@@ -85,7 +85,7 @@ export default function ImagesToPDF() {
   return (
     <ToolLayout title="" description="">
       <div ref={dropzoneRef}>
-        <DropZone onFiles={onFiles} accept="image/*" multiple label="Drop images here or click to browse" />
+        <DropZone onFiles={onFiles} accept="image/*" multiple label="Drop images here or click to browse" enableCamera cameraLabel="Take a photo instead" />
       </div>
 
       {files.length > 0 && (

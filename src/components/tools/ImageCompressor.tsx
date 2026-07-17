@@ -64,7 +64,7 @@ export default function ImageCompressor() {
   return (
     <ToolLayout title="" description="">
       {!original ? (
-        <DropZone onFiles={handleFiles} accept="image/*" label="Drop an image here or click to browse" />
+        <DropZone onFiles={handleFiles} accept="image/*" label="Drop an image here or click to browse" enableCamera />
       ) : (
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">

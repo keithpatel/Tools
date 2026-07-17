@@ -92,10 +92,19 @@ export function ResultPanel({
   const targets = sourceToolSlug && outputType ? getCompatibleTargets(outputType).filter((s) => s !== sourceToolSlug) : [];
   const suggestions = sourceToolSlug && outputType ? getToolSuggestions(sourceToolSlug, outputType, 3) : [];
 
+  // Determine the current primary action for the mobile sticky bottom bar
+  const stickAction = onDownload
+    ? { label: downloadLabel || "Download", onClick: onDownload, icon: Download }
+    : onAction
+      ? { label: actionLabel || "Process", onClick: onAction, icon: null }
+      : null;
+
   return (
     <div className="mt-6">
       {!children && !loading && !error && onAction && (
-        <BtnPrimary onClick={onAction}>{actionLabel || "Process"}</BtnPrimary>
+        <div className="hidden md:block">
+          <BtnPrimary onClick={onAction}>{actionLabel || "Process"}</BtnPrimary>
+        </div>
       )}
 
       {loading && (
@@ -192,6 +201,22 @@ export function ResultPanel({
               </div>
             </div>
           )}
+        </div>
+      )}
+
+      {/* Mobile sticky bottom action bar */}
+      {stickAction && !loading && !error && (
+        <div
+          className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-surface/95 backdrop-blur-md border-t border-border px-4 pt-3 pb-3"
+          style={{ paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 0.75rem)" }}
+        >
+          <button
+            onClick={stickAction.onClick}
+            className="w-full flex items-center justify-center gap-2 px-5 py-3.5 bg-accent text-white rounded-xl hover:opacity-90 active:scale-[0.97] text-sm font-semibold transition-all shadow-lg min-h-[48px]"
+          >
+            {stickAction.icon && <stickAction.icon className="w-4 h-4" />}
+            {stickAction.label}
+          </button>
         </div>
       )}
     </div>

@@ -96,7 +96,7 @@ export default function ImageCropper() {
       ]}
     >
       {!file ? (
-        <DropZone onFiles={handleFiles} accept="image/*" />
+        <DropZone onFiles={handleFiles} accept="image/*" enableCamera />
       ) : (
         <div className="space-y-4">
           <div className="relative w-full h-80 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">

@@ -55,7 +55,7 @@ export default function ImageToBase64() {
       description="Convert any image to a Base64 data URI string."
     >
       {!file ? (
-        <DropZone onFiles={handleFiles} accept="image/*" />
+        <DropZone onFiles={handleFiles} accept="image/*" enableCamera />
       ) : (
         <div className="space-y-4">
           <div className="flex items-start gap-4">

@@ -80,7 +80,7 @@ export default function ColorPicker() {
       description="Pick colors from an image. Click on the image or use the EyeDropper tool."
     >
       {!file ? (
-        <DropZone onFiles={handleFiles} accept="image/*" />
+        <DropZone onFiles={handleFiles} accept="image/*" enableCamera />
       ) : (
         <div className="space-y-4">
           <div className="relative">

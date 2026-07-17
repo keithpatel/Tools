@@ -80,7 +80,7 @@ export default function ImageToPDF() {
       description="Convert multiple images into a single PDF document."
     >
       {files.length === 0 ? (
-        <DropZone onFiles={handleFiles} accept="image/*" multiple />
+        <DropZone onFiles={handleFiles} accept="image/*" multiple enableCamera cameraLabel="Take a photo instead" />
       ) : (
         <div className="space-y-4">
           <div className="flex flex-wrap gap-2">

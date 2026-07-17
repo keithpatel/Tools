@@ -56,7 +56,7 @@ export default function FaviconGenerator() {
       description="Generate favicons in multiple sizes from a single image. Square images work best."
     >
       {!file ? (
-        <DropZone onFiles={handleFiles} accept="image/*" />
+        <DropZone onFiles={handleFiles} accept="image/*" enableCamera />
       ) : (
         <div className="space-y-4">
           <img src={imageUrl} alt="Source" className="max-h-48 rounded-lg object-contain bg-gray-100 dark:bg-gray-800" />

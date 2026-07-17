@@ -6,6 +6,8 @@ import { Footer } from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ShortcutCheatSheet } from "@/components/ShortcutCheatSheet";
 import { OnboardingTooltip } from "@/components/OnboardingTooltip";
+import { InstallPrompt } from "@/components/InstallPrompt";
+import { PageTransition } from "@/components/PageTransition";
 import { WorkflowProvider } from "@/lib/useWorkflowStore";
 
 const headingFont = Geist({
@@ -37,8 +39,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeProvider>
           <WorkflowProvider>
             <GlobalNav />
-            <main className="flex-1">{children}</main>
+            <main className="flex-1">
+              <PageTransition>{children}</PageTransition>
+            </main>
             <Footer />
+            <InstallPrompt />
             <ShortcutCheatSheet />
             <OnboardingTooltip />
           </WorkflowProvider>

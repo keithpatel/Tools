@@ -88,7 +88,7 @@ export default function CollageMaker() {
       description="Create simple image collages from multiple photos."
     >
       {files.length === 0 ? (
-        <DropZone onFiles={handleFiles} accept="image/*" multiple />
+        <DropZone onFiles={handleFiles} accept="image/*" multiple enableCamera cameraLabel="Take photos instead" />
       ) : (
         <div className="space-y-4">
           <div className="flex flex-wrap gap-2">
