@@ -255,7 +255,7 @@ export function GlobalNav() {
                 <input
                   ref={searchInputRef}
                   type="text"
-                  placeholder="Search 50+ offline tools..."
+                  placeholder={`Search ${tools.length}+ offline tools...`}
                   value={mobileSearch}
                   onChange={(e) => setMobileSearch(e.target.value)}
                   className="w-full pl-9 pr-8 py-2 text-sm rounded-lg border border-border bg-surface text-text-primary focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent/50 transition-all"

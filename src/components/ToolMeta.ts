@@ -571,6 +571,31 @@ export const toolMeta: Record<string, ToolMeta> = {
       { q: "Is this accurate for leap years?", a: "Yes. JavaScript's Date object handles leap years automatically." },
     ],
   }),
+  // Video tools
+  "video-to-frames": make("Video to Frames", {
+    title: "Extract Frames from Video Online Free — Video to JPG/PNG Sequence",
+    description: "Extract still frames from MP4, MOV, and WebM videos as JPG or PNG images. All processing happens in your browser — video never leaves your device.",
+    ogTitle: "Video to Frames — Free Online Tool",
+    ogDesc: "Extract frames from any video in your browser. No upload, no server — 100% private.",
+    body: [
+      "Need to extract frames from a video for thumbnails, sprite sheets, animation prep, or still analysis? Our Video to Frames tool lets you capture a sequence of frames from any video file — all in your browser with zero uploads.",
+      "Unlike upload-based converters such as ezgif which require sending your video to their servers (a genuine concern for private footage, large files, or sensitive content), this tool processes everything locally using the HTML5 Video API and Canvas. You control the output resolution, frame rate, time range, and quality — and your video never leaves your device.",
+      "Supports resolution scaling (preset sizes or custom), JPG quality adjustment, start/end time trimming, and one-click ZIP download of all frames.",
+    ],
+    howTo: [
+      "Upload your video file (MP4, MOV, or WebM)",
+      "Set output resolution, frame rate (FPS), and time range",
+      "Choose JPG or PNG output and adjust quality",
+      'Click "Extract Frames" to begin processing, then download individual frames or the entire set as a ZIP',
+    ],
+    faq: [
+      { q: "What video formats are supported?", a: "MP4 (H.264), MOV, and WebM formats are supported. Support depends on your browser's video codec capabilities." },
+      { q: "Is my video uploaded to a server?", a: "No. Everything runs in your browser using the HTML5 Video API and Canvas. Unlike upload-based converters (ezgif, etc.), your video never leaves your device — this is a genuine privacy advantage for private or sensitive footage." },
+      { q: "Is there a file size or duration limit?", a: "There is no hard limit, but very large videos (over 200MB or longer than 5 minutes) may be slow or unstable since all processing happens in your browser's memory. The tool shows a warning for large files." },
+      { q: "Can I control the output resolution?", a: "Yes. Choose from preset sizes (1920x1080, 1280x720, 854x480, 640x360) or keep the original resolution. The frame is drawn at your chosen size for consistent output." },
+      { q: "What is the output quality?", a: "JPG output has an adjustable quality slider from 10% to 100%. PNG output is lossless. You can choose either format before extraction." },
+    ],
+  }),
   "bmi-calculator": make("BMI Calculator", {
     title: "BMI Calculator Online Free — Body Mass Index",
     description: "Calculate your BMI and see your weight category. Supports metric and imperial units. All in your browser.",

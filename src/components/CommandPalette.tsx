@@ -80,7 +80,7 @@ export function CommandPalette() {
                 <LucideIcons.Search className="w-4 h-4 text-text-secondary shrink-0" />
                 <Command.Input
                   autoFocus
-                  placeholder="Search all 50 tools..."
+                  placeholder={"Search all " + tools.length + " tools..."}
                   className="w-full bg-transparent px-2 py-3 text-sm outline-none placeholder:text-text-secondary"
                 />
               </div>

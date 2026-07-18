@@ -38,7 +38,7 @@ export function Footer() {
           <p className="text-xs text-text-secondary">
             All processing happens locally in your browser. No files are uploaded to any server.
           </p>
-          <p className="text-xs text-text-secondary/60">50 free, privacy-first online tools.</p>
+          <p className="text-xs text-text-secondary/60">{tools.length} free, privacy-first online tools.</p>
         </div>
       </div>
     </footer>

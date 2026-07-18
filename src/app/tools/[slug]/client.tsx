@@ -55,6 +55,7 @@ const toolComponents: Record<string, any> = {
   "unit-converter": dynamic(() => import("@/components/tools/UnitConverter"), { ssr: false }),
   "age-calculator": dynamic(() => import("@/components/tools/AgeCalculator"), { ssr: false }),
   "bmi-calculator": dynamic(() => import("@/components/tools/BMICalculator"), { ssr: false }),
+  "video-to-frames": dynamic(() => import("@/components/tools/VideoToFrames"), { ssr: false }),
 };
 
 export function ToolPageClient({ slug }: { slug: string }) {

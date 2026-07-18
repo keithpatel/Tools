@@ -36,7 +36,7 @@ function HeroSearch() {
       <LucideIcons.Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-secondary pointer-events-none" />
       <input
         type="text"
-        placeholder="Search 50 tools... (e.g. compress pdf, json formatter)"
+        placeholder={`Search ${tools.length} tools... (e.g. compress pdf, json formatter)`}
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         onFocus={() => setFocused(true)}
@@ -88,10 +88,10 @@ export default function HomePage() {
       <div className="max-w-7xl mx-auto px-4">
         <section className="text-center pt-10 pb-6 md:pt-16 md:pb-8">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-tight animate-fade-up">
-            <span className="text-accent">50 Free</span> Online Tools
+            <span className="text-accent">{tools.length} Free</span> Online Tools
           </h1>
           <p className="text-text-secondary text-base max-w-lg mx-auto mb-5 animate-fade-up animate-fade-up-d1">
-            Privacy-first tools for PDF, images, text, development, and everyday tasks.
+            Privacy-first tools for PDF, images, text, video, development, and everyday tasks.
             <br />All processing happens in your browser — nothing is ever uploaded.
           </p>
           <div className="animate-fade-up animate-fade-up-d2">
@@ -99,7 +99,7 @@ export default function HomePage() {
           </div>
           <div className="flex items-center justify-center gap-2 mt-4 animate-fade-up animate-fade-up-d3 flex-wrap">
             <span className="inline-flex items-center gap-1.5 text-xs text-text-secondary bg-surface-hover px-3 py-1.5 rounded-full border border-border-soft">
-              <LucideIcons.Grid3x3 className="w-3 h-3" /> 50 Tools
+              <LucideIcons.Grid3x3 className="w-3 h-3" /> {tools.length} Tools
             </span>
             <span className="inline-flex items-center gap-1.5 text-xs text-text-secondary bg-surface-hover px-3 py-1.5 rounded-full border border-border-soft">
               <LucideIcons.Lock className="w-3 h-3" /> Zero Uploads

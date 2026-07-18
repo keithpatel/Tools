@@ -3,7 +3,7 @@ export interface Tool {
   name: string;
   slug: string;
   description: string;
-  category: "pdf" | "image" | "text" | "developer" | "utility";
+  category: "pdf" | "image" | "text" | "developer" | "utility" | "video";
   icon: string;
 }
 
@@ -13,6 +13,7 @@ export const categories = [
   { id: "text", label: "Text Tools", icon: "AlignLeft", color: "#1d4ed8" },
   { id: "developer", label: "Developer Tools", icon: "Code", color: "#6d28d9" },
   { id: "utility", label: "Utility Tools", icon: "Wrench", color: "#047857" },
+  { id: "video", label: "Video Tools", icon: "Film", color: "#0d9488" },
 ] as const;
 
 export type CategoryId = (typeof categories)[number]["id"];
@@ -77,6 +78,9 @@ export const tools: Tool[] = [
   { id: 48, name: "Unit Converter", slug: "unit-converter", description: "Convert between length, weight, temperature, and more", category: "utility", icon: "Ruler" },
   { id: 49, name: "Age Calculator", slug: "age-calculator", description: "Calculate exact age from birth date", category: "utility", icon: "Calendar" },
   { id: 50, name: "BMI Calculator", slug: "bmi-calculator", description: "Calculate Body Mass Index", category: "utility", icon: "Activity" },
+
+  // Video Tools
+  { id: 51, name: "Video to Frames", slug: "video-to-frames", description: "Extract frames from video files as downloadable images", category: "video", icon: "Clapperboard" },
 ];
 
 export function getToolsByCategory(category: CategoryId) {
