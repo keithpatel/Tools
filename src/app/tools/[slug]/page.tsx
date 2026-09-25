@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { tools, getToolBySlug } from "@/data/tools";
 import { ToolPageClient } from "./client";
 import { toolMeta } from "@/components/ToolMeta";
+import { toolUrl } from "@/lib/seo";
 import type { Metadata } from "next";
 
 export function generateStaticParams() {
@@ -14,16 +15,24 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!tool) return { title: "Tool Not Found" };
 
   const meta = toolMeta[slug];
-  const title = meta?.title || `${tool.name} — Free Online Tool`;
+  const title = meta?.title || `${tool.name} — Free Online Tool | MultiTool`;
   const description = meta?.description || tool.description;
+  const url = toolUrl(slug);
 
   return {
-    title,
+    // Absolute: per-tool titles already carry the "| MultiTool" brand suffix,
+    // so the layout template must not append it a second time.
+    title: { absolute: title },
     description,
+    keywords: [tool.name, `${tool.name} online`, `free ${tool.name.toLowerCase()}`, `${tool.category} tool`, "no signup", "no upload", "browser tool"],
+    alternates: { canonical: url },
+    robots: { index: true, follow: true },
     openGraph: {
       title: meta?.ogTitle || title,
       description: meta?.ogDesc || description,
       type: "website",
+      url,
+      siteName: "MultiTool",
     },
     twitter: {
       card: "summary_large_image",

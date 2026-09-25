@@ -1,5 +1,28 @@
 import { Shield, Globe, Zap, Lock } from "lucide-react";
 import { tools } from "@/data/tools";
+import { SITE_URL } from "@/lib/seo";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  // Absolute so the layout title template does not double-suffix the brand.
+  title: { absolute: "About — Free Private Browser Tools | MultiTool" },
+  description:
+    "MultiTool offers free online tools that run 100% in your browser. No uploads, no signup, no tracking — files never leave your device.",
+  alternates: { canonical: `${SITE_URL}/about` },
+  openGraph: {
+    title: "About MultiTool — Private, Free Online Tools",
+    description:
+      "Free online tools that run 100% in your browser. No uploads, no signup, no tracking.",
+    type: "website",
+    url: `${SITE_URL}/about`,
+    siteName: "MultiTool",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About MultiTool — Private, Free Online Tools",
+    description: "Free online tools that run 100% in your browser. No uploads, no signup.",
+  },
+};
 
 export default function AboutPage() {
   return (

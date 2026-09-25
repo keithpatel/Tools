@@ -12,12 +12,24 @@ import Link from "next/link";
 import { toolMeta } from "./ToolMeta";
 import type { PendingOutput } from "@/data/workflow";
 import { StructuredData } from "./StructuredData";
+import { getRelatedTools } from "@/lib/seo";
 
 const ChainInputContext = createContext<PendingOutput | null>(null);
 export const useChainInput = () => useContext(ChainInputContext);
 
 function InfoSection({ slug }: { slug: string }) {
-  const [open, setOpen] = useState(false);
+  // Default open on first render (including SSR) so About/How-to/Benefits/FAQ
+  // are present in the static HTML for crawlers; the effect below then
+  // applies the user's persisted/collapsed preference on the client.
+  const [open, setOpen] = useState(() => {
+    if (typeof window === "undefined") return true;
+    try {
+      const seen = localStorage.getItem(`seen_tool_info_${slug}`);
+      return seen !== "true" && window.innerWidth >= 768;
+    } catch {
+      return true;
+    }
+  });
   const [init, setInit] = useState(false);
 
   useEffect(() => {
@@ -61,6 +73,17 @@ function InfoSection({ slug }: { slug: string }) {
                   <li key={i}>{step}</li>
                 ))}
               </ol>
+            </div>
+          )}
+
+          {tm.benefits && tm.benefits.length > 0 && (
+            <div>
+              <h2 className="text-lg font-heading font-semibold mb-3">Key Benefits</h2>
+              <ul className="list-disc list-inside space-y-2 text-sm text-text-secondary">
+                {tm.benefits.map((b, i) => (
+                  <li key={i}>{b}</li>
+                ))}
+              </ul>
             </div>
           )}
 
@@ -194,8 +217,42 @@ export function ToolPageLayout({ slug, children }: { slug: string; children: Rea
           )}
 
           {meta && <InfoSection slug={slug} />}
+
+          <RelatedTools slug={slug} />
         </div>
       </div>
     </div>
+  );
+}
+
+function RelatedTools({ slug }: { slug: string }) {
+  const related = getRelatedTools(slug, 4);
+  if (related.length === 0) return null;
+  return (
+    <section className="mt-8 md:mt-10 border-t border-border-soft pt-4 md:pt-6">
+      <h2 className="text-lg font-heading font-semibold mb-1">You Might Also Need</h2>
+      <p className="text-sm text-text-secondary mb-4">Related free tools that run in your browser.</p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {related.map((t) => {
+          const Icon = (LucideIcons as any)[t.icon] || LucideIcons.File;
+          const rc = categories.find((c) => c.id === t.category);
+          return (
+            <Link
+              key={t.slug}
+              href={`/tools/${t.slug}`}
+              className="flex items-center gap-3 p-3 rounded-xl border border-border-soft bg-surface hover:border-accent/40 transition-colors"
+            >
+              <span className="p-2 rounded-lg shrink-0" style={{ backgroundColor: `${rc?.color}15` }}>
+                <Icon className="w-4 h-4" style={{ color: rc?.color }} aria-hidden="true" />
+              </span>
+              <span className="min-w-0">
+                <span className="block text-sm font-medium truncate">{t.name}</span>
+                <span className="block text-xs text-text-secondary truncate">{t.description}</span>
+              </span>
+            </Link>
+          );
+        })}
+      </div>
+    </section>
   );
 }

@@ -8,6 +8,7 @@ import { useFavorites } from "@/lib/useFavorites";
 import { useHistory } from "@/lib/useHistory";
 import Link from "next/link";
 import * as LucideIcons from "lucide-react";
+import { HomeStructuredData } from "@/components/StructuredData";
 
 function HeroSearch() {
   const [query, setQuery] = useState("");
@@ -85,6 +86,7 @@ export default function HomePage() {
 
   return (
     <div className="hero-mesh">
+      <HomeStructuredData toolCount={tools.length} />
       <div className="max-w-7xl mx-auto px-4 pb-24 md:pb-12">
         <section className="text-center pt-8 pb-6 sm:pt-16 sm:pb-8 md:pt-20 md:pb-10">
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-tight animate-fade-up">

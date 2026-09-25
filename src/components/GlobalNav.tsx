@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "./ThemeProvider";
@@ -243,10 +244,15 @@ export function GlobalNav() {
           </div>
         </div>
 
-        {/* Mobile-Native Overflow Slide-In Drawer */}
+        {/* Mobile-Native Overflow Slide-In Drawer.
+            Portaled to document.body: the header's backdrop-blur makes it a
+            containing block for `fixed` descendants, which would squash the
+            drawer into the 56px header box instead of the viewport. */}
         <AnimatePresence>
-          {mobileNavOpen && (
-            <>
+          {mobileNavOpen &&
+            typeof document !== "undefined" &&
+            createPortal(
+              <>
               {/* Dark blur overlay */}
               <motion.div
                 initial={{ opacity: 0 }}
@@ -522,75 +528,88 @@ export function GlobalNav() {
                   )}
                 </div>
               </motion.div>
-            </>
-          )}
+              </>,
+              document.body
+            )}
         </AnimatePresence>
       </header>
 
-      {/* Mobile Bottom Tab Navigation */}
+      {/* Mobile Bottom Tab Navigation — floating pill, safe-area aware */}
       <nav
-        className="fixed bottom-0 left-0 right-0 z-30 md:hidden bg-surface/95 backdrop-blur-md border-t border-border flex items-center justify-around px-1"
-        style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)", height: "60px" }}
+        aria-label="Mobile navigation"
+        className="fixed bottom-3 left-3 right-3 z-30 md:hidden"
+        style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
       >
-        <Link
-          href="/"
-          className={`flex flex-col items-center justify-center gap-0.5 min-w-[48px] flex-1 h-full rounded-xl transition-colors ${
-            pathname === "/" && !mobileNavOpen ? "text-accent font-semibold" : "text-text-secondary hover:text-text-primary"
-          }`}
-          aria-label="Home"
-        >
-          <LucideIcons.House className="w-5 h-5" />
-          <span className="text-[10px] leading-tight">Home</span>
-        </Link>
+        <div className="flex items-stretch gap-1 rounded-2xl border border-border bg-surface-raised/95 backdrop-blur-md shadow-lg px-1.5 py-1.5">
+          <Link
+            href="/"
+            aria-label="Home"
+            aria-current={pathname === "/" && !mobileNavOpen ? "page" : undefined}
+            className={`flex flex-col items-center justify-center gap-0.5 flex-1 min-w-0 min-h-[52px] rounded-xl transition-colors ${
+              pathname === "/" && !mobileNavOpen
+                ? "bg-accent/10 text-accent font-semibold"
+                : "text-text-secondary hover:text-text-primary active:bg-surface-hover"
+            }`}
+          >
+            <LucideIcons.House className="w-5 h-5" />
+            <span className="text-[10px] leading-tight">Home</span>
+          </Link>
 
-        <button
-          onClick={openSearch}
-          className="flex flex-col items-center justify-center gap-0.5 min-w-[48px] flex-1 h-full rounded-xl text-text-secondary hover:text-text-primary transition-colors cursor-pointer"
-          aria-label="Search tools"
-        >
-          <LucideIcons.Search className="w-5 h-5" />
-          <span className="text-[10px] leading-tight">Search</span>
-        </button>
+          <button
+            onClick={openSearch}
+            className="flex flex-col items-center justify-center gap-0.5 flex-1 min-w-0 min-h-[52px] rounded-xl text-text-secondary hover:text-text-primary active:bg-surface-hover transition-colors cursor-pointer"
+            aria-label="Search tools"
+          >
+            <LucideIcons.Search className="w-5 h-5" />
+            <span className="text-[10px] leading-tight">Search</span>
+          </button>
 
-        <button
-          onClick={() => openDrawer("favorites")}
-          className={`flex flex-col items-center justify-center gap-0.5 min-w-[48px] flex-1 h-full rounded-xl transition-colors cursor-pointer ${
-            mobileNavOpen && drawerIntent === "favorites" ? "text-accent font-semibold" : "text-text-secondary hover:text-text-primary"
-          }`}
-          aria-label="Favorites"
-        >
-          <div className="relative">
-            <LucideIcons.Star className="w-5 h-5" />
-            {favoriteTools.length > 0 && (
-              <span className="absolute -top-1 -right-1.5 w-3.5 h-3.5 bg-amber-400 text-black text-[8px] font-bold rounded-full flex items-center justify-center">
-                {favoriteTools.length}
-              </span>
-            )}
-          </div>
-          <span className="text-[10px] leading-tight">Favorites</span>
-        </button>
+          <button
+            onClick={() => openDrawer("favorites")}
+            className={`flex flex-col items-center justify-center gap-0.5 flex-1 min-w-0 min-h-[52px] rounded-xl transition-colors cursor-pointer ${
+              mobileNavOpen && drawerIntent === "favorites"
+                ? "bg-accent/10 text-accent font-semibold"
+                : "text-text-secondary hover:text-text-primary active:bg-surface-hover"
+            }`}
+            aria-label="Favorites"
+          >
+            <span className="relative">
+              <LucideIcons.Star className="w-5 h-5" />
+              {favoriteTools.length > 0 && (
+                <span className="absolute -top-1.5 -right-2 min-w-4 h-4 px-0.5 bg-amber-400 text-black text-[9px] font-bold rounded-full flex items-center justify-center">
+                  {favoriteTools.length > 9 ? "9+" : favoriteTools.length}
+                </span>
+              )}
+            </span>
+            <span className="text-[10px] leading-tight">Favorites</span>
+          </button>
 
-        <button
-          onClick={() => openDrawer("recent")}
-          className={`flex flex-col items-center justify-center gap-0.5 min-w-[48px] flex-1 h-full rounded-xl transition-colors cursor-pointer ${
-            mobileNavOpen && drawerIntent === "recent" ? "text-accent font-semibold" : "text-text-secondary hover:text-text-primary"
-          }`}
-          aria-label="Recent tools"
-        >
-          <LucideIcons.Clock className="w-5 h-5" />
-          <span className="text-[10px] leading-tight">Recent</span>
-        </button>
+          <button
+            onClick={() => openDrawer("recent")}
+            className={`flex flex-col items-center justify-center gap-0.5 flex-1 min-w-0 min-h-[52px] rounded-xl transition-colors cursor-pointer ${
+              mobileNavOpen && drawerIntent === "recent"
+                ? "bg-accent/10 text-accent font-semibold"
+                : "text-text-secondary hover:text-text-primary active:bg-surface-hover"
+            }`}
+            aria-label="Recent tools"
+          >
+            <LucideIcons.Clock className="w-5 h-5" />
+            <span className="text-[10px] leading-tight">Recent</span>
+          </button>
 
-        <button
-          onClick={() => openDrawer("menu")}
-          className={`flex flex-col items-center justify-center gap-0.5 min-w-[48px] flex-1 h-full rounded-xl transition-colors cursor-pointer ${
-            mobileNavOpen && drawerIntent === "menu" ? "text-accent font-semibold" : "text-text-secondary hover:text-text-primary"
-          }`}
-          aria-label="Categories menu"
-        >
-          <LucideIcons.Grid3x3 className="w-5 h-5" />
-          <span className="text-[10px] leading-tight">Menu</span>
-        </button>
+          <button
+            onClick={() => openDrawer("menu")}
+            className={`flex flex-col items-center justify-center gap-0.5 flex-1 min-w-0 min-h-[52px] rounded-xl transition-colors cursor-pointer ${
+              mobileNavOpen && drawerIntent === "menu"
+                ? "bg-accent/10 text-accent font-semibold"
+                : "text-text-secondary hover:text-text-primary active:bg-surface-hover"
+            }`}
+            aria-label="Categories menu"
+          >
+            <LucideIcons.Grid3x3 className="w-5 h-5" />
+            <span className="text-[10px] leading-tight">Menu</span>
+          </button>
+        </div>
       </nav>
     </>
   );

@@ -25,10 +25,29 @@ const bodyFont = Inter({
 });
 
 import { tools } from "@/data/tools";
+import { SITE_URL, TITLE_TEMPLATE } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: `MultiTool — ${tools.length} Free Online Tools`,
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: `MultiTool — ${tools.length} Free Online Tools That Run in Your Browser`,
+    template: TITLE_TEMPLATE,
+  },
   description: `${tools.length} free, privacy-first browser tools for PDF, images, text, video, development, and everyday tasks. All processing happens locally — files never leave your device.`,
+  alternates: { canonical: "/" },
+  robots: { index: true, follow: true },
+  openGraph: {
+    type: "website",
+    siteName: "MultiTool",
+    url: "/",
+    title: `MultiTool — ${tools.length} Free Online Tools That Run in Your Browser`,
+    description: `${tools.length} free, privacy-first tools. No uploads, no signup — everything runs in your browser.`,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `MultiTool — ${tools.length} Free Online Tools`,
+    description: `${tools.length} free, privacy-first tools. No uploads, no signup — everything runs in your browser.`,
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

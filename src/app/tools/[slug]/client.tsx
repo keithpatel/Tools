@@ -35,7 +35,6 @@ const toolComponents: Record<string, any> = {
   "color-picker": dynamic(() => import("@/components/tools/ColorPicker"), { ssr: false }),
   "collage-maker": dynamic(() => import("@/components/tools/CollageMaker"), { ssr: false }),
   "favicon-generator": dynamic(() => import("@/components/tools/FaviconGenerator"), { ssr: false }),
-  "image-to-pdf": dynamic(() => import("@/components/tools/ImageToPDF"), { ssr: false }),
   "word-counter": dynamic(() => import("@/components/tools/WordCounter"), { ssr: false }),
   "case-converter": dynamic(() => import("@/components/tools/CaseConverter"), { ssr: false }),
   "text-diff-checker": dynamic(() => import("@/components/tools/TextDiffChecker"), { ssr: false }),

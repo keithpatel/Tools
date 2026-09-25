@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://multitool.example.com/sitemap.xml
+Sitemap: https://mahant-tools.vercel.app/sitemap.xml
