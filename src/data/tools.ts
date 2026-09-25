@@ -30,6 +30,14 @@ export const tools: Tool[] = [
   { id: 8, name: "Add Watermark", slug: "add-watermark", description: "Add text or image watermark to PDF pages", category: "pdf", icon: "Droplets" },
   { id: 9, name: "Add Page Numbers", slug: "add-page-numbers", description: "Add page numbers to your PDF", category: "pdf", icon: "Hash" },
   { id: 10, name: "Extract Text", slug: "extract-text", description: "Extract text content from PDF files", category: "pdf", icon: "FileText" },
+  { id: 55, name: "Protect PDF", slug: "protect-pdf", description: "Encrypt and password protect your PDF files", category: "pdf", icon: "Lock" },
+  { id: 56, name: "Unlock PDF", slug: "unlock-pdf", description: "Remove passwords and permission restrictions from PDFs", category: "pdf", icon: "Unlock" },
+  { id: 57, name: "Fill and Sign PDF", slug: "fill-and-sign-pdf", description: "Draw, type, or upload signatures and fill out PDF forms", category: "pdf", icon: "PenTool" },
+  { id: 58, name: "Extract Pages", slug: "extract-pages", description: "Extract selected pages into a new PDF document", category: "pdf", icon: "FileCheck" },
+  { id: 59, name: "Remove Pages", slug: "remove-pages", description: "Delete unwanted pages or auto-detect blank pages", category: "pdf", icon: "FileX" },
+  { id: 60, name: "Crop PDF", slug: "crop-pdf", description: "Trim margins and adjust visible area of PDF pages", category: "pdf", icon: "Crop" },
+  { id: 61, name: "Extract Images", slug: "extract-images", description: "Extract embedded photos and images from PDF in high quality", category: "pdf", icon: "Image" },
+  { id: 62, name: "PDF Metadata Editor", slug: "pdf-metadata", description: "View, edit, or strip metadata (title, author, tags) from PDF", category: "pdf", icon: "Tags" },
 
   // Image Tools
   { id: 11, name: "Image Compressor", slug: "image-compressor", description: "Compress images without losing quality", category: "image", icon: "ImageDown" },
@@ -44,7 +52,6 @@ export const tools: Tool[] = [
   { id: 20, name: "Color Picker", slug: "color-picker", description: "Pick colors from an image with eyedropper", category: "image", icon: "Eye" },
   { id: 21, name: "Collage Maker", slug: "collage-maker", description: "Create photo collages from multiple images", category: "image", icon: "LayoutGrid" },
   { id: 22, name: "Favicon Generator", slug: "favicon-generator", description: "Generate favicons in multiple sizes", category: "image", icon: "Globe" },
-  { id: 23, name: "Image to PDF", slug: "image-to-pdf", description: "Convert images to PDF documents", category: "image", icon: "FileImage" },
 
   // Text Tools
   { id: 24, name: "Word Counter", slug: "word-counter", description: "Count words, characters, sentences, and paragraphs", category: "text", icon: "Sigma" },

@@ -1,11 +1,12 @@
 import { Shield, Globe, Zap, Lock } from "lucide-react";
+import { tools } from "@/data/tools";
 
 export default function AboutPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-12">
       <h1 className="text-3xl font-heading font-bold mb-4">About MultiTool</h1>
       <p className="text-text-secondary text-base leading-relaxed mb-8">
-        MultiTool is a collection of 50 free, privacy-first online tools that run entirely in your browser.
+        MultiTool is a collection of {tools.length} free, privacy-first online tools that run entirely in your browser.
         We believe you shouldn&apos;t have to upload your files to some unknown server just to resize an image or merge a PDF.
       </p>
 

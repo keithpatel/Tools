@@ -669,4 +669,167 @@ export const toolMeta: Record<string, ToolMeta> = {
       { q: "Can I extract audio from large video files?", a: "Yes. Processing is performed locally on your device without file size limits imposed by network upload caps." },
     ],
   }),
+  "protect-pdf": make("Protect PDF", {
+    title: "Protect PDF Online Free — Password Protect & Encrypt PDF",
+    description: "Password protect and encrypt your PDF files with 128-bit standard encryption directly in your browser. 100% private, no uploads.",
+    ogTitle: "Protect PDF — Free Password Protection & Encryption",
+    ogDesc: "Set open passwords and restrict printing or copying on PDF files. Files never leave your device.",
+    body: [
+      "Keep confidential contracts, financial sheets, and personal documents secure from unauthorized eyes. Our Protect PDF tool lets you set a strong open password and adjust printing and copying permissions without ever uploading your files to an external server.",
+      "Using client-side cryptographic hashing and standard PDF encryption, your protected file opens in Adobe Acrobat, Google Chrome, and standard PDF readers with a password prompt.",
+    ],
+    howTo: [
+      "Upload or drop the PDF file you want to protect",
+      "Enter an open password and confirm it",
+      "Optionally configure permissions for printing and copying",
+      "Click 'Protect PDF' and download your encrypted document",
+    ],
+    faq: [
+      { q: "Does the recipient need special software to open the PDF?", a: "No. The encrypted PDF adheres to standard PDF encryption specifications and opens in Adobe Acrobat, Chrome, Safari, Preview, and standard mobile readers." },
+      { q: "Is it safe to protect sensitive files?", a: "Yes. All encryption is calculated locally inside your browser. No passwords or documents are sent to any server." },
+    ],
+  }),
+  "unlock-pdf": make("Unlock PDF", {
+    title: "Unlock PDF Online Free — Remove PDF Password & Restrictions",
+    description: "Remove passwords and printing/editing restrictions from PDF files directly in your browser. 100% client-side privacy.",
+    ogTitle: "Unlock PDF — Remove Password & Restrictions",
+    ogDesc: "Unlock password-protected PDFs and strip permission restrictions in your browser.",
+    body: [
+      "Tired of having to type a password every single time you open your own document? Or need to print a restricted PDF? Our Unlock PDF tool decrypts and strips security restrictions directly on your device.",
+      "If the PDF requires an open password, enter it once to verify ownership and the tool produces a permanently unlocked, restriction-free version.",
+    ],
+    howTo: [
+      "Upload your password-protected or restricted PDF",
+      "If prompted, enter the document password",
+      "Click 'Unlock PDF' to decrypt the file",
+      "Download the restriction-free PDF document",
+    ],
+    faq: [
+      { q: "Can this unlock any PDF without knowing the password?", a: "For PDFs protected by an open password, the correct password must be entered once to verify authorization and decrypt the content. For permission-restricted PDFs without an open password, restrictions are removed automatically." },
+      { q: "Is my password sent over the internet?", a: "No. Password verification and decryption run 100% locally in your browser memory." },
+    ],
+  }),
+  "fill-and-sign-pdf": make("Fill and Sign PDF", {
+    title: "Fill and Sign PDF Online Free — Electronic Signatures & Form Filling",
+    description: "Sign PDF documents and fill out forms online for free. Draw, type, or upload your signature with zero file uploads.",
+    ogTitle: "Fill and Sign PDF Online — Free & Private",
+    ogDesc: "Add signatures, dates, checkmarks, and text to any PDF in your browser.",
+    body: [
+      "Complete agreements, sign contracts, and fill out PDF forms without printing or scanning. Our Fill and Sign tool lets you draw your signature, type it in realistic cursive handwriting, or upload an existing image.",
+      "Add custom text fields, date stamps, and checkmarks anywhere on the document, then download your finalized signed PDF.",
+    ],
+    howTo: [
+      "Drop or select the PDF document you need to sign",
+      "Click 'Add Signature' to draw, type, or upload your signature",
+      "Drag and position your signature and annotations onto the page",
+      "Add text boxes, date stamps, or checkmarks as needed",
+      "Click 'Sign & Download PDF' to export the signed document",
+    ],
+    faq: [
+      { q: "Can I save my signature for future documents?", a: "Yes. Check the 'Remember signature' box and your signature will be securely saved in your browser's local storage for 1-click reuse." },
+      { q: "Does the output have a watermark?", a: "No. All tools are 100% free with no watermarks, no account requirement, and no hidden fees." },
+    ],
+  }),
+  "extract-pages": make("Extract Pages", {
+    title: "Extract PDF Pages Online Free — Save Selected Pages as PDF",
+    description: "Extract specific pages from a PDF document into a new file. Select by thumbnails or page range. Fast and private.",
+    ogTitle: "Extract PDF Pages — Free & Private",
+    ogDesc: "Select and pull pages from any PDF into a new document. No uploads required.",
+    body: [
+      "Need to extract just pages 3 to 7 from a 50-page document? Our Extract Pages tool provides a visual thumbnail picker and flexible range syntax to pull exactly the pages you need.",
+      "The extracted document preserves original vector fonts, images, and formatting with zero quality loss.",
+    ],
+    howTo: [
+      "Upload your PDF document",
+      "Click on page thumbnails to select pages, or type a page range (e.g. 1-3, 5, 8)",
+      "Use quick presets like 'Odd Pages' or 'Even Pages' if desired",
+      "Click 'Extract Pages' to create and download your new PDF",
+    ],
+    faq: [
+      { q: "Is the original PDF altered?", a: "No. Your original file remains untouched on your device; a new PDF containing only the selected pages is generated." },
+      { q: "Is there a limit on how many pages I can extract?", a: "No arbitrary limits! Extract as few or as many pages as you like." },
+    ],
+  }),
+  "remove-pages": make("Remove Pages", {
+    title: "Remove PDF Pages Online Free — Delete Unwanted Pages",
+    description: "Delete unwanted pages or auto-detect and remove blank pages from PDF files in your browser. 100% private.",
+    ogTitle: "Remove PDF Pages — Free & Private",
+    ogDesc: "Delete unwanted or blank pages from any PDF document without uploading.",
+    body: [
+      "Clean up scanned documents and remove accidental blank pages, duplicate sheets, or irrelevant sections with ease.",
+      "Features intelligent blank page auto-detection that analyzes page canvas pixels to detect and delete blank pages in one click.",
+    ],
+    howTo: [
+      "Upload the PDF you want to clean up",
+      "Click any page to mark it for deletion, or enter page numbers in the range box",
+      "Optionally click 'Auto-detect blank pages' to identify empty sheets automatically",
+      "Click 'Delete Pages' and download the pruned PDF",
+    ],
+    faq: [
+      { q: "Can I undo page deletions before downloading?", a: "Yes. You can unmark individual pages or click 'Reset All' at any point before saving." },
+      { q: "Does the auto-detect feature catch slightly off-white blank pages?", a: "Yes. Our pixel sampler accounts for scanner noise and subtle paper tints." },
+    ],
+  }),
+  "crop-pdf": make("Crop PDF", {
+    title: "Crop PDF Online Free — Trim Margins & Adjust Page Size",
+    description: "Crop PDF pages and trim white margins with live preview. Apply to all pages, odd/even, or specific pages. Fast & free.",
+    ogTitle: "Crop PDF Margins — Free & Private",
+    ogDesc: "Trim margins and adjust visible area of PDF pages directly in your browser.",
+    body: [
+      "Remove excessive whitespace margins from PDF documents, trim headers and footers, or standardize page layouts for reading on e-readers and tablets.",
+      "Includes a visual crop overlay with real-time margin adjustments in inches, millimeters, or PDF points.",
+    ],
+    howTo: [
+      "Upload your PDF document",
+      "Adjust top, bottom, left, and right margins or choose a preset like 'Standard' or 'Tight'",
+      "Preview the crop box directly on the page viewer",
+      "Select whether to apply to all pages, current page, or odd/even pages",
+      "Click 'Crop PDF' and download your trimmed document",
+    ],
+    faq: [
+      { q: "Does cropping reduce image resolution?", a: "No. Cropping modifies the document's CropBox and MediaBox boundaries without compressing or degrading any images or text." },
+      { q: "Can I crop odd and even pages differently?", a: "Yes. Use the scope selector to apply specific margins to odd or even pages independently." },
+    ],
+  }),
+  "extract-images": make("Extract Images", {
+    title: "Extract Images from PDF Online Free — Save PDF Photos as PNG",
+    description: "Extract all embedded photos and images from any PDF document in high resolution. Download individually or as a ZIP package.",
+    ogTitle: "Extract Images from PDF — Free & Private",
+    ogDesc: "Pull original embedded photos and artwork from PDF documents without quality loss.",
+    body: [
+      "Extract embedded photographs, diagrams, and artwork from PDF documents without taking blurry screenshots.",
+      "Scans the PDF structure, pulls images at their original resolution, and lets you filter by size and download all images in a convenient ZIP archive.",
+    ],
+    howTo: [
+      "Upload your PDF document",
+      "Browse the gallery of extracted embedded images with dimensions",
+      "Filter by image size to exclude tiny icons or bullets",
+      "Download individual images or click 'Download All (ZIP)'",
+    ],
+    faq: [
+      { q: "Are the images extracted at full resolution?", a: "Yes. Images are extracted at their exact native resolution and color depth as embedded inside the PDF." },
+      { q: "What format are the extracted images saved in?", a: "Images are exported in lossless PNG format for maximum clarity and compatibility." },
+    ],
+  }),
+  "pdf-metadata": make("PDF Metadata Editor", {
+    title: "PDF Metadata Editor Online Free — View, Edit & Strip PDF Properties",
+    description: "View and edit PDF Title, Author, Subject, Keywords, and Creator properties, or strip all metadata for privacy. 100% client-side.",
+    ogTitle: "PDF Metadata Editor — View, Edit & Scrub Metadata",
+    ogDesc: "Edit document properties or wipe author and application metadata before sharing.",
+    body: [
+      "Protect your personal privacy and present professional documents by editing or cleaning PDF metadata. Many PDF authoring programs automatically embed your computer name, username, and editing software.",
+      "View all metadata fields, edit values, or click 'Strip All Metadata' to completely anonymize your PDF before sharing.",
+    ],
+    howTo: [
+      "Upload your PDF file to inspect its current metadata properties",
+      "Edit the Title, Author, Subject, Keywords, and Software fields as desired",
+      "Or click 'Strip All Metadata' to wipe all identifying data in one click",
+      "Click 'Save & Download PDF' to export your updated file",
+    ],
+    faq: [
+      { q: "Why should I strip PDF metadata?", a: "Metadata often contains private information like your full name, software version, exact file paths, and creation timestamps that you may not want to share publicly." },
+      { q: "Does editing metadata alter document text or formatting?", a: "No. Only the document's information dictionary is updated; the page contents, fonts, and layout remain completely untouched." },
+    ],
+  }),
 };
+

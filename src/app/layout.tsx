@@ -24,9 +24,11 @@ const bodyFont = Inter({
   display: "swap",
 });
 
+import { tools } from "@/data/tools";
+
 export const metadata: Metadata = {
-  title: "MultiTool — 54 Free Online Tools",
-  description: "54 free, privacy-first browser tools for PDF, images, text, video, development, and everyday tasks. All processing happens locally — files never leave your device.",
+  title: `MultiTool — ${tools.length} Free Online Tools`,
+  description: `${tools.length} free, privacy-first browser tools for PDF, images, text, video, development, and everyday tasks. All processing happens locally — files never leave your device.`,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
