@@ -110,7 +110,7 @@ export default function ExtractAudio() {
   const { sendOutput } = useWorkflowStore();
 
   useEffect(() => {
-    if (chainInput && chainInput.data) {
+    if (chainInput && "data" in chainInput && chainInput.data) {
       if (chainInput.data instanceof Blob || chainInput.data instanceof File) {
         handleFile(chainInput.data);
       }
