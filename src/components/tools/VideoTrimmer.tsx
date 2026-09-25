@@ -51,7 +51,7 @@ export default function VideoTrimmer() {
   // Load incoming chain input if available
   useEffect(() => {
     if (chainInput && "data" in chainInput && chainInput.data) {
-      if (chainInput.data instanceof Blob || chainInput.data instanceof File) {
+      if (chainInput.data instanceof Blob) {
         handleLoadVideo(chainInput.data);
       }
     }

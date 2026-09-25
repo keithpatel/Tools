@@ -111,7 +111,7 @@ export default function ExtractAudio() {
 
   useEffect(() => {
     if (chainInput && "data" in chainInput && chainInput.data) {
-      if (chainInput.data instanceof Blob || chainInput.data instanceof File) {
+      if (chainInput.data instanceof Blob) {
         handleFile(chainInput.data);
       }
     }
