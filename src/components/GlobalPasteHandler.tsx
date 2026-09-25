@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Clipboard, Check } from "lucide-react";
+import { Clipboard } from "lucide-react";
 
 export function GlobalPasteHandler() {
   const [toastMessage, setToastMessage] = useState<string | null>(null);

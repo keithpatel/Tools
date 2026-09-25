@@ -1,3 +1,5 @@
+"use client";
+
 import { getToolBySlug } from "@/data/tools";
 import { toolMeta } from "./ToolMeta";
 

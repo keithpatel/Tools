@@ -11,15 +11,11 @@ import {
   Monitor,
   Camera,
   Layers,
-  Mic,
-  MicOff,
-  Volume2,
   Play,
   Pause,
   Square,
   RotateCcw,
   Download,
-  Clock,
   Sparkles,
   AlertCircle,
 } from "lucide-react";
@@ -193,7 +189,11 @@ export default function ScreenRecorder() {
 
           ctx.save();
           ctx.beginPath();
-          ctx.roundRect(pipX, pipY, pipW, pipH, 16);
+          if (typeof (ctx as any).roundRect === "function") {
+            (ctx as any).roundRect(pipX, pipY, pipW, pipH, 16);
+          } else {
+            ctx.rect(pipX, pipY, pipW, pipH);
+          }
           ctx.clip();
           ctx.drawImage(camVideo, pipX, pipY, pipW, pipH);
           ctx.restore();
@@ -201,14 +201,22 @@ export default function ScreenRecorder() {
           ctx.strokeStyle = "rgba(255, 255, 255, 0.8)";
           ctx.lineWidth = 4;
           ctx.beginPath();
-          ctx.roundRect(pipX, pipY, pipW, pipH, 16);
+          if (typeof (ctx as any).roundRect === "function") {
+            (ctx as any).roundRect(pipX, pipY, pipW, pipH, 16);
+          } else {
+            ctx.rect(pipX, pipY, pipW, pipH);
+          }
           ctx.stroke();
 
           animationFrameRef.current = requestAnimationFrame(drawComposite);
         };
         drawComposite();
 
-        const canvasStream = canvas.captureStream(30);
+        const canvasAny = canvas as any;
+        const canvasStream: MediaStream =
+          typeof canvasAny.captureStream === "function"
+            ? canvasAny.captureStream(30)
+            : canvasAny.mozCaptureStream(30);
 
         const allAudioTracks: MediaStreamTrack[] = [
           ...screenStream.getAudioTracks(),

@@ -14,11 +14,9 @@ import {
   Pause,
   RotateCcw,
   Download,
-  Clock,
   Film,
   Sparkles,
   AlertCircle,
-  Volume2,
 } from "lucide-react";
 
 function formatSeconds(secs: number): string {

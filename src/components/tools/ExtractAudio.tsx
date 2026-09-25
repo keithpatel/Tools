@@ -13,12 +13,8 @@ import {
   Pause,
   RotateCcw,
   Download,
-  Music,
-  Clock,
-  Sparkles,
   AlertCircle,
   FileAudio,
-  Radio,
 } from "lucide-react";
 
 function formatSeconds(secs: number): string {

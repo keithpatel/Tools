@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Copy, Check, RefreshCw, Lock, Share2 } from "lucide-react";
+import { Copy, Check, RefreshCw, Share2 } from "lucide-react";
 import { ToolLayout } from "@/components/ToolLayout";
 
 function generatePassword(length: number, upper: boolean, lower: boolean, numbers: boolean, symbols: boolean): string {
