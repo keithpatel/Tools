@@ -99,7 +99,7 @@ export function GlobalNav() {
 
   return (<>
     <header
-      className="sticky top-0 z-40 border-b border-border bg-surface/90 backdrop-blur-md"
+      className="sticky top-0 z-40 border-b border-border-soft bg-surface/85 backdrop-blur-xl"
       style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
     >
       {/* Desktop Header Layout */}
@@ -116,7 +116,7 @@ export function GlobalNav() {
         <div ref={menuRef} className="relative">
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="flex items-center gap-1.5 text-sm text-text-secondary hover:text-accent px-3 py-1.5 rounded-lg hover:bg-surface-hover transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 text-sm text-text-secondary hover:text-accent px-3 py-1.5 rounded-full hover:bg-surface-hover transition-colors cursor-pointer"
             aria-label="All tools menu"
             aria-expanded={menuOpen}
           >

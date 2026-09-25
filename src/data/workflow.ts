@@ -1,4 +1,4 @@
-export type WorkflowOutputType = "image" | "pdf" | "text" | "json" | "csv" | "file-batch" | "video-frames";
+export type WorkflowOutputType = "image" | "pdf" | "text" | "json" | "csv" | "file-batch" | "video-frames" | "video" | "audio";
 
 export interface WorkflowOutput {
   type: WorkflowOutputType;
@@ -58,7 +58,18 @@ const chains: Record<WorkflowOutputType, string[]> = {
     "collage-maker",
     "merge-pdf",
   ],
-  "video-frames": [],
+  "video-frames": [
+    "collage-maker",
+    "images-to-pdf",
+  ],
+  video: [
+    "video-trimmer",
+    "extract-audio",
+    "video-to-frames",
+  ],
+  audio: [
+    "extract-audio",
+  ],
 };
 
 export function getCompatibleTargets(type: WorkflowOutputType): string[] {

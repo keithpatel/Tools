@@ -40,7 +40,7 @@ function HeroSearch() {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         onFocus={() => setFocused(true)}
-        className="w-full pl-12 pr-4 py-3.5 text-sm sm:text-base rounded-xl border border-border bg-surface text-text-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent/50 transition-all placeholder:text-text-secondary/60"
+        className="w-full pl-12 pr-4 py-4 text-sm sm:text-base rounded-full border border-border-soft bg-surface text-text-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-accent/25 focus:border-accent/40 transition-all placeholder:text-text-secondary/60"
       />
       {focused && filtered.length > 0 && (
         <div className="absolute top-full left-0 right-0 mt-1.5 bg-surface-raised rounded-xl shadow-xl border border-border p-2 max-h-72 overflow-y-auto z-10">
@@ -86,25 +86,25 @@ export default function HomePage() {
   return (
     <div className="hero-mesh">
       <div className="max-w-7xl mx-auto px-4">
-        <section className="text-center pt-10 pb-6 md:pt-16 md:pb-8">
+        <section className="text-center pt-12 pb-8 md:pt-20 md:pb-10">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-tight animate-fade-up">
             <span className="text-accent">{tools.length} Free</span> Online Tools
           </h1>
-          <p className="text-text-secondary text-base max-w-lg mx-auto mb-5 animate-fade-up animate-fade-up-d1">
+          <p className="text-text-secondary text-base max-w-lg mx-auto mb-6 animate-fade-up animate-fade-up-d1">
             Privacy-first tools for PDF, images, text, video, development, and everyday tasks.
             <br />All processing happens in your browser — nothing is ever uploaded.
           </p>
           <div className="animate-fade-up animate-fade-up-d2">
             <HeroSearch />
           </div>
-          <div className="flex items-center justify-center gap-2 mt-4 animate-fade-up animate-fade-up-d3 flex-wrap">
-            <span className="inline-flex items-center gap-1.5 text-xs text-text-secondary bg-surface-hover px-3 py-1.5 rounded-full border border-border-soft">
+          <div className="flex items-center justify-center gap-2 mt-5 animate-fade-up animate-fade-up-d3 flex-wrap">
+            <span className="inline-flex items-center gap-1.5 text-xs text-text-secondary bg-surface px-3 py-1.5 rounded-full border border-border-soft shadow-xs">
               <LucideIcons.Grid3x3 className="w-3 h-3" /> {tools.length} Tools
             </span>
-            <span className="inline-flex items-center gap-1.5 text-xs text-text-secondary bg-surface-hover px-3 py-1.5 rounded-full border border-border-soft">
+            <span className="inline-flex items-center gap-1.5 text-xs text-text-secondary bg-surface px-3 py-1.5 rounded-full border border-border-soft shadow-xs">
               <LucideIcons.Lock className="w-3 h-3" /> Zero Uploads
             </span>
-            <span className="inline-flex items-center gap-1.5 text-xs text-text-secondary bg-surface-hover px-3 py-1.5 rounded-full border border-border-soft">
+            <span className="inline-flex items-center gap-1.5 text-xs text-text-secondary bg-surface px-3 py-1.5 rounded-full border border-border-soft shadow-xs">
               <LucideIcons.Heart className="w-3 h-3" /> 100% Free
             </span>
           </div>

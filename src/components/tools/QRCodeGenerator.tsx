@@ -1,23 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ToolLayout } from "@/components/ToolLayout";
 import { ResultPanel } from "@/components/ResultPanel";
 import QRCode from "qrcode";
 import { useWorkflowStore } from "@/lib/useWorkflowStore";
+import { Share2, Check } from "lucide-react";
 
 export default function QRCodeGenerator() {
   const [text, setText] = useState("");
   const [dataUrl, setDataUrl] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [copiedLink, setCopiedLink] = useState(false);
   const { sendOutput } = useWorkflowStore();
 
-  const generate = async () => {
+  const generateWithText = async (content: string) => {
+    if (!content.trim()) return;
     setError("");
     setLoading(true);
     try {
-      const url = await QRCode.toDataURL(text || " ", { width: 400, margin: 2 });
+      const url = await QRCode.toDataURL(content, { width: 400, margin: 2 });
       setDataUrl(url);
       const qrBlob = await (await fetch(url)).blob();
       sendOutput({ type: "image", data: qrBlob, filename: "qrcode.png", sourceToolSlug: "qr-code-generator", createdAt: Date.now() });
@@ -26,6 +29,28 @@ export default function QRCodeGenerator() {
     } finally {
       setLoading(false);
     }
+  };
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const param = new URLSearchParams(window.location.search).get("text");
+    if (param) {
+      setText(param);
+      generateWithText(param);
+    }
+  }, []);
+
+  const generate = async () => {
+    generateWithText(text || " ");
+  };
+
+  const copyShareLink = async () => {
+    if (typeof window === "undefined" || !text) return;
+    const url = new URL(window.location.href);
+    url.searchParams.set("text", text);
+    await navigator.clipboard.writeText(url.toString());
+    setCopiedLink(true);
+    setTimeout(() => setCopiedLink(false), 2000);
   };
 
   const download = () => {
@@ -52,6 +77,17 @@ export default function QRCodeGenerator() {
           onChange={(e) => setText(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && generate()}
         />
+        {text && (
+          <button
+            type="button"
+            onClick={copyShareLink}
+            className="flex items-center gap-1.5 px-3 py-2 text-xs font-medium border border-border bg-surface rounded-lg hover:bg-surface-hover text-text-secondary transition-colors"
+            title="Share URL with this QR code text"
+          >
+            {copiedLink ? <Check className="w-3.5 h-3.5 text-green-500" /> : <Share2 className="w-3.5 h-3.5" />}
+            {copiedLink ? "Copied" : "Share"}
+          </button>
+        )}
       </div>
 
       <ResultPanel

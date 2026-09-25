@@ -9,6 +9,8 @@ import { OnboardingTooltip } from "@/components/OnboardingTooltip";
 import { InstallPrompt } from "@/components/InstallPrompt";
 import { PageTransition } from "@/components/PageTransition";
 import { WorkflowProvider } from "@/lib/useWorkflowStore";
+import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
+import { GlobalPasteHandler } from "@/components/GlobalPasteHandler";
 
 const headingFont = Geist({
   variable: "--font-geist-heading",
@@ -23,8 +25,8 @@ const bodyFont = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "MultiTool — 50 Free Online Tools",
-  description: "50 free, privacy-first browser tools for PDF, images, text, development, and everyday tasks. All processing happens locally — files never leave your device.",
+  title: "MultiTool — 54 Free Online Tools",
+  description: "54 free, privacy-first browser tools for PDF, images, text, video, development, and everyday tasks. All processing happens locally — files never leave your device.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -46,6 +48,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <InstallPrompt />
             <ShortcutCheatSheet />
             <OnboardingTooltip />
+            <ServiceWorkerRegister />
+            <GlobalPasteHandler />
           </WorkflowProvider>
         </ThemeProvider>
       </body>

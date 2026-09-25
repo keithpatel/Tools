@@ -13,7 +13,7 @@ export function ToolCard({ tool }: { tool: Tool }) {
   const isFav = favorites.includes(tool.slug);
 
   return (
-    <div className="group relative block p-4 rounded-xl border border-border-soft bg-surface hover:border-accent/30 hover:shadow-md transition-all duration-200 hover:-translate-y-0.5">
+    <div className="group relative block p-4 rounded-2xl border border-border-soft bg-surface shadow-xs hover:shadow-md hover:-translate-y-0.5 hover:border-accent/30 transition-all duration-200">
       <button
         onClick={(e) => {
           e.preventDefault();
@@ -21,7 +21,7 @@ export function ToolCard({ tool }: { tool: Tool }) {
             isFav ? prev.filter((s) => s !== tool.slug) : [...prev, tool.slug]
           );
         }}
-        className="absolute top-2 right-2 p-1 rounded hover:bg-surface-hover opacity-0 group-hover:opacity-100 transition-opacity"
+        className="absolute top-2 right-2 p-1.5 rounded-full hover:bg-surface-hover opacity-0 group-hover:opacity-100 transition-opacity"
         aria-label={isFav ? "Remove from favorites" : "Add to favorites"}
       >
         <LucideIcons.Star
@@ -41,7 +41,7 @@ export function ToolCard({ tool }: { tool: Tool }) {
               {tool.description}
             </p>
             <span
-              className="inline-flex items-center gap-1 text-[10px] font-medium mt-1.5 uppercase tracking-wider opacity-60"
+              className="inline-flex items-center gap-1 text-[10px] font-medium mt-2 uppercase tracking-wider opacity-60"
               style={{ color: cat.color }}
             >
               <CatIcon className="w-3 h-3" />

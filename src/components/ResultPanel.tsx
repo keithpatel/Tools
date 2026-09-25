@@ -5,29 +5,8 @@ import { Download, Copy, Check, Loader2, RotateCcw, Send, ChevronRight } from "l
 import { useWorkflowStore } from "@/lib/useWorkflowStore";
 import { getCompatibleTargets, getToolSuggestions, type WorkflowOutputType } from "@/data/workflow";
 import { tools } from "@/data/tools";
+import { Button } from "@/components/ui/Button";
 import Link from "next/link";
-
-function BtnPrimary({ children, onClick, className }: { children: ReactNode; onClick?: () => void; className?: string }) {
-  return (
-    <button
-      onClick={onClick}
-      className={`inline-flex items-center gap-1.5 px-5 py-2.5 bg-accent text-white rounded-xl hover:opacity-90 active:scale-[0.97] text-sm font-medium transition-all shadow-sm ${className || ""}`}
-    >
-      {children}
-    </button>
-  );
-}
-
-function BtnSecondary({ children, onClick, className }: { children: ReactNode; onClick?: () => void; className?: string }) {
-  return (
-    <button
-      onClick={onClick}
-      className={`inline-flex items-center gap-1.5 px-4 py-2 bg-surface-hover text-text-primary rounded-xl hover:bg-border active:scale-[0.97] text-sm font-medium transition-all ${className || ""}`}
-    >
-      {children}
-    </button>
-  );
-}
 
 export function ResultPanel({
   loading,
@@ -103,50 +82,52 @@ export function ResultPanel({
     <div className="mt-6">
       {!children && !loading && !error && onAction && (
         <div className="hidden md:block">
-          <BtnPrimary onClick={onAction}>{actionLabel || "Process"}</BtnPrimary>
+          <Button onClick={onAction} size="lg">
+            {actionLabel || "Process"}
+          </Button>
         </div>
       )}
 
       {loading && (
-        <div className="flex items-center gap-3 text-sm text-text-secondary bg-surface-hover rounded-xl px-5 py-4 border border-border-soft">
+        <div className="flex items-center gap-3 text-sm text-text-secondary bg-surface rounded-2xl px-5 py-4 border border-border-soft shadow-xs">
           <Loader2 className="w-5 h-5 animate-spin text-accent" />
           <span>{loadingLabel || "Processing..."}</span>
         </div>
       )}
 
       {error && (
-        <div className="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 px-4 py-3 rounded-xl border border-red-200 dark:border-red-900">
+        <div className="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 px-4 py-3 rounded-2xl border border-red-200 dark:border-red-900">
           {error}
         </div>
       )}
 
       {children && !loading && (
         <div className="space-y-4">
-          <div className="relative bg-surface rounded-xl border border-border-soft p-4">
+          <div className="relative bg-surface rounded-2xl border border-border-soft shadow-xs p-5">
             {children}
 
-            <div className="flex items-center gap-2 mt-4 pt-3 border-t border-border-soft">
+            <div className="flex flex-wrap items-center gap-2 mt-4 pt-4 border-t border-border-soft">
               {onDownload && (
-                <BtnPrimary onClick={onDownload}>
+                <Button onClick={onDownload}>
                   <Download className="w-4 h-4" />
                   {downloadLabel || "Download"}
-                </BtnPrimary>
+                </Button>
               )}
               {onCopy && (
-                <BtnSecondary onClick={handleCopy}>
+                <Button variant="secondary" onClick={handleCopy}>
                   {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
                   {copied ? "Copied" : copyLabel || "Copy"}
-                </BtnSecondary>
+                </Button>
               )}
 
               {targets.length > 0 && (
                 <div className="relative ml-auto" ref={dropdownRef}>
-                  <BtnSecondary onClick={() => setSendOpen(!sendOpen)}>
+                  <Button variant="secondary" onClick={() => setSendOpen(!sendOpen)}>
                     <Send className="w-4 h-4" />
                     Send to...
-                  </BtnSecondary>
+                  </Button>
                   {sendOpen && (
-                    <div className="absolute right-0 top-full mt-1 w-52 bg-surface-raised rounded-xl shadow-xl border border-border z-50 py-1">
+                    <div className="absolute right-0 top-full mt-1 w-52 bg-surface-raised rounded-2xl shadow-xl border border-border z-50 py-1">
                       {targets.map((slug) => {
                         const t = tools.find((tool) => tool.slug === slug);
                         if (!t) return null;
@@ -168,13 +149,10 @@ export function ResultPanel({
               )}
 
               {onReset && (
-                <button
-                  onClick={onReset}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 text-sm text-text-secondary hover:text-text-primary transition-colors"
-                >
+                <Button variant="ghost" onClick={onReset}>
                   <RotateCcw className="w-4 h-4" />
                   {resetLabel || "Start Over"}
-                </button>
+                </Button>
               )}
             </div>
           </div>

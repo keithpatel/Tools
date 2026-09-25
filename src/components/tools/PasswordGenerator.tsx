@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Copy, Check, RefreshCw, Lock } from "lucide-react";
+import { Copy, Check, RefreshCw, Lock, Share2 } from "lucide-react";
 import { ToolLayout } from "@/components/ToolLayout";
 
 function generatePassword(length: number, upper: boolean, lower: boolean, numbers: boolean, symbols: boolean): string {
@@ -44,6 +44,21 @@ export default function PasswordGenerator() {
   const [symbols, setSymbols] = useState(true);
   const [password, setPassword] = useState("");
   const [copied, setCopied] = useState(false);
+  const [copiedLink, setCopiedLink] = useState(false);
+
+  // Initialize from URL parameters if present
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    const qLen = params.get("length");
+    if (qLen && !isNaN(parseInt(qLen))) {
+      setLength(Math.min(64, Math.max(4, parseInt(qLen))));
+    }
+    if (params.has("upper")) setUpper(params.get("upper") === "true");
+    if (params.has("lower")) setLower(params.get("lower") === "true");
+    if (params.has("numbers")) setNumbers(params.get("numbers") === "true");
+    if (params.has("symbols")) setSymbols(params.get("symbols") === "true");
+  }, []);
 
   const generate = useCallback(() => {
     setPassword(generatePassword(length, upper, lower, numbers, symbols));
@@ -55,6 +70,19 @@ export default function PasswordGenerator() {
     await navigator.clipboard.writeText(password);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const copyShareLink = async () => {
+    if (typeof window === "undefined") return;
+    const url = new URL(window.location.href);
+    url.searchParams.set("length", length.toString());
+    url.searchParams.set("upper", upper.toString());
+    url.searchParams.set("lower", lower.toString());
+    url.searchParams.set("numbers", numbers.toString());
+    url.searchParams.set("symbols", symbols.toString());
+    await navigator.clipboard.writeText(url.toString());
+    setCopiedLink(true);
+    setTimeout(() => setCopiedLink(false), 2000);
   };
 
   const strength = password ? getStrength(password) : { label: "", color: "", width: "" };
@@ -131,12 +159,21 @@ export default function PasswordGenerator() {
           ))}
         </div>
 
-        <button
-          onClick={generate}
-          className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-accent text-white rounded-lg hover:bg-accent-dark transition-colors font-medium"
-        >
-          <RefreshCw className="w-4 h-4" /> Regenerate
-        </button>
+        <div className="flex flex-col sm:flex-row items-center gap-3">
+          <button
+            onClick={generate}
+            className="flex-1 w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-accent text-white rounded-lg hover:bg-accent-dark transition-colors font-medium"
+          >
+            <RefreshCw className="w-4 h-4" /> Regenerate
+          </button>
+          <button
+            onClick={copyShareLink}
+            className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 bg-surface border border-border text-text-primary rounded-lg hover:bg-surface-hover transition-colors font-medium text-sm"
+          >
+            {copiedLink ? <Check className="w-4 h-4 text-green-500" /> : <Share2 className="w-4 h-4" />}
+            {copiedLink ? "Link Copied!" : "Share Preset"}
+          </button>
+        </div>
       </div>
     </ToolLayout>
   );

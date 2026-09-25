@@ -4,9 +4,9 @@ import { Wrench } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="border-t border-border mt-20 bg-surface">
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 mb-8">
+    <footer className="border-t border-border-soft mt-20 bg-surface">
+      <div className="max-w-7xl mx-auto px-4 py-14">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8 mb-10">
           {categories.map((cat) => {
             const items = tools.filter((t) => t.category === cat.id);
             return (
@@ -14,7 +14,7 @@ export function Footer() {
                 <h3 className="text-xs font-heading font-semibold uppercase tracking-wider mb-3" style={{ color: cat.color }}>
                   {cat.label}
                 </h3>
-                <ul className="space-y-1.5">
+                <ul className="space-y-2">
                   {items.map((tool) => (
                     <li key={tool.id}>
                       <Link
@@ -30,7 +30,7 @@ export function Footer() {
             );
           })}
         </div>
-        <div className="border-t border-border pt-8 text-center space-y-3">
+        <div className="border-t border-border-soft pt-8 text-center space-y-2.5">
           <div className="flex items-center justify-center gap-2 text-sm font-heading font-semibold text-text-primary">
             <Wrench className="w-4 h-4 text-accent" />
             MultiTool

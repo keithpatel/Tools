@@ -56,6 +56,9 @@ const toolComponents: Record<string, any> = {
   "age-calculator": dynamic(() => import("@/components/tools/AgeCalculator"), { ssr: false }),
   "bmi-calculator": dynamic(() => import("@/components/tools/BMICalculator"), { ssr: false }),
   "video-to-frames": dynamic(() => import("@/components/tools/VideoToFrames"), { ssr: false }),
+  "screen-recorder": dynamic(() => import("@/components/tools/ScreenRecorder"), { ssr: false }),
+  "video-trimmer": dynamic(() => import("@/components/tools/VideoTrimmer"), { ssr: false }),
+  "extract-audio": dynamic(() => import("@/components/tools/ExtractAudio"), { ssr: false }),
 };
 
 export function ToolPageClient({ slug }: { slug: string }) {

@@ -11,6 +11,7 @@ import { getToolBySlug as getTool } from "@/data/tools";
 import Link from "next/link";
 import { toolMeta } from "./ToolMeta";
 import type { PendingOutput } from "@/data/workflow";
+import { StructuredData } from "./StructuredData";
 
 const ChainInputContext = createContext<PendingOutput | null>(null);
 export const useChainInput = () => useContext(ChainInputContext);
@@ -34,7 +35,7 @@ function InfoSection({ slug }: { slug: string }) {
   if (!tm) return null;
 
   return (
-    <section className="mt-6 md:mt-12 border-t border-border pt-4 md:pt-8">
+    <section className="mt-6 md:mt-12 border-t border-border-soft pt-4 md:pt-8">
       <button
         onClick={() => setOpen(!open)}
         className="flex items-center gap-2 text-sm text-text-secondary hover:text-text-primary transition-colors mb-1 w-full"
@@ -44,8 +45,8 @@ function InfoSection({ slug }: { slug: string }) {
       </button>
 
       {open && (
-        <div className="space-y-6 mt-4">
-          <div className="prose prose-sm dark:prose-invert max-w-none space-y-3">
+        <div className="space-y-8 mt-5">
+          <div className="space-y-3">
             <h2 className="text-lg font-heading font-semibold">About This Tool</h2>
             {tm.body.map((p, i) => (
               <p key={i} className="text-sm text-text-secondary leading-relaxed">{p}</p>
@@ -54,8 +55,8 @@ function InfoSection({ slug }: { slug: string }) {
 
           {tm.howTo.length > 0 && (
             <div>
-              <h2 className="text-lg font-heading font-semibold mb-2">How to Use</h2>
-              <ol className="list-decimal list-inside space-y-1 text-sm text-text-secondary">
+              <h2 className="text-lg font-heading font-semibold mb-3">How to Use</h2>
+              <ol className="list-decimal list-inside space-y-2 text-sm text-text-secondary">
                 {tm.howTo.map((step, i) => (
                   <li key={i}>{step}</li>
                 ))}
@@ -65,12 +66,12 @@ function InfoSection({ slug }: { slug: string }) {
 
           {tm.faq.length > 0 && (
             <div>
-              <h2 className="text-lg font-heading font-semibold mb-3">Frequently Asked Questions</h2>
-              <div className="space-y-3">
+              <h2 className="text-lg font-heading font-semibold mb-4">Frequently Asked Questions</h2>
+              <div className="space-y-4">
                 {tm.faq.map((item, i) => (
                   <div key={i}>
-                    <h3 className="text-sm font-medium mb-0.5">{item.q}</h3>
-                    <p className="text-sm text-text-secondary">{item.a}</p>
+                    <h3 className="text-sm font-medium mb-1">{item.q}</h3>
+                    <p className="text-sm text-text-secondary leading-relaxed">{item.a}</p>
                   </div>
                 ))}
               </div>
@@ -123,6 +124,7 @@ export function ToolPageLayout({ slug, children }: { slug: string; children: Rea
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-4 md:py-6">
+      <StructuredData slug={slug} />
       <Breadcrumbs category={tool.category} toolName={tool.name} />
 
       {chainInput && sourceTool && (
@@ -145,13 +147,13 @@ export function ToolPageLayout({ slug, children }: { slug: string; children: Rea
         <CategorySidebar currentSlug={slug} />
 
         <div className="flex-1 min-w-0 pb-20 md:pb-0">
-          <div className="hidden md:flex items-center gap-3 mb-2">
-            <div className="p-2 rounded-xl shrink-0" style={{ backgroundColor: `${cat?.color}12` }}>
+          <div className="hidden md:flex items-center gap-4 mb-2">
+            <div className="p-2.5 rounded-2xl shrink-0 shadow-xs bg-surface" style={{ boxShadow: `0 0 0 1px ${cat?.color}22, 0 4px 16px 0 ${cat?.color}14` }}>
               <Icon className="w-5 h-5" style={{ color: cat?.color }} />
             </div>
             <div className="flex-1">
               <div className="flex items-center gap-2">
-                <h1 className="text-xl font-heading font-bold" id="tool-top">{tool.name}</h1>
+                <h1 className="text-2xl font-heading font-bold tracking-tight" id="tool-top">{tool.name}</h1>
                 <button
                   onClick={() =>
                     setFavorites((prev: string[]) =>
@@ -166,11 +168,11 @@ export function ToolPageLayout({ slug, children }: { slug: string; children: Rea
                   />
                 </button>
               </div>
-              <p className="text-sm text-text-secondary">{tool.description}</p>
+              <p className="text-sm text-text-secondary mt-0.5">{tool.description}</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-1.5 text-xs text-green-600 dark:text-green-400 mb-3 md:mb-6 bg-green-50 dark:bg-green-950/30 px-3 py-1.5 rounded-full w-fit">
+          <div className="inline-flex items-center gap-1.5 text-xs text-green-700 dark:text-green-400 bg-green-50/70 dark:bg-green-950/30 px-3 py-1.5 rounded-full mb-3 md:mb-6">
             <LucideIcons.Shield className="w-3.5 h-3.5" />
             Runs entirely in your browser — files are never uploaded
           </div>

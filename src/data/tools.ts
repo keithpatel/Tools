@@ -81,6 +81,9 @@ export const tools: Tool[] = [
 
   // Video Tools
   { id: 51, name: "Video to Frames", slug: "video-to-frames", description: "Extract frames from video files as downloadable images", category: "video", icon: "Clapperboard" },
+  { id: 52, name: "Screen & Webcam Recorder", slug: "screen-recorder", description: "Record screen, webcam, or picture-in-picture with audio directly in browser", category: "video", icon: "Video" },
+  { id: 53, name: "Video Trimmer", slug: "video-trimmer", description: "Cut and trim videos to exact timestamps without uploading", category: "video", icon: "Scissors" },
+  { id: 54, name: "Extract Audio", slug: "extract-audio", description: "Extract audio track from video files into studio-quality WAV format", category: "video", icon: "Volume2" },
 ];
 
 export function getToolsByCategory(category: CategoryId) {

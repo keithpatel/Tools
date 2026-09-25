@@ -608,4 +608,65 @@ export const toolMeta: Record<string, ToolMeta> = {
       { q: "What are the BMI categories?", a: "Underweight (<18.5), Normal (18.5-24.9), Overweight (25-29.9), Obese Class I (30-34.9), Class II (35-39.9), Class III (40+)." },
     ],
   }),
+  "screen-recorder": make("Screen & Webcam Recorder", {
+    title: "Screen & Webcam Recorder Online Free — No Download, No Upload",
+    description: "Record your screen, webcam, or picture-in-picture with audio directly in your browser. 100% private, no watermarks, no sign-up.",
+    ogTitle: "Screen & Webcam Recorder — Free & Private",
+    ogDesc: "Record your screen, camera, and microphone directly in browser. Files stay on your device.",
+    body: [
+      "Capture presentations, software tutorials, bug reports, and video meetings without downloading heavy software or paying subscription fees.",
+      "Everything is recorded directly in your browser using the MediaStream and MediaRecorder APIs. Your recordings are encoded locally on your computer and never uploaded to any server.",
+    ],
+    howTo: [
+      "Select your recording source: Screen, Webcam, or Picture-in-Picture",
+      "Choose your preferred audio input: Microphone, System Audio, Both, or Muted",
+      "Click 'Start Recording' and select which window, screen, or tab to share",
+      "Pause and resume as needed, then click 'Stop Recording' to preview and download your video",
+    ],
+    faq: [
+      { q: "Is there a recording time limit or watermark?", a: "No! There are zero artificial time limits and no watermarks. You can record as long as your device has available memory." },
+      { q: "Are my recordings uploaded to any cloud server?", a: "Never. All audio and video streams are processed, composited, and encoded 100% locally on your machine." },
+      { q: "What formats can I download?", a: "Recordings are saved in high-efficiency WebM or MP4 formats that play smoothly in all modern media players and browsers." },
+    ],
+  }),
+  "video-trimmer": make("Video Trimmer", {
+    title: "Video Trimmer Online Free — Cut & Trim Video in Browser",
+    description: "Cut and trim video clips quickly with millisecond precision without uploading to a server. 100% client-side privacy.",
+    ogTitle: "Video Trimmer — Free & Private",
+    ogDesc: "Trim and cut videos directly in your browser. No files uploaded.",
+    body: [
+      "Trim unwanted introductions, cut out pauses, or slice clips to the exact section you need without installing video editing software.",
+      "Using modern browser APIs, your video is loaded and cut right in your browser's memory with zero uploads.",
+    ],
+    howTo: [
+      "Drop or select the video file you want to trim",
+      "Drag the start and end sliders or enter precise timestamps to frame the desired segment",
+      "Click 'Play Segment' to preview the trimmed clip in a continuous loop",
+      "Click 'Trim & Export' to generate and download your trimmed video clip",
+    ],
+    faq: [
+      { q: "Are my video files uploaded to your servers?", a: "No. The entire trimming operation executes locally inside your browser. Your video files never leave your computer." },
+      { q: "What video file formats are supported?", a: "Supports all browser-compatible video formats including MP4, WebM, MOV, and MKV." },
+    ],
+  }),
+  "extract-audio": make("Extract Audio", {
+    title: "Extract Audio from Video Online Free — MP4 to WAV Converter",
+    description: "Extract the audio track from video files into lossless, studio-quality WAV audio directly in your browser. Fast, free, and completely private.",
+    ogTitle: "Extract Audio from Video — Free & Private",
+    ogDesc: "Strip audio from MP4 and WebM videos into studio-quality WAV files with no uploads.",
+    body: [
+      "Extract voice recordings, background music, or dialogue from any video file without loss of quality.",
+      "Our tool utilizes the browser Web Audio API to decode the audio stream and encode it into an uncompressed, crystal-clear 16-bit PCM WAV audio file.",
+    ],
+    howTo: [
+      "Drop or select a video file (MP4, WebM, MOV, or MKV)",
+      "View the decoded audio waveform, duration, channels, and sample rate",
+      "Listen to the preview using the integrated audio player",
+      "Click 'Download WAV' to save the extracted audio directly to your device",
+    ],
+    faq: [
+      { q: "Is the extracted audio compressed or degraded?", a: "No! The audio track is decoded and saved as uncompressed 16-bit PCM WAV at the original sample rate for pristine sound quality." },
+      { q: "Can I extract audio from large video files?", a: "Yes. Processing is performed locally on your device without file size limits imposed by network upload caps." },
+    ],
+  }),
 };

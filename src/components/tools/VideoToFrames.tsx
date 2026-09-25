@@ -4,8 +4,22 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { ToolLayout } from "@/components/ToolLayout";
 import { DropZone } from "@/components/DropZone";
 import { ResultPanel } from "@/components/ResultPanel";
-import { useWorkflowStore } from "@/lib/useWorkflowStore";
-import { Download, Film, Image, Loader2, AlertTriangle, CheckSquare, Square } from "lucide-react";
+import { Button } from "@/components/ui/Button";
+import { Segmented } from "@/components/ui/Segmented";
+import { RangeSlider } from "@/components/ui/RangeSlider";
+import { Chip } from "@/components/ui/Chip";
+import { TrimRange } from "@/components/ui/TrimRange";
+import {
+  Download,
+  Film,
+  Image as ImageIcon,
+  Loader2,
+  AlertTriangle,
+  Clock,
+  Ruler,
+  Camera,
+  Layers,
+} from "lucide-react";
 import JSZip from "jszip";
 
 type OutputFormat = "image/jpeg" | "image/png";
@@ -158,6 +172,32 @@ function extractFrames(
   });
 }
 
+function Toggle({ checked, onChange, label, description }: { checked: boolean; onChange: () => void; label: string; description: string }) {
+  return (
+    <div className="flex items-center justify-between gap-4">
+      <div className="min-w-0">
+        <p className="text-sm font-medium text-text-primary">{label}</p>
+        <p className="text-xs text-text-secondary mt-0.5">{description}</p>
+      </div>
+      <button
+        type="button"
+        role="switch"
+        aria-checked={checked}
+        onClick={onChange}
+        className={`relative inline-flex h-6 w-10 shrink-0 items-center rounded-full transition-colors duration-200 ${
+          checked ? "bg-accent" : "bg-border"
+        }`}
+      >
+        <span
+          className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-sm transition-transform duration-200 ${
+            checked ? "translate-x-[18px]" : "translate-x-[2px]"
+          }`}
+        />
+      </button>
+    </div>
+  );
+}
+
 export default function VideoToFrames() {
   const [phase, setPhase] = useState<"input" | "settings" | "extracting" | "results">("input");
   const [videoFile, setVideoFile] = useState<File | null>(null);
@@ -223,8 +263,6 @@ export default function VideoToFrames() {
     };
   }, [videoUrl]);
 
-  const { sendOutput } = useWorkflowStore();
-
   const handleFiles = useCallback((files: File[]) => {
     const file = files.find(
       (f) => f.type.startsWith("video/") || f.name.match(/\.(mp4|mov|webm|avi|mkv)$/i)
@@ -270,8 +308,6 @@ export default function VideoToFrames() {
   const preset = SIZE_PRESETS[sizePreset];
   const targetW = preset ? (preset.w > 0 ? preset.w : srcW) : customW;
   const targetH = preset ? (preset.h > 0 ? preset.h : srcH) : customH;
-  const displayTargetW = preset?.w || customW || srcW;
-  const displayTargetH = preset?.h || customH || srcH;
 
   const effectiveStart = Math.max(0, Math.min(startTime, dur));
   const effectiveEnd = Math.max(effectiveStart, Math.min(endTime, dur));
@@ -399,6 +435,7 @@ export default function VideoToFrames() {
   const tooLarge = videoFile && videoFile.size > 200 * 1024 * 1024;
   const tooLong = dur > 300;
   const hugeExtraction = estimatedCount > 500;
+  const extractingPct = progress.total > 0 ? Math.round((progress.current / progress.total) * 100) : 0;
 
   return (
     <ToolLayout title="" description="">
@@ -409,246 +446,236 @@ export default function VideoToFrames() {
             accept="video/mp4,video/quicktime,video/webm,video/x-msvideo,video/x-matroska"
             label="Drop a video here or click to browse"
           />
-          <p className="text-xs text-text-secondary/60 mt-2 text-center">
-            Supports MP4, MOV, WebM &middot; Works best with videos under 200MB / 5 minutes
-          </p>
+          <div className="flex flex-wrap items-center justify-center gap-2 mt-3">
+            <Chip>MP4</Chip>
+            <Chip>MOV</Chip>
+            <Chip>WebM</Chip>
+            <Chip tone="accent">100% private — never uploaded</Chip>
+          </div>
         </div>
       )}
 
       {phase === "settings" && videoFile && videoUrl && (
         <div className="space-y-5">
-          <div className="bg-black/5 dark:bg-white/5 rounded-xl overflow-hidden border border-border-soft">
+          <div className="bg-surface rounded-2xl border border-border-soft shadow-xs overflow-hidden">
             <video
               ref={playerRef}
               src={videoUrl}
               controls
               preload="auto"
-              className="w-full max-h-[400px] object-contain"
+              className="w-full max-h-[400px] object-contain bg-black"
               onLoadedMetadata={onPlayerMetaLoad}
               onLoadedData={onPlayerMetaLoad}
             />
           </div>
 
-          <div className="flex items-center gap-4 bg-surface-hover rounded-xl p-4 border border-border-soft">
-            <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center shrink-0">
-              <Film className="w-6 h-6 text-accent" />
+          <div className="flex items-center gap-3">
+            <div className="w-11 h-11 rounded-xl bg-accent/10 flex items-center justify-center shrink-0">
+              <Film className="w-5 h-5 text-accent" />
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium truncate">{videoFile.name}</p>
-              <p className="text-xs text-text-secondary">
-                {formatSize(videoFile.size)}
-                {metaLoaded
-                  ? ` \u00b7 ${formatTime(dur)} \u00b7 ${srcW}x${srcH}`
-                  : " \u00b7 Loading..."}
-              </p>
+              <p className="text-xs text-text-secondary">{formatSize(videoFile.size)}</p>
             </div>
-            <button onClick={reset} className="text-xs text-text-secondary hover:text-text-primary underline shrink-0">
+            <Button variant="ghost" size="sm" onClick={reset}>
               Change
-            </button>
+            </Button>
           </div>
 
-          <div className="bg-surface rounded-xl border border-border-soft p-4 space-y-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="text-xs font-medium text-text-secondary block mb-1">Start time</label>
-                <input
-                  type="text"
-                  value={formatTime(startTime)}
-                  onChange={(e) => setStartTime(parseTime(e.target.value))}
-                  placeholder="0:00"
-                  className="w-full px-3 py-1.5 text-sm font-mono rounded-lg border border-border-soft bg-surface text-text-primary"
-                />
-              </div>
-              <div>
-                <label className="text-xs font-medium text-text-secondary block mb-1">End time</label>
-                <input
-                  type="text"
-                  value={formatTime(endTime)}
-                  onChange={(e) => setEndTime(parseTime(e.target.value))}
-                  placeholder={metaLoaded ? formatTime(dur) : "0:00"}
-                  className="w-full px-3 py-1.5 text-sm font-mono rounded-lg border border-border-soft bg-surface text-text-primary"
-                />
-              </div>
+          {metaLoaded && dur > 0 && (
+            <div className="flex flex-wrap gap-2">
+              <Chip icon={<Clock />}>{formatTime(dur)}</Chip>
+              <Chip icon={<Ruler />}>{srcW > 0 ? `${srcW}×${srcH}` : "—"}</Chip>
+              <Chip icon={<Layers />}>~{estimatedCount.toLocaleString()} frames</Chip>
+              <Chip icon={<Film />}>{format === "image/jpeg" ? "JPG" : "PNG"}</Chip>
+              {(targetW > 0 && targetH > 0 && (preset.w > 0 || customW > 0)) && (
+                <Chip tone="accent" icon={<Camera />}>Output {targetW}×{targetH}</Chip>
+              )}
             </div>
+          )}
 
-            <div>
-              <label className="text-xs font-medium text-text-secondary block mb-2">Output Size</label>
-              <div className="flex flex-wrap gap-2">
-                {SIZE_PRESETS.map((p, i) => (
-                  <button
-                    key={p.label}
-                    onClick={() => setSizePreset(i)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                      sizePreset === i
-                        ? "bg-accent text-white"
-                        : "bg-surface-hover text-text-secondary hover:text-text-primary border border-border-soft"
-                    }`}
-                  >
-                    {p.label}
-                  </button>
-                ))}
+          <div className="bg-surface rounded-2xl border border-border-soft shadow-xs overflow-hidden divide-y divide-border-soft">
+            {/* Time range */}
+            <section className="px-5 py-5">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-sm font-heading font-semibold flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-text-secondary" /> Time Range
+                </h2>
+                {metaLoaded && (
+                  <span className="text-xs text-text-secondary font-mono">
+                    {formatTime(effectiveStart)} – {formatTime(effectiveEnd)}
+                  </span>
+                )}
               </div>
+              <TrimRange
+                min={0}
+                max={dur}
+                start={effectiveStart}
+                end={effectiveEnd}
+                disabled={!metaLoaded || dur === 0}
+                onChange={(s, e) => {
+                  setStartTime(s);
+                  setEndTime(e);
+                }}
+              />
+              <div className="grid grid-cols-2 gap-4 mt-4">
+                <div>
+                  <label className="text-xs font-medium text-text-secondary block mb-1">Start time</label>
+                  <input
+                    type="text"
+                    value={formatTime(startTime)}
+                    onChange={(e) => setStartTime(parseTime(e.target.value))}
+                    placeholder="0:00"
+                    className="w-full px-3 py-2 text-sm font-mono rounded-lg border border-border-soft bg-surface-hover text-text-primary focus:outline-none focus:ring-2 focus:ring-accent/25 focus:border-accent/40 transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-text-secondary block mb-1">End time</label>
+                  <input
+                    type="text"
+                    value={formatTime(endTime)}
+                    onChange={(e) => setEndTime(parseTime(e.target.value))}
+                    placeholder={metaLoaded ? formatTime(dur) : "0:00"}
+                    className="w-full px-3 py-2 text-sm font-mono rounded-lg border border-border-soft bg-surface-hover text-text-primary focus:outline-none focus:ring-2 focus:ring-accent/25 focus:border-accent/40 transition-all"
+                  />
+                </div>
+              </div>
+            </section>
+
+            {/* Output size */}
+            <section className="px-5 py-5">
+              <h2 className="text-sm font-heading font-semibold flex items-center gap-2 mb-3">
+                <Ruler className="w-4 h-4 text-text-secondary" /> Output Size
+              </h2>
+              <Segmented
+                value={String(sizePreset)}
+                onChange={(v) => setSizePreset(Number(v))}
+                options={SIZE_PRESETS.map((p, i) => ({ value: String(i), label: p.label }))}
+              />
               {metaLoaded && sizePreset === 0 && (
-                <p className="text-[10px] text-text-secondary/60 mt-1">
+                <p className="text-[11px] text-text-secondary/70 mt-2">
                   Output at original video resolution ({srcW}x{srcH})
                 </p>
               )}
-            </div>
+            </section>
 
-            <div>
-              <label className="text-xs font-medium text-text-secondary block mb-2">Extraction</label>
-              <div className="flex flex-wrap gap-2 mb-3">
-                {([
+            {/* Extraction */}
+            <section className="px-5 py-5">
+              <h2 className="text-sm font-heading font-semibold flex items-center gap-2 mb-3">
+                <Camera className="w-4 h-4 text-text-secondary" /> Extraction
+              </h2>
+              <Segmented
+                value={mode}
+                onChange={setMode}
+                options={[
                   { value: "fps" as const, label: "Frames per second" },
                   { value: "interval" as const, label: "Every N seconds" },
-                ]).map((opt) => (
-                  <button
-                    key={opt.value}
-                    onClick={() => setMode(opt.value)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                      mode === opt.value
-                        ? "bg-accent text-white"
-                        : "bg-surface-hover text-text-secondary hover:text-text-primary border border-border-soft"
-                    }`}
-                  >
-                    {opt.label}
-                  </button>
-                ))}
+                ]}
+              />
+              <div className="mt-5">
+                {mode === "fps" ? (
+                  <>
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-xs text-text-secondary">Frame rate</label>
+                      <span className="text-sm font-semibold text-text-primary font-mono">
+                        {fpsValue} fps
+                      </span>
+                    </div>
+                    <RangeSlider
+                      min={0.1}
+                      max={60}
+                      step={0.1}
+                      value={fpsValue}
+                      onChange={setFpsValue}
+                    />
+                    <div className="flex justify-between text-[10px] text-text-secondary/60 mt-1">
+                      <span>0.1</span>
+                      <span>60</span>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-xs text-text-secondary">Interval</label>
+                      <span className="text-sm font-semibold text-text-primary font-mono">
+                        {intervalSec}s
+                      </span>
+                    </div>
+                    <RangeSlider
+                      min={0.5}
+                      max={60}
+                      step={0.5}
+                      value={intervalSec}
+                      onChange={setIntervalSec}
+                    />
+                    <div className="flex justify-between text-[10px] text-text-secondary/60 mt-1">
+                      <span>0.5s</span>
+                      <span>60s</span>
+                    </div>
+                  </>
+                )}
               </div>
-              {mode === "fps" ? (
-                <div>
-                  <label className="text-xs text-text-secondary block mb-1">
-                    {fpsValue} frame{fpsValue !== 1 ? "s" : ""} per second
-                  </label>
-                  <input
-                    type="range"
-                    min={0.1}
-                    max={60}
-                    step={0.1}
-                    value={fpsValue}
-                    onChange={(e) => setFpsValue(Number(e.target.value))}
-                    className="w-full accent-accent"
-                  />
-                  <div className="flex justify-between text-[10px] text-text-secondary/60 mt-0.5">
-                    <span>0.1</span>
-                    <span>60</span>
-                  </div>
-                </div>
-              ) : (
-                <div>
-                  <label className="text-xs text-text-secondary block mb-1">
-                    1 frame every {intervalSec} second{intervalSec !== 1 ? "s" : ""}
-                  </label>
-                  <input
-                    type="range"
-                    min={0.5}
-                    max={60}
-                    step={0.5}
-                    value={intervalSec}
-                    onChange={(e) => setIntervalSec(Number(e.target.value))}
-                    className="w-full accent-accent"
-                  />
-                  <div className="flex justify-between text-[10px] text-text-secondary/60 mt-0.5">
-                    <span>0.5s</span>
-                    <span>60s</span>
-                  </div>
-                </div>
-              )}
-            </div>
+            </section>
 
-            <div>
-              <label className="text-xs font-medium text-text-secondary block mb-2">Output Format</label>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => setFormat("image/jpeg")}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                    format === "image/jpeg"
-                      ? "bg-accent text-white"
-                      : "bg-surface-hover text-text-secondary hover:text-text-primary border border-border-soft"
-                  }`}
-                >
-                  <Image className="w-3.5 h-3.5" /> JPG
-                </button>
-                <button
-                  onClick={() => setFormat("image/png")}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                    format === "image/png"
-                      ? "bg-accent text-white"
-                      : "bg-surface-hover text-text-secondary hover:text-text-primary border border-border-soft"
-                  }`}
-                >
-                  <Image className="w-3.5 h-3.5" /> PNG
-                </button>
-              </div>
+            {/* Output format */}
+            <section className="px-5 py-5">
+              <h2 className="text-sm font-heading font-semibold flex items-center gap-2 mb-3">
+                <ImageIcon className="w-4 h-4 text-text-secondary" /> Output Format
+              </h2>
+              <Segmented
+                value={format}
+                onChange={setFormat}
+                options={[
+                  { value: "image/jpeg" as const, label: "JPG", icon: <ImageIcon className="w-3.5 h-3.5" /> },
+                  { value: "image/png" as const, label: "PNG", icon: <ImageIcon className="w-3.5 h-3.5" /> },
+                ]}
+              />
               {format === "image/jpeg" && (
-                <div className="mt-3">
-                  <label className="text-xs text-text-secondary block mb-1">
-                    Quality: {jpgQuality}%
-                  </label>
-                  <input
-                    type="range"
+                <div className="mt-5">
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="text-xs text-text-secondary">Quality</label>
+                    <span className="text-sm font-semibold text-text-primary font-mono">{jpgQuality}%</span>
+                  </div>
+                  <RangeSlider
                     min={10}
                     max={100}
                     step={1}
                     value={jpgQuality}
-                    onChange={(e) => setJpgQuality(Number(e.target.value))}
-                    className="w-full accent-accent"
+                    onChange={setJpgQuality}
                   />
-                  <div className="flex justify-between text-[10px] text-text-secondary/60 mt-0.5">
+                  <div className="flex justify-between text-[10px] text-text-secondary/60 mt-1">
                     <span>10%</span>
                     <span>100%</span>
                   </div>
                 </div>
               )}
-            </div>
+            </section>
 
-            <div className="flex items-center justify-between gap-3">
-              <label className="text-xs font-medium text-text-secondary flex items-center gap-2 cursor-pointer">
-                <button
-                  onClick={() => setZipOnly(!zipOnly)}
-                  className="text-accent"
-                >
-                  {zipOnly ? <CheckSquare className="w-4 h-4" /> : <Square className="w-4 h-4" />}
-                </button>
-                ZIP only — skip preview grid, go straight to download
-              </label>
-            </div>
-
-            {hugeExtraction && (
-              <div className="flex items-start gap-2 text-xs text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30 px-3 py-2 rounded-lg border border-amber-200 dark:border-amber-900">
-                <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
-                <span>
-                  This will extract <strong>{estimatedCount.toLocaleString()}</strong> frames. Consider lowering the
-                  frame rate or narrowing the time range to avoid performance issues.
-                </span>
-              </div>
-            )}
-
-            <div className="text-sm text-text-secondary bg-surface-hover rounded-lg px-3 py-2 flex items-center justify-between">
-              <span className="flex items-center gap-2">
-                Estimated frames:
-                {mode === "fps" && <span className="text-[10px] opacity-60">({fpsValue} fps)</span>}
-                {mode === "interval" && <span className="text-[10px] opacity-60">(every {intervalSec}s)</span>}
-              </span>
-              <span className="font-semibold text-text-primary">
-                {metaLoaded ? `~${estimatedCount.toLocaleString()}` : "Loading..."}
-              </span>
-            </div>
+            {/* ZIP only */}
+            <section className="px-5 py-5">
+              <Toggle
+                checked={zipOnly}
+                onChange={() => setZipOnly(!zipOnly)}
+                label="ZIP only"
+                description="Skip the preview grid and go straight to download"
+              />
+            </section>
           </div>
 
-          {(tooLarge || tooLong) && (
-            <div className="flex items-start gap-2 text-xs text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30 px-3 py-2.5 rounded-lg border border-amber-200 dark:border-amber-900">
+          {(hugeExtraction || tooLarge || tooLong) && (
+            <div className="flex items-start gap-2.5 text-xs text-amber-700 dark:text-amber-400 bg-amber-50/80 dark:bg-amber-950/30 px-4 py-3 rounded-2xl border border-amber-200/70 dark:border-amber-900">
               <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
               <span>
+                {hugeExtraction && `This will extract ~${estimatedCount.toLocaleString()} frames. `}
                 {tooLarge && "This video is larger than 200MB. "}
                 {tooLong && "This video is longer than 5 minutes. "}
-                Processing may be slow or unstable.
+                Processing may be slow — consider lowering the frame rate or narrowing the time range.
               </span>
             </div>
           )}
 
           {error && (
-            <div className="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 px-4 py-3 rounded-xl border border-red-200 dark:border-red-900">
+            <div className="text-sm text-red-600 dark:text-red-400 bg-red-50/80 dark:bg-red-950/30 px-4 py-3 rounded-2xl border border-red-200/70 dark:border-red-900">
               {error}
             </div>
           )}
@@ -663,17 +690,23 @@ export default function VideoToFrames() {
       )}
 
       {phase === "extracting" && (
-        <div className="space-y-4">
-          <div className="bg-surface-hover rounded-xl p-6 border border-border-soft text-center">
-            <Loader2 className="w-8 h-8 animate-spin text-accent mx-auto mb-3" />
-            <p className="text-sm font-medium text-text-primary">Extracting frames...</p>
-            <p className="text-xs text-text-secondary mt-1">
-              Frame {progress.current} of {progress.total}
-            </p>
-            <div className="w-full bg-border rounded-full h-2 mt-3 overflow-hidden">
+        <div className="bg-surface rounded-2xl border border-border-soft shadow-xs p-8 text-center">
+          <div className="relative w-14 h-14 mx-auto mb-4">
+            <Loader2 className="w-14 h-14 animate-spin text-accent" />
+          </div>
+          <p className="text-base font-heading font-semibold text-text-primary">Extracting frames...</p>
+          <p className="text-xs text-text-secondary mt-1">
+            Frame {progress.current} of {progress.total}
+          </p>
+          <div className="mt-6 max-w-sm mx-auto">
+            <div className="flex items-center justify-between text-xs text-text-secondary mb-2">
+              <span>{extractingPct}%</span>
+              <span className="font-mono">{progress.current}/{progress.total}</span>
+            </div>
+            <div className="w-full bg-border-soft rounded-full h-2 overflow-hidden">
               <div
-                className="bg-accent h-full rounded-full transition-all duration-200"
-                style={{ width: `${(progress.current / progress.total) * 100}%` }}
+                className="h-full rounded-full bg-gradient-to-r from-accent to-accent-light transition-all duration-200 ease-out"
+                style={{ width: `${extractingPct}%` }}
               />
             </div>
           </div>
@@ -683,57 +716,56 @@ export default function VideoToFrames() {
       {phase === "results" && (
         <div className="space-y-4">
           {zipOnly ? (
-            <div className="bg-surface-hover rounded-xl p-6 border border-border-soft text-center space-y-3">
-              <p className="text-sm font-medium text-text-primary">
+            <div className="bg-surface rounded-2xl border border-border-soft shadow-xs p-8 text-center space-y-3">
+              <div className="w-12 h-12 rounded-2xl bg-accent/10 flex items-center justify-center mx-auto">
+                <Film className="w-6 h-6 text-accent" />
+              </div>
+              <p className="text-base font-heading font-semibold text-text-primary">
                 {frames.length} frame{frames.length !== 1 ? "s" : ""} extracted
               </p>
-              {targetW > 0 && targetH > 0 && (
+              {(targetW > 0 && targetH > 0) && (
                 <p className="text-xs text-text-secondary">
                   Resolution: {targetW}×{targetH} &middot; Format: {format === "image/jpeg" ? "JPG" : "PNG"}
                 </p>
               )}
-              <button
-                onClick={downloadAllAsZip}
-                className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-accent text-white rounded-xl hover:opacity-90 active:scale-[0.97] text-sm font-medium transition-all shadow-sm"
-              >
-                <Download className="w-4 h-4" />
-                Download ZIP ({frames.length} frames)
-              </button>
+              <div className="pt-2">
+                <Button size="lg" onClick={downloadAllAsZip}>
+                  <Download className="w-4 h-4" />
+                  Download ZIP ({frames.length} frames)
+                </Button>
+              </div>
             </div>
           ) : (
             <>
               <div className="flex items-center justify-between">
                 <p className="text-sm font-medium text-text-primary">
                   {frames.length} frame{frames.length !== 1 ? "s" : ""} extracted
-                  {targetW > 0 && targetH > 0 && (
+                  {(targetW > 0 && targetH > 0) && (
                     <span className="text-xs text-text-secondary ml-2">
                       &middot; {targetW}×{targetH} &middot; {format === "image/jpeg" ? "JPG" : "PNG"}
                     </span>
                   )}
                 </p>
-                <button
-                  onClick={downloadAllAsZip}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-accent text-white rounded-xl hover:opacity-90 active:scale-[0.97] text-sm font-medium transition-all shadow-sm"
-                >
+                <Button onClick={downloadAllAsZip}>
                   <Download className="w-4 h-4" />
                   Download All as ZIP
-                </button>
+                </Button>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 max-h-[600px] overflow-y-auto">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 max-h-[600px] overflow-y-auto pr-1">
                 {frames.map((frame) => (
-                  <div key={frame.index} className="group relative bg-surface rounded-xl border border-border-soft overflow-hidden">
-                    <div className="aspect-video bg-black/5">
+                  <div key={frame.index} className="group relative bg-surface rounded-2xl border border-border-soft shadow-xs overflow-hidden transition-shadow hover:shadow-md">
+                    <div className="aspect-video bg-black/5 overflow-hidden">
                       <img
                         src={frame.url}
                         alt={`Frame ${frame.index + 1}`}
-                        className="w-full h-full object-contain"
+                        className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-[1.03]"
                         loading="lazy"
                       />
                     </div>
-                    <div className="p-2 flex items-center justify-between">
+                    <div className="p-2.5 flex items-center justify-between">
                       <span className="text-[10px] text-text-secondary font-mono">#{frame.index + 1}</span>
-                      <span className="text-[9px] text-text-secondary/50 font-mono">
+                      <span className="text-[10px] text-text-secondary/50 font-mono">
                         {formatTime(frame.timestamp)}
                       </span>
                       <button

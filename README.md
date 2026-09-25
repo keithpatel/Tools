@@ -70,20 +70,29 @@ A free, fast, and powerful collection of 50+ browser-based developer and product
 - Code Minifier — Minify or beautify HTML/CSS/JS
 
 ### 🔧 Utility Tools (5)
-- Password Generator — Strong random passwords
+- Password Generator — Strong random passwords (with shareable preset links)
 - Random Number Generator — Numbers within a range
 - Unit Converter — Length, weight, temperature
 - Age Calculator — Calculate exact age
 - BMI Calculator — Calculate Body Mass Index
 
+### 🎬 Video Tools (4)
+- Screen & Webcam Recorder — Record screen, webcam, or PiP with audio
+- Video Trimmer — Cut and trim videos to exact timestamps
+- Extract Audio — Extract audio track from video files into studio-quality WAV
+- Video to Frames — Extract frames from video files as downloadable images
+
 ## Tech Stack
 
-- **Framework:** Next.js 15
+- **Framework:** Next.js (App Router)
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS
 - **Icons:** Lucide React
-- **PDF Processing:** pdf-lib
-- **Image Processing:** Canvas API
+- **PDF Processing:** pdf-lib, pdfjs-dist
+- **Image Processing:** Canvas API, browser-image-compression
+- **Audio Processing:** Web Audio API (PCM 16-bit WAV encoder)
+- **Video Processing:** MediaStream & MediaRecorder APIs
+- **PWA / Offline:** Service Worker cache
 - **Deployment:** Vercel
 
 ## Getting Started
