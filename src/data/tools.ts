@@ -52,6 +52,18 @@ export const tools: Tool[] = [
   { id: 20, name: "Color Picker", slug: "color-picker", description: "Pick colors from an image with eyedropper", category: "image", icon: "Eye" },
   { id: 21, name: "Collage Maker", slug: "collage-maker", description: "Create photo collages from multiple images", category: "image", icon: "LayoutGrid" },
   { id: 22, name: "Favicon Generator", slug: "favicon-generator", description: "Generate favicons in multiple sizes", category: "image", icon: "Globe" },
+  { id: 63, name: "Background Remover", slug: "background-remover", description: "Remove photo backgrounds with in-browser AI", category: "image", icon: "Eraser" },
+  { id: 64, name: "Image Filters", slug: "image-filters", description: "Apply brightness, contrast and photo effects", category: "image", icon: "SlidersHorizontal" },
+  { id: 65, name: "Passport Photo Maker", slug: "passport-photo", description: "Make passport and ID photos for 5 countries", category: "image", icon: "IdCard" },
+  { id: 66, name: "Meme Generator", slug: "meme-generator", description: "Add classic caption text to any image", category: "image", icon: "Laugh" },
+  { id: 67, name: "Image Splitter", slug: "image-splitter", description: "Split one image into an N x M tile grid", category: "image", icon: "Grid2x2" },
+  { id: 68, name: "Sticker Maker", slug: "sticker-maker", description: "Cut out subjects with sticker borders", category: "image", icon: "Sticker" },
+  { id: 69, name: "Compare Slider", slug: "compare-slider", description: "Draggable before and after image comparison", category: "image", icon: "SplitSquareHorizontal" },
+  { id: 70, name: "Palette Extractor", slug: "palette-extractor", description: "Extract dominant colors with export options", category: "image", icon: "SwatchBook" },
+  { id: 71, name: "Border & Frame", slug: "border-frame", description: "Add solid, gradient or polaroid frames", category: "image", icon: "Frame" },
+  { id: 72, name: "Image to GIF", slug: "image-to-gif", description: "Combine images into an animated GIF", category: "image", icon: "Film" },
+  { id: 73, name: "SVG PNG Converter", slug: "svg-png-converter", description: "Rasterize SVG or vectorize raster images", category: "image", icon: "Shapes" },
+  { id: 74, name: "Batch Renamer", slug: "batch-renamer", description: "Rename many files by pattern into a ZIP", category: "image", icon: "FileSignature" },
 
   // Text Tools
   { id: 24, name: "Word Counter", slug: "word-counter", description: "Count words, characters, sentences, and paragraphs", category: "text", icon: "Sigma" },
