@@ -265,7 +265,7 @@ export default function VideoTrimmer() {
     <ToolLayout title="" description="">
       <div className="space-y-6">
         {error && (
-          <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-sm flex items-center gap-3">
+          <div className="p-4 rounded-xl bg-error-soft border border-error-border text-error-text text-sm flex items-center gap-3">
             <AlertCircle className="w-5 h-5 shrink-0" />
             <span>{error}</span>
           </div>

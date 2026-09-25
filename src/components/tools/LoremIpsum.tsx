@@ -60,25 +60,25 @@ export default function LoremIpsum() {
     >
       <div className="flex flex-wrap gap-4 items-end mb-4">
         <div>
-          <label className="block text-xs text-gray-500 mb-1">Paragraphs</label>
+          <label className="block text-xs text-text-secondary mb-1">Paragraphs</label>
           <input
             type="number"
             min={1}
             max={20}
             value={paragraphs}
             onChange={(e) => setParagraphs(Number(e.target.value))}
-            className="w-20 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-accent"
+            className="w-20 px-3 py-2 border border-border rounded-lg bg-surface focus:outline-none focus:ring-2 focus:ring-accent"
           />
         </div>
         <div>
-          <label className="block text-xs text-gray-500 mb-1">Words per paragraph</label>
+          <label className="block text-xs text-text-secondary mb-1">Words per paragraph</label>
           <input
             type="number"
             min={1}
             max={200}
             value={wordsPerPara}
             onChange={(e) => setWordsPerPara(Number(e.target.value))}
-            className="w-24 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-accent"
+            className="w-24 px-3 py-2 border border-border rounded-lg bg-surface focus:outline-none focus:ring-2 focus:ring-accent"
           />
         </div>
         <button
@@ -91,15 +91,15 @@ export default function LoremIpsum() {
       {text && (
         <div className="relative">
           <textarea
-            className="w-full h-64 p-4 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 resize-y focus:outline-none focus:ring-2 focus:ring-accent"
+            className="w-full h-64 p-4 border border-border rounded-lg bg-surface resize-y focus:outline-none focus:ring-2 focus:ring-accent"
             value={text}
             readOnly
           />
           <button
             onClick={copy}
-            className="absolute top-2 right-2 p-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+            className="absolute top-2 right-2 p-2 bg-surface-hover rounded-lg hover:bg-border transition-colors"
           >
-            {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+            {copied ? <Check className="w-4 h-4 text-success" /> : <Copy className="w-4 h-4" />}
           </button>
         </div>
       )}

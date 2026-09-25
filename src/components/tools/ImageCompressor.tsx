@@ -222,17 +222,17 @@ export default function ImageCompressor() {
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-xs text-gray-500 mb-1">Original ({formatSize(original.size)})</p>
-              <img src={originalUrl} alt="Original" className="rounded-lg max-h-48 object-contain bg-gray-100 dark:bg-gray-800" />
+              <p className="text-xs text-text-secondary mb-1">Original ({formatSize(original.size)})</p>
+              <img src={originalUrl} alt="Original" className="rounded-lg max-h-48 object-contain bg-surface-hover checkerboard" />
             </div>
             <div>
-              <p className="text-xs text-gray-500 mb-1">
+              <p className="text-xs text-text-secondary mb-1">
                 {compressed ? `Compressed (${formatSize(compressed.size)})` : "Compressed"}
               </p>
               {compressed ? (
-                <img src={compressedUrl} alt="Compressed" className="rounded-lg max-h-48 object-contain bg-gray-100 dark:bg-gray-800" />
+                <img src={compressedUrl} alt="Compressed" className="rounded-lg max-h-48 object-contain bg-surface-hover checkerboard" />
               ) : (
-                <div className="h-full flex items-center justify-center text-gray-400 text-sm border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg">
+                <div className="h-full flex items-center justify-center text-text-secondary/70 text-sm border-2 border-dashed border-border rounded-lg">
                   <ImageIcon className="w-6 h-6 mr-2" /> Preview
                 </div>
               )}
@@ -278,9 +278,9 @@ export default function ImageCompressor() {
                 min={1}
                 value={targetKB}
                 onChange={(e) => setTargetKB(Number(e.target.value))}
-                className="w-full sm:w-40 p-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-sm mt-1 focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
+                className="w-full sm:w-40 p-2 border border-border rounded-lg bg-surface text-sm mt-1 focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
               />
-              <p className="text-xs text-gray-500 mt-1">Quality is auto-tuned to land at or under this size.</p>
+              <p className="text-xs text-text-secondary mt-1">Quality is auto-tuned to land at or under this size.</p>
             </div>
           )}
 
@@ -289,7 +289,7 @@ export default function ImageCompressor() {
             <select
               value={outputFormat}
               onChange={(e) => setOutputFormat(e.target.value as OutputFormat)}
-              className="w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-sm mt-1 focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
+              className="w-full p-2 border border-border rounded-lg bg-surface text-sm mt-1 focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
             >
               {OUTPUT_FORMATS.map((f) => (
                 <option key={f.value} value={f.value}>
@@ -300,7 +300,7 @@ export default function ImageCompressor() {
           </div>
 
           {batch.length > 1 && (
-            <div className="space-y-2 border-t border-gray-200 dark:border-gray-700 pt-4">
+            <div className="space-y-2 border-t border-border-soft pt-4">
               <div className="flex flex-col sm:flex-row sm:items-center gap-2">
                 <p className="text-sm font-medium">
                   Batch ({batch.length} files{batchDone > 0 ? `, ${batchDone} compressed` : ""})
@@ -321,14 +321,14 @@ export default function ImageCompressor() {
                 return (
                   <div
                     key={item.id}
-                    className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-sm p-2 rounded-lg bg-gray-50 dark:bg-gray-800/50"
+                    className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-sm p-2 rounded-lg bg-surface-hover"
                   >
                     <span className="font-medium truncate flex-1">{item.file.name}</span>
-                    <span className="text-xs text-gray-500">
+                    <span className="text-xs text-text-secondary">
                       {formatSize(item.file.size)}
                       {item.compressed ? ` -> ${formatSize(item.compressed.size)} (${saved}% saved)` : ""}
                     </span>
-                    {item.error && <span className="text-xs text-red-500">{item.error}</span>}
+                    {item.error && <span className="text-xs text-error-text">{item.error}</span>}
                     {item.compressedUrl && (
                       <Button variant="ghost" size="sm" onClick={() => downloadBatchItem(item)} className="min-h-[44px] sm:min-h-0">
                         <Download className="w-4 h-4" /> Download
@@ -371,10 +371,10 @@ export default function ImageCompressor() {
         outputType="image"
       >
         {compressed && (
-          <div className="text-sm text-gray-500 dark:text-gray-400 space-y-1">
-            <p className="font-medium text-gray-700 dark:text-gray-300">Compression complete</p>
+          <div className="text-sm text-text-secondary dark:text-text-secondary/70 space-y-1">
+            <p className="font-medium text-text-primary">Compression complete</p>
             <p>Original: {original && formatSize(original.size)} &rarr; Compressed: {formatSize(compressed.size)}</p>
-            <p className="text-green-600">{original && ((1 - compressed.size / original.size) * 100).toFixed(1)}% reduction</p>
+            <p className="text-success">{original && ((1 - compressed.size / original.size) * 100).toFixed(1)}% reduction</p>
           </div>
         )}
       </ResultPanel>

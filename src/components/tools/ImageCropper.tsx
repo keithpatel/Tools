@@ -158,7 +158,7 @@ export default function ImageCropper() {
         <DropZone onFiles={handleFiles} accept="image/*" enableCamera />
       ) : (
         <div className="space-y-4">
-          <div className="relative w-full h-64 sm:h-80 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden touch-none">
+          <div className="relative w-full h-64 sm:h-80 bg-surface-hover checkerboard rounded-lg overflow-hidden touch-none">
             {Cropper ? (
               <>
                 <Cropper
@@ -174,15 +174,15 @@ export default function ImageCropper() {
                 />
                 {showGrid && (
                   <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-                    <div className="absolute inset-y-0 left-1/3 w-px bg-white/80" />
-                    <div className="absolute inset-y-0 left-2/3 w-px bg-white/80" />
-                    <div className="absolute inset-x-0 top-1/3 h-px bg-white/80" />
-                    <div className="absolute inset-x-0 top-2/3 h-px bg-white/80" />
+                    <div className="absolute inset-y-0 left-1/3 w-px bg-surface/80" />
+                    <div className="absolute inset-y-0 left-2/3 w-px bg-surface/80" />
+                    <div className="absolute inset-x-0 top-1/3 h-px bg-surface/80" />
+                    <div className="absolute inset-x-0 top-2/3 h-px bg-surface/80" />
                   </div>
                 )}
               </>
             ) : (
-              <div className="flex items-center justify-center h-full text-sm text-gray-500">
+              <div className="flex items-center justify-center h-full text-sm text-text-secondary">
                 react-easy-crop not available. Using simplified view.
               </div>
             )}
@@ -196,7 +196,7 @@ export default function ImageCropper() {
               id="aspect-preset"
               value={aspectLabel}
               onChange={(e) => handlePresetSelect(e.target.value)}
-              className="w-full sm:w-auto px-3 py-2 sm:py-1.5 rounded-lg text-xs font-medium bg-gray-200 dark:bg-gray-700 min-h-[38px] sm:min-h-0 focus:outline-none"
+              className="w-full sm:w-auto px-3 py-2 sm:py-1.5 rounded-lg text-xs font-medium bg-surface-hover min-h-[38px] sm:min-h-0 focus:outline-none"
             >
               {ASPECTS.map((a) => (
                 <option key={a.label} value={a.label}>
@@ -215,7 +215,7 @@ export default function ImageCropper() {
                 className={`px-3 py-2 sm:py-1 rounded-lg text-xs font-medium transition-colors min-h-[38px] sm:min-h-0 flex items-center justify-center ${
                   aspectLabel === a.label
                     ? "bg-accent text-white"
-                    : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
+                    : "bg-surface-hover hover:bg-border"
                 }`}
               >
                 {a.label}
@@ -277,16 +277,16 @@ export default function ImageCropper() {
 
           {resultUrl && (
             <div>
-              <p className="text-xs text-gray-500 mb-1">Cropped Result</p>
+              <p className="text-xs text-text-secondary mb-1">Cropped Result</p>
               <img
                 src={resultUrl}
                 alt="Cropped"
-                className={`max-w-full max-h-56 sm:max-h-48 object-contain bg-gray-100 dark:bg-gray-800 mb-3 mx-auto sm:mx-0 ${circular ? "rounded-full aspect-square" : "rounded-lg"}`}
+                className={`max-w-full max-h-56 sm:max-h-48 object-contain bg-surface-hover checkerboard mb-3 mx-auto sm:mx-0 ${circular ? "rounded-full aspect-square" : "rounded-lg"}`}
               />
               <a
                 href={resultUrl}
                 download={`cropped-${file.name}`}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 sm:py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-base sm:text-sm font-medium transition-colors min-h-[44px]"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 sm:py-2 bg-brand-600 text-white rounded-lg hover:bg-brand-700 text-base sm:text-sm font-medium transition-colors min-h-[44px]"
               >
                 <Download className="w-4 h-4" /> Download
               </a>
@@ -295,14 +295,14 @@ export default function ImageCropper() {
 
           {/* Mobile sticky action bar */}
           <div
-            className="sm:hidden fixed bottom-0 left-0 right-0 p-3 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-t border-gray-200 dark:border-gray-800 z-50 flex gap-2"
+            className="sm:hidden fixed bottom-0 left-0 right-0 p-3 bg-surface/95 dark:bg-surface/95 backdrop-blur-md border-t border-border-soft dark:border-border-soft z-50 flex gap-2"
             style={{ paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }}
           >
             {resultUrl ? (
               <a
                 href={resultUrl}
                 download={`cropped-${file.name}`}
-                className="w-full h-12 inline-flex items-center justify-center gap-2 bg-green-600 text-white rounded-xl font-medium text-base active:bg-green-700 transition-colors shadow-lg"
+                className="w-full h-12 inline-flex items-center justify-center gap-2 bg-brand-600 text-white rounded-xl font-medium text-base active:bg-brand-700 transition-colors shadow-lg"
               >
                 <Download className="w-5 h-5" /> Download
               </a>

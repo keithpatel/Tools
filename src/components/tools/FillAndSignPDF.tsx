@@ -447,7 +447,7 @@ export default function FillAndSignPDF() {
             </div>
             <button
               onClick={reset}
-              className="text-xs text-text-secondary hover:text-red-500 transition-colors px-2 py-1"
+              className="text-xs text-text-secondary hover:text-error transition-colors px-2 py-1"
             >
               Change file
             </button>
@@ -504,11 +504,11 @@ export default function FillAndSignPDF() {
                     onClick={() => setActiveTool(activeTool === "check" ? "select" : "check")}
                     className={`inline-flex items-center gap-1 px-2.5 py-2 sm:py-1.5 rounded-lg text-xs font-medium border transition-colors min-h-[38px] sm:min-h-0 ${
                       activeTool === "check"
-                        ? "border-emerald-500 bg-emerald-500/10 text-emerald-600"
+                        ? "border-success bg-success-soft text-success-text"
                         : "border-border-soft hover:bg-surface-hover text-text-secondary"
                     }`}
                   >
-                    <Check className="w-3.5 h-3.5 text-emerald-500" />
+                    <Check className="w-3.5 h-3.5 text-success" />
                     Checkmark
                   </button>
 
@@ -517,11 +517,11 @@ export default function FillAndSignPDF() {
                     onClick={() => setActiveTool(activeTool === "cross" ? "select" : "cross")}
                     className={`inline-flex items-center gap-1 px-2.5 py-2 sm:py-1.5 rounded-lg text-xs font-medium border transition-colors min-h-[38px] sm:min-h-0 ${
                       activeTool === "cross"
-                        ? "border-red-500 bg-red-500/10 text-red-600"
+                        ? "border-red-500 bg-error-soft text-error-text"
                         : "border-border-soft hover:bg-surface-hover text-text-secondary"
                     }`}
                   >
-                    <X className="w-3.5 h-3.5 text-red-500" />
+                    <X className="w-3.5 h-3.5 text-error-text" />
                     Cross
                   </button>
                 </div>
@@ -557,7 +557,7 @@ export default function FillAndSignPDF() {
                 <div
                   ref={pageContainerRef}
                   onClick={handlePageClick}
-                  className={`relative shadow-lg border border-border rounded-lg bg-white overflow-hidden select-none ${
+                  className={`relative shadow-lg border border-border rounded-lg bg-surface overflow-hidden select-none ${
                     activeTool !== "select" ? "cursor-crosshair" : "cursor-default"
                   }`}
                   style={{ width: "fit-content" }}
@@ -613,13 +613,13 @@ export default function FillAndSignPDF() {
                         )}
 
                         {anno.type === "check" && (
-                          <div className="w-full h-full flex items-center justify-center font-bold text-emerald-600">
+                          <div className="w-full h-full flex items-center justify-center font-bold text-success-text">
                             ✓
                           </div>
                         )}
 
                         {anno.type === "cross" && (
-                          <div className="w-full h-full flex items-center justify-center font-bold text-red-600">
+                          <div className="w-full h-full flex items-center justify-center font-bold text-error-text">
                             ✗
                           </div>
                         )}
@@ -632,7 +632,7 @@ export default function FillAndSignPDF() {
                               e.stopPropagation();
                               removeAnnotation(anno.id);
                             }}
-                            className="absolute -top-3 -right-3 p-1 rounded-full bg-red-500 text-white shadow hover:bg-red-600 transition-colors"
+                            className="absolute -top-3 -right-3 p-1 rounded-full bg-error-soft0 text-white shadow hover:bg-error transition-colors"
                           >
                             <Trash2 className="w-3 h-3" />
                           </button>
@@ -680,7 +680,7 @@ export default function FillAndSignPDF() {
                 {/* Draw Mode */}
                 {sigMode === "draw" && (
                   <div className="space-y-3">
-                    <div className="relative border border-border rounded-xl bg-white overflow-hidden h-40">
+                    <div className="relative border border-border rounded-xl bg-surface overflow-hidden h-40">
                       <canvas
                         ref={sigCanvasRef}
                         width={460}
@@ -735,7 +735,7 @@ export default function FillAndSignPDF() {
                     />
 
                     {typedName && (
-                      <div className="h-28 rounded-xl border border-border bg-white flex items-center justify-center overflow-hidden px-2">
+                      <div className="h-28 rounded-xl border border-border bg-surface flex items-center justify-center overflow-hidden px-2">
                         <span
                           className="text-3xl sm:text-4xl text-black font-cursive italic truncate"
                           style={{
@@ -784,7 +784,7 @@ export default function FillAndSignPDF() {
                   {savedSig && (
                     <button
                       onClick={clearSavedSignature}
-                      className="text-[11px] text-red-500 hover:underline text-left sm:text-right py-1"
+                      className="text-[11px] text-error-text hover:underline text-left sm:text-right py-1"
                     >
                       Delete saved signature
                     </button>
@@ -826,7 +826,7 @@ export default function FillAndSignPDF() {
           >
             {resultBlob && (
               <div className="text-center py-4 space-y-2">
-                <div className="w-12 h-12 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center mx-auto">
+                <div className="w-12 h-12 rounded-full bg-success-soft text-success flex items-center justify-center mx-auto">
                   <CheckCircle2 className="w-6 h-6" />
                 </div>
                 <h4 className="text-sm font-heading font-semibold text-text-primary">

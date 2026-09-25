@@ -229,7 +229,7 @@ export default function ExtractImages() {
             </div>
             <button
               onClick={reset}
-              className="text-xs text-text-secondary hover:text-red-500 transition-colors px-2 py-1"
+              className="text-xs text-text-secondary hover:text-error transition-colors px-2 py-1"
             >
               Change file
             </button>
@@ -284,7 +284,7 @@ export default function ExtractImages() {
                     key={img.id}
                     className="group relative rounded-xl border border-border-soft bg-surface-raised p-2 overflow-hidden hover:border-accent/40 transition-all flex flex-col"
                   >
-                    <div className="relative aspect-video sm:aspect-square bg-checkerboard rounded-lg overflow-hidden flex items-center justify-center bg-black/5 dark:bg-white/5">
+                    <div className="relative aspect-video sm:aspect-square bg-checkerboard rounded-lg overflow-hidden flex items-center justify-center bg-black/5 dark:bg-surface/5">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={img.src}
@@ -320,7 +320,7 @@ export default function ExtractImages() {
           )}
 
           {error && (
-            <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 text-xs">
+            <div className="p-4 rounded-xl bg-error-soft border border-error-border text-error-text text-xs">
               {error}
             </div>
           )}

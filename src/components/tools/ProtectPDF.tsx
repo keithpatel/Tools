@@ -46,10 +46,10 @@ export default function ProtectPDF() {
     if (/[0-9]/.test(pwd)) score++;
     if (/[^A-Za-z0-9]/.test(pwd)) score++;
 
-    if (score <= 1) return { score: 1, label: "Weak", color: "bg-red-500" };
-    if (score === 2) return { score: 2, label: "Fair", color: "bg-amber-500" };
-    if (score === 3) return { score: 3, label: "Good", color: "bg-blue-500" };
-    return { score: 4, label: "Strong", color: "bg-emerald-500" };
+    if (score <= 1) return { score: 1, label: "Weak", color: "bg-error-soft0" };
+    if (score === 2) return { score: 2, label: "Fair", color: "bg-warning-soft0" };
+    if (score === 3) return { score: 3, label: "Good", color: "bg-info-soft0" };
+    return { score: 4, label: "Strong", color: "bg-success" };
   };
 
   const strength = getStrength(userPassword);
@@ -140,7 +140,7 @@ export default function ProtectPDF() {
             </div>
             <button
               onClick={reset}
-              className="text-xs text-text-secondary hover:text-red-500 transition-colors px-2 py-1"
+              className="text-xs text-text-secondary hover:text-error transition-colors px-2 py-1"
             >
               Change file
             </button>
@@ -157,7 +157,7 @@ export default function ProtectPDF() {
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-medium text-text-primary mb-1.5">
-                    Open Password <span className="text-red-500">*</span>
+                    Open Password <span className="text-error-text">*</span>
                   </label>
                   <div className="relative">
                     <input
@@ -198,7 +198,7 @@ export default function ProtectPDF() {
 
                 <div>
                   <label className="block text-xs font-medium text-text-primary mb-1.5">
-                    Confirm Password <span className="text-red-500">*</span>
+                    Confirm Password <span className="text-error-text">*</span>
                   </label>
                   <div className="relative">
                     <input
@@ -211,9 +211,9 @@ export default function ProtectPDF() {
                     {confirmPassword && (
                       <div className="absolute right-3 top-1/2 -translate-y-1/2">
                         {passwordsMatch ? (
-                          <Check className="w-4 h-4 text-emerald-500" />
+                          <Check className="w-4 h-4 text-success" />
                         ) : (
-                          <AlertCircle className="w-4 h-4 text-red-500" />
+                          <AlertCircle className="w-4 h-4 text-error-text" />
                         )}
                       </div>
                     )}
@@ -275,7 +275,7 @@ export default function ProtectPDF() {
           >
             {resultBlob && (
               <div className="text-center py-4 space-y-2">
-                <div className="w-12 h-12 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center mx-auto">
+                <div className="w-12 h-12 rounded-full bg-success-soft text-success flex items-center justify-center mx-auto">
                   <Lock className="w-6 h-6" />
                 </div>
                 <h4 className="text-sm font-heading font-semibold text-text-primary">

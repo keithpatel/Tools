@@ -100,32 +100,32 @@ export default function ColorConverter() {
       ]}
     >
       <div className="flex items-center gap-4 mb-6">
-        <div className="w-16 h-16 rounded-lg border border-gray-300 dark:border-gray-700 shrink-0" style={{ backgroundColor: preview }} />
-        <div className="text-xs text-gray-500 font-mono">{preview}</div>
+        <div className="w-16 h-16 rounded-lg border border-border shrink-0" style={{ backgroundColor: preview }} />
+        <div className="text-xs text-text-secondary font-mono">{preview}</div>
       </div>
       <div className="space-y-4">
         <div>
-          <label className="text-xs text-gray-500 block mb-1">HEX</label>
+          <label className="text-xs text-text-secondary block mb-1">HEX</label>
           <input
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-accent"
+            className="w-full px-3 py-2 border border-border rounded-lg bg-surface text-sm font-mono focus:outline-none focus:ring-2 focus:ring-accent"
             placeholder="#000000"
             value={hex}
             onChange={(e) => fromHex(e.target.value)}
           />
         </div>
         <div>
-          <label className="text-xs text-gray-500 block mb-1">RGB</label>
+          <label className="text-xs text-text-secondary block mb-1">RGB</label>
           <input
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-accent"
+            className="w-full px-3 py-2 border border-border rounded-lg bg-surface text-sm font-mono focus:outline-none focus:ring-2 focus:ring-accent"
             placeholder="rgb(0,0,0)"
             value={rgb}
             onChange={(e) => fromRgb(e.target.value)}
           />
         </div>
         <div>
-          <label className="text-xs text-gray-500 block mb-1">HSL</label>
+          <label className="text-xs text-text-secondary block mb-1">HSL</label>
           <input
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-accent"
+            className="w-full px-3 py-2 border border-border rounded-lg bg-surface text-sm font-mono focus:outline-none focus:ring-2 focus:ring-accent"
             placeholder="hsl(0,0%,0%)"
             value={hsl}
             onChange={(e) => fromHsl(e.target.value)}

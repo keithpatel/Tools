@@ -307,24 +307,24 @@ export default function WatermarkAdder() {
                 key={i}
                 src={u}
                 alt={`Original ${i + 1}`}
-                className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg object-cover bg-gray-100 dark:bg-gray-800"
+                className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg object-cover bg-surface-hover checkerboard"
               />
             ))}
           </div>
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-text-secondary">
             {files.length} image{files.length === 1 ? "" : "s"} loaded. Same watermark settings apply to all.
           </p>
 
           <div className="flex gap-2">
             <button
               onClick={() => setMode("text")}
-              className={`flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-4 py-2.5 sm:py-2 rounded-lg text-sm font-medium transition-colors min-h-[44px] sm:min-h-0 ${mode === "text" ? "bg-accent text-white" : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"}`}
+              className={`flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-4 py-2.5 sm:py-2 rounded-lg text-sm font-medium transition-colors min-h-[44px] sm:min-h-0 ${mode === "text" ? "bg-accent text-white" : "bg-surface-hover hover:bg-border"}`}
             >
               <Type className="w-4 h-4" /> Text
             </button>
             <button
               onClick={() => setMode("image")}
-              className={`flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-4 py-2.5 sm:py-2 rounded-lg text-sm font-medium transition-colors min-h-[44px] sm:min-h-0 ${mode === "image" ? "bg-accent text-white" : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"}`}
+              className={`flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-4 py-2.5 sm:py-2 rounded-lg text-sm font-medium transition-colors min-h-[44px] sm:min-h-0 ${mode === "image" ? "bg-accent text-white" : "bg-surface-hover hover:bg-border"}`}
             >
               <ImageIcon className="w-4 h-4" /> Image
             </button>
@@ -334,15 +334,15 @@ export default function WatermarkAdder() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="text-xs font-medium">Text</label>
-                <input value={text} onChange={(e) => setText(e.target.value)} className="w-full p-2.5 sm:p-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-accent" />
+                <input value={text} onChange={(e) => setText(e.target.value)} className="w-full p-2.5 sm:p-2 border border-border rounded-lg bg-surface text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-accent" />
               </div>
               <div>
                 <label className="text-xs font-medium">Font Size</label>
-                <input type="number" min={8} max={200} value={fontSize} onChange={(e) => setFontSize(Number(e.target.value))} className="w-full p-2.5 sm:p-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-accent" />
+                <input type="number" min={8} max={200} value={fontSize} onChange={(e) => setFontSize(Number(e.target.value))} className="w-full p-2.5 sm:p-2 border border-border rounded-lg bg-surface text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-accent" />
               </div>
               <div>
                 <label className="text-xs font-medium">Color</label>
-                <input type="color" value={color} onChange={(e) => setColor(e.target.value)} className="w-full h-11 sm:h-9 p-0.5 border border-gray-300 dark:border-gray-700 rounded-lg cursor-pointer" />
+                <input type="color" value={color} onChange={(e) => setColor(e.target.value)} className="w-full h-11 sm:h-9 p-0.5 border border-border rounded-lg cursor-pointer" />
               </div>
               <div>
                 <label className="text-xs font-medium">Opacity: {Math.round(opacity * 100)}%</label>
@@ -356,9 +356,9 @@ export default function WatermarkAdder() {
                 <DropZone onFiles={handleLogoFiles} accept="image/png,image/jpeg,image/webp" label="Drop logo image here" />
               ) : (
                 <div className="flex items-center gap-3">
-                  <img src={logoUrl} alt="Logo" className="w-16 h-16 rounded-lg object-contain bg-gray-100 dark:bg-gray-800" />
-                  <span className="text-sm text-gray-500 truncate flex-1">{logoFile.name}</span>
-                  <button onClick={() => { setLogoFile(null); setLogoUrl(""); }} className="text-xs text-red-500 hover:underline p-2 min-h-[44px] flex items-center">Remove</button>
+                  <img src={logoUrl} alt="Logo" className="w-16 h-16 rounded-lg object-contain bg-surface-hover checkerboard" />
+                  <span className="text-sm text-text-secondary truncate flex-1">{logoFile.name}</span>
+                  <button onClick={() => { setLogoFile(null); setLogoUrl(""); }} className="text-xs text-error-text hover:underline p-2 min-h-[44px] flex items-center">Remove</button>
                 </div>
               )}
               <div className="mt-3">
@@ -381,7 +381,7 @@ export default function WatermarkAdder() {
                   key={p}
                   title={p}
                   onClick={() => setPosition(p)}
-                  className={`px-2 py-2 sm:py-1.5 rounded-lg text-[11px] font-medium transition-colors min-h-[38px] sm:min-h-0 flex items-center justify-center ${position === p ? "bg-accent text-white" : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"}`}
+                  className={`px-2 py-2 sm:py-1.5 rounded-lg text-[11px] font-medium transition-colors min-h-[38px] sm:min-h-0 flex items-center justify-center ${position === p ? "bg-accent text-white" : "bg-surface-hover hover:bg-border"}`}
                 >
                   {p}
                 </button>
@@ -393,11 +393,11 @@ export default function WatermarkAdder() {
             <button
               onClick={() => setTile(!tile)}
               aria-pressed={tile}
-              className={`inline-flex items-center gap-1.5 px-4 py-2.5 sm:py-2 rounded-lg text-sm font-medium transition-colors min-h-[44px] sm:min-h-0 ${tile ? "bg-accent text-white" : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"}`}
+              className={`inline-flex items-center gap-1.5 px-4 py-2.5 sm:py-2 rounded-lg text-sm font-medium transition-colors min-h-[44px] sm:min-h-0 ${tile ? "bg-accent text-white" : "bg-surface-hover hover:bg-border"}`}
             >
               <Layers className="w-4 h-4" /> Tile mode: {tile ? "On" : "Off"}
             </button>
-            <span className="text-xs text-gray-500">Repeat watermark across the whole image.</span>
+            <span className="text-xs text-text-secondary">Repeat watermark across the whole image.</span>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-2">
@@ -420,14 +420,14 @@ export default function WatermarkAdder() {
 
           {results.length > 0 && (
             <div>
-              <p className="text-xs text-gray-500 mb-1">Result{results.length > 1 ? "s" : ""}</p>
-              <img src={resultUrl} alt="Watermarked" className="max-w-full max-h-56 sm:max-h-48 rounded-lg object-contain bg-gray-100 dark:bg-gray-800 mb-3 mx-auto sm:mx-0" />
+              <p className="text-xs text-text-secondary mb-1">Result{results.length > 1 ? "s" : ""}</p>
+              <img src={resultUrl} alt="Watermarked" className="max-w-full max-h-56 sm:max-h-48 rounded-lg object-contain bg-surface-hover checkerboard mb-3 mx-auto sm:mx-0" />
               <div className="flex flex-col sm:flex-row gap-2">
-                <a href={resultUrl} download={`watermarked-${file?.name ?? "image.png"}`} className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 sm:py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-base sm:text-sm font-medium transition-colors min-h-[44px]">
+                <a href={resultUrl} download={`watermarked-${file?.name ?? "image.png"}`} className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 sm:py-2 bg-brand-600 text-white rounded-lg hover:bg-brand-700 text-base sm:text-sm font-medium transition-colors min-h-[44px]">
                   <Download className="w-4 h-4" /> Download{results.length > 1 ? " first" : ""}
                 </a>
                 {results.length > 1 && (
-                  <Button onClick={downloadZip} className="w-full sm:w-auto min-h-[44px] bg-green-600 hover:opacity-90">
+                  <Button onClick={downloadZip} className="w-full sm:w-auto min-h-[44px] bg-brand-600 hover:opacity-90">
                     <Archive className="w-4 h-4" /> Download all as ZIP
                   </Button>
                 )}
@@ -436,7 +436,7 @@ export default function WatermarkAdder() {
                 <ul className="mt-3 space-y-1.5">
                   {results.map((r, i) => (
                     <li key={i} className="flex items-center gap-2 text-sm">
-                      <span className="truncate flex-1 text-gray-600 dark:text-gray-300">{r.name}</span>
+                      <span className="truncate flex-1 text-text-secondary">{r.name}</span>
                       <a href={r.url} download={r.name} className="text-xs text-accent hover:underline p-2 min-h-[36px] flex items-center">
                         Download
                       </a>

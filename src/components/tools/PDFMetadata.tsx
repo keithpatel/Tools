@@ -153,7 +153,7 @@ export default function PDFMetadata() {
             </div>
             <button
               onClick={reset}
-              className="text-xs text-text-secondary hover:text-red-500 transition-colors px-2 py-1"
+              className="text-xs text-text-secondary hover:text-error transition-colors px-2 py-1"
             >
               Change file
             </button>
@@ -169,7 +169,7 @@ export default function PDFMetadata() {
                 <button
                   type="button"
                   onClick={stripAllMetadata}
-                  className="inline-flex items-center gap-1.5 text-xs px-2.5 py-1.5 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500/15 border border-red-500/20 transition-colors self-start sm:self-auto"
+                  className="inline-flex items-center gap-1.5 text-xs px-2.5 py-1.5 rounded-lg bg-error-soft text-error-text hover:bg-error-soft0/15 border border-error-border transition-colors self-start sm:self-auto"
                 >
                   <ShieldAlert className="w-3.5 h-3.5" />
                   Strip All Metadata (Privacy Mode)
@@ -274,7 +274,7 @@ export default function PDFMetadata() {
           >
             {resultBlob && (
               <div className="text-center py-4 space-y-2">
-                <div className="w-12 h-12 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center mx-auto">
+                <div className="w-12 h-12 rounded-full bg-success-soft text-success flex items-center justify-center mx-auto">
                   <CheckCircle2 className="w-6 h-6" />
                 </div>
                 <h4 className="text-sm font-heading font-semibold text-text-primary">

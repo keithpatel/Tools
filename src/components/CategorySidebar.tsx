@@ -265,14 +265,17 @@ export function CategorySidebar({ currentSlug }: { currentSlug: string }) {
                   key={s.id}
                   href={`/tools/${s.slug}`}
                   className={cn(
-                    "flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs transition-colors",
+                    "relative flex items-center gap-2 pl-3 pr-2 py-2 rounded-[12px] text-xs transition-all duration-200 ease-out min-h-[36px]",
                     active
-                      ? "bg-accent/10 text-accent font-medium"
-                      : "text-text-secondary hover:bg-surface-hover"
+                      ? "bg-accent/10 text-accent font-semibold"
+                      : "text-text-secondary hover:bg-surface-hover hover:text-text-primary"
                   )}
                   aria-current={active ? "page" : undefined}
                 >
-                  <Icon className="w-3.5 h-3.5 shrink-0" />
+                  {active && (
+                    <span aria-hidden="true" className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 rounded-full bg-accent" />
+                  )}
+                  <Icon className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
                   <span className="truncate">{s.name}</span>
                 </Link>
               );

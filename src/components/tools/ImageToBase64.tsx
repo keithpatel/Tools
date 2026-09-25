@@ -84,8 +84,8 @@ export default function ImageToBase64() {
       ) : (
         <div className="space-y-4">
           <div className="flex flex-col sm:flex-row items-start gap-4">
-            <img src={imageUrl} alt="Uploaded" className="w-32 h-32 rounded-lg object-cover bg-gray-100 dark:bg-gray-800" />
-            <div className="text-sm text-gray-500">
+            <img src={imageUrl} alt="Uploaded" className="w-32 h-32 rounded-lg object-cover bg-surface-hover checkerboard" />
+            <div className="text-sm text-text-secondary">
               <p>Name: {file.name}</p>
               <p>Size: {formatSize(file.size)}</p>
               <p>Type: {file.type}</p>
@@ -94,7 +94,7 @@ export default function ImageToBase64() {
           </div>
 
           {showSizeWarning && (
-            <div className="flex items-start gap-2 text-sm bg-amber-50 dark:bg-amber-950/30 border border-amber-300 dark:border-amber-800 text-amber-800 dark:text-amber-200 px-4 py-3 rounded-lg">
+            <div className="flex items-start gap-2 text-sm bg-warning-soft border border-warning-border text-warning-text px-4 py-3 rounded-lg">
               <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" />
               <p>
                 This output exceeds ~1MB ({base64.length.toLocaleString()} chars). Embedding this
@@ -108,38 +108,38 @@ export default function ImageToBase64() {
             <textarea
               readOnly
               value={base64}
-              className="w-full h-40 p-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-xs font-mono resize-y focus:outline-none"
+              className="w-full h-40 p-3 border border-border rounded-lg bg-surface text-xs font-mono resize-y focus:outline-none"
             />
             <button
               onClick={handleCopy}
-              className="min-h-[38px] sm:min-h-0 absolute top-2 right-2 p-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+              className="min-h-[38px] sm:min-h-0 absolute top-2 right-2 p-2 bg-surface-hover rounded-lg hover:bg-border transition-colors"
               title="Copy to clipboard"
             >
-              {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+              {copied ? <Check className="w-4 h-4 text-success" /> : <Copy className="w-4 h-4" />}
             </button>
           </div>
 
-          {copied && <p className="text-xs text-green-500">Copied to clipboard!</p>}
+          {copied && <p className="text-xs text-success">Copied to clipboard!</p>}
 
           <div className="flex flex-col sm:flex-row gap-2">
             <Button variant="secondary" size="md" onClick={handleCopy} className="w-full sm:w-auto">
-              {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+              {copied ? <Check className="w-4 h-4 text-success" /> : <Copy className="w-4 h-4" />}
               {copied ? "Copied" : "Copy"}
             </Button>
           </div>
 
           {base64 && (
-            <div className="space-y-2 border-t border-gray-200 dark:border-gray-700 pt-4">
+            <div className="space-y-2 border-t border-border-soft pt-4">
               <p className="text-sm font-medium flex items-center gap-1.5">
                 <Code className="w-4 h-4" /> CSS snippet
               </p>
               <textarea
                 readOnly
                 value={cssSnippet}
-                className="w-full h-28 p-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-xs font-mono resize-y focus:outline-none"
+                className="w-full h-28 p-3 border border-border rounded-lg bg-surface text-xs font-mono resize-y focus:outline-none"
               />
               <Button variant="outline" size="sm" onClick={handleCopyCss} className="w-full sm:w-auto min-h-[38px] sm:min-h-0">
-                {cssCopied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+                {cssCopied ? <Check className="w-4 h-4 text-success" /> : <Copy className="w-4 h-4" />}
                 {cssCopied ? "CSS copied" : "Copy CSS snippet"}
               </Button>
             </div>
@@ -147,7 +147,7 @@ export default function ImageToBase64() {
 
           <button
             onClick={() => { setFile(null); setImageUrl(""); setBase64(""); setCopied(false); setCssCopied(false); }}
-            className="min-h-[44px] sm:min-h-0 px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 text-sm transition-colors"
+            className="min-h-[44px] sm:min-h-0 px-4 py-2 bg-surface-hover rounded-lg hover:bg-border text-sm transition-colors"
           >
             Reset
           </button>

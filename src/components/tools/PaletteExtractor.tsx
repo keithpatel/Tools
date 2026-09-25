@@ -253,7 +253,7 @@ export default function PaletteExtractor() {
                         <span className="block text-[11px] text-text-secondary font-mono">rgb({s.r}, {s.g}, {s.b})</span>
                       </span>
                       {copiedKind === "swatch" && copiedIdx === i ? (
-                        <Check className="w-4 h-4 text-green-500 shrink-0" />
+                        <Check className="w-4 h-4 text-success shrink-0" />
                       ) : (
                         <Copy className="w-4 h-4 text-text-secondary shrink-0" />
                       )}
@@ -262,11 +262,11 @@ export default function PaletteExtractor() {
                 </div>
                 <div className="sticky bottom-20 md:static flex flex-col sm:flex-row flex-wrap gap-2">
                   <Button variant="secondary" size="sm" onClick={() => copyText(cssSnippet, "css")} className="w-full sm:w-auto">
-                    {copiedKind === "css" ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+                    {copiedKind === "css" ? <Check className="w-4 h-4 text-success" /> : <Copy className="w-4 h-4" />}
                     {copiedKind === "css" ? "Copied" : "Copy CSS variables"}
                   </Button>
                   <Button variant="secondary" size="sm" onClick={() => copyText(tailwindSnippet, "tw")} className="w-full sm:w-auto">
-                    {copiedKind === "tw" ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+                    {copiedKind === "tw" ? <Check className="w-4 h-4 text-success" /> : <Copy className="w-4 h-4" />}
                     {copiedKind === "tw" ? "Copied" : "Copy Tailwind snippet"}
                   </Button>
                   <Button variant="secondary" size="sm" onClick={downloadTxt} className="w-full sm:w-auto">

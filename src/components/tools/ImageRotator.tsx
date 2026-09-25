@@ -201,33 +201,33 @@ export default function ImageRotator() {
       ) : !batchMode && file ? (
         <div className="space-y-4">
           <div className="relative inline-block">
-            <img ref={imgRef} src={imageUrl} alt="Original" className="max-h-48 rounded-lg object-contain bg-gray-100 dark:bg-gray-800" crossOrigin="anonymous" />
+            <img ref={imgRef} src={imageUrl} alt="Original" className="max-h-48 rounded-lg object-contain bg-surface-hover checkerboard" crossOrigin="anonymous" />
             {showStraightenGrid && (
               <div className="absolute inset-0 pointer-events-none rounded-lg overflow-hidden" aria-hidden="true">
-                <div className="absolute inset-y-0 left-1/2 w-px bg-white/90" />
-                <div className="absolute inset-x-0 top-1/2 h-px bg-white/90" />
-                <div className="absolute inset-y-0 left-1/3 w-px bg-white/50" />
-                <div className="absolute inset-y-0 left-2/3 w-px bg-white/50" />
-                <div className="absolute inset-x-0 top-1/3 h-px bg-white/50" />
-                <div className="absolute inset-x-0 top-2/3 h-px bg-white/50" />
+                <div className="absolute inset-y-0 left-1/2 w-px bg-surface/90" />
+                <div className="absolute inset-x-0 top-1/2 h-px bg-surface/90" />
+                <div className="absolute inset-y-0 left-1/3 w-px bg-surface/50" />
+                <div className="absolute inset-y-0 left-2/3 w-px bg-surface/50" />
+                <div className="absolute inset-x-0 top-1/3 h-px bg-surface/50" />
+                <div className="absolute inset-x-0 top-2/3 h-px bg-surface/50" />
               </div>
             )}
           </div>
 
           <div className="flex flex-wrap gap-2">
-            <button onClick={rotateCW} className="min-h-[44px] sm:min-h-0 inline-flex items-center gap-1.5 px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 text-sm font-medium transition-colors">
+            <button onClick={rotateCW} className="min-h-[44px] sm:min-h-0 inline-flex items-center gap-1.5 px-4 py-2 bg-surface-hover rounded-lg hover:bg-border text-sm font-medium transition-colors">
               <RotateCw className="w-4 h-4" /> Rotate 90° CW
             </button>
-            <button onClick={rotateCCW} className="min-h-[44px] sm:min-h-0 inline-flex items-center gap-1.5 px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 text-sm font-medium transition-colors">
+            <button onClick={rotateCCW} className="min-h-[44px] sm:min-h-0 inline-flex items-center gap-1.5 px-4 py-2 bg-surface-hover rounded-lg hover:bg-border text-sm font-medium transition-colors">
               <RotateCw className="w-4 h-4 scale-x-[-1]" /> Rotate 90° CCW
             </button>
             <button onClick={toggleFlipH} className={`min-h-[44px] sm:min-h-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-              flipH ? "bg-accent text-white" : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
+              flipH ? "bg-accent text-white" : "bg-surface-hover hover:bg-border"
             }`}>
               <FlipHorizontal className="w-4 h-4" /> Flip H
             </button>
             <button onClick={toggleFlipV} className={`min-h-[44px] sm:min-h-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-              flipV ? "bg-accent text-white" : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
+              flipV ? "bg-accent text-white" : "bg-surface-hover hover:bg-border"
             }`}>
               <FlipVertical className="w-4 h-4" /> Flip V
             </button>
@@ -250,24 +250,24 @@ export default function ImageRotator() {
               onBlur={() => setIsAdjusting(false)}
               className="w-full h-7 sm:h-5 mt-1"
             />
-            <p className="text-xs text-gray-500 mt-1">Composes with 90° steps above. A straighten grid overlay appears on the preview while adjusting.</p>
+            <p className="text-xs text-text-secondary mt-1">Composes with 90° steps above. A straighten grid overlay appears on the preview while adjusting.</p>
           </div>
 
           <button
             onClick={resetAll}
-            className="min-h-[44px] sm:min-h-0 px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 text-sm transition-colors"
+            className="min-h-[44px] sm:min-h-0 px-4 py-2 bg-surface-hover rounded-lg hover:bg-border text-sm transition-colors"
           >
             Reset
           </button>
 
           {resultUrl && (
             <div>
-              <p className="text-xs text-gray-500 mb-1">Result</p>
-              <img src={resultUrl} alt="Result" className="max-h-48 rounded-lg object-contain bg-gray-100 dark:bg-gray-800 mb-2" />
+              <p className="text-xs text-text-secondary mb-1">Result</p>
+              <img src={resultUrl} alt="Result" className="max-h-48 rounded-lg object-contain bg-surface-hover checkerboard mb-2" />
               <a
                 href={resultUrl}
                 download={`transformed-${file.name}`}
-                className="min-h-[44px] sm:min-h-0 inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium transition-colors"
+                className="min-h-[44px] sm:min-h-0 inline-flex items-center gap-2 px-4 py-2 bg-brand-600 text-white rounded-lg hover:bg-brand-700 text-sm font-medium transition-colors"
               >
                 <Download className="w-4 h-4" /> Download
               </a>
@@ -278,7 +278,7 @@ export default function ImageRotator() {
         <div className="space-y-4">
           <DropZone onFiles={handleBatchFiles} accept="image/*" multiple label="Drop multiple images here or click to browse" />
           {batchFiles.length > 0 && (
-            <p className="text-xs text-gray-500">{batchFiles.length} file(s) selected.</p>
+            <p className="text-xs text-text-secondary">{batchFiles.length} file(s) selected.</p>
           )}
 
           <div className="flex flex-wrap gap-2">
@@ -340,15 +340,15 @@ export default function ImageRotator() {
 
           {batchResults.length > 0 && (
             <div className="space-y-3">
-              <p className="text-xs text-gray-500">Results ({batchResults.length})</p>
+              <p className="text-xs text-text-secondary">Results ({batchResults.length})</p>
               {batchResults.map((r) => (
-                <div key={r.name} className="flex flex-col sm:flex-row sm:items-center gap-2 border border-gray-200 dark:border-gray-700 rounded-lg p-2">
-                  <img src={r.url} alt={r.name} className="w-20 h-20 rounded object-cover bg-gray-100 dark:bg-gray-800" />
+                <div key={r.name} className="flex flex-col sm:flex-row sm:items-center gap-2 border border-border-soft rounded-lg p-2">
+                  <img src={r.url} alt={r.name} className="w-20 h-20 rounded object-cover bg-surface-hover checkerboard" />
                   <span className="text-xs truncate flex-1">{r.name}</span>
                   <a
                     href={r.url}
                     download={r.name}
-                    className="min-h-[44px] sm:min-h-0 inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-xs font-medium transition-colors"
+                    className="min-h-[44px] sm:min-h-0 inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-brand-600 text-white rounded-lg hover:bg-brand-700 text-xs font-medium transition-colors"
                   >
                     <Download className="w-4 h-4" /> Download
                   </a>

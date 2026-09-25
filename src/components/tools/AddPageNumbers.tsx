@@ -84,9 +84,9 @@ export default function AddPageNumbers() {
       {file && (
         <div className="mt-6 space-y-4 max-w-sm">
           <div>
-            <label className="block text-xs text-gray-500 mb-1">Position</label>
+            <label className="block text-xs text-text-secondary mb-1">Position</label>
             <select
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-accent text-sm"
+              className="w-full px-3 py-2 border border-border rounded-lg bg-surface focus:outline-none focus:ring-2 focus:ring-accent text-sm"
               value={position}
               onChange={(e) => setPosition(e.target.value as Position)}
             >
@@ -96,19 +96,19 @@ export default function AddPageNumbers() {
             </select>
           </div>
           <div>
-            <label className="block text-xs text-gray-500 mb-1">Starting number</label>
+            <label className="block text-xs text-text-secondary mb-1">Starting number</label>
             <input
               type="number"
               min={1}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-accent"
+              className="w-full px-3 py-2 border border-border rounded-lg bg-surface focus:outline-none focus:ring-2 focus:ring-accent"
               value={startNum}
               onChange={(e) => setStartNum(Math.max(1, parseInt(e.target.value) || 1))}
             />
           </div>
           <div>
-            <label className="block text-xs text-gray-500 mb-1">Format</label>
+            <label className="block text-xs text-text-secondary mb-1">Format</label>
             <select
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-accent text-sm"
+              className="w-full px-3 py-2 border border-border rounded-lg bg-surface focus:outline-none focus:ring-2 focus:ring-accent text-sm"
               value={format}
               onChange={(e) => setFormat(e.target.value as Format)}
             >
@@ -119,7 +119,7 @@ export default function AddPageNumbers() {
           <button
             onClick={apply}
             disabled={processing}
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium transition-colors"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-brand-600 text-white rounded-lg hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium transition-colors"
           >
             <Download className="w-4 h-4" />
             {processing ? "Applying..." : "Apply & Download"}

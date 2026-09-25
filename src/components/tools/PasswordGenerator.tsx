@@ -30,10 +30,10 @@ function getStrength(pw: string): { label: string; color: string; width: string 
   if (/[a-z]/.test(pw) && /[A-Z]/.test(pw)) score++;
   if (/\d/.test(pw)) score++;
   if (/[^a-zA-Z0-9]/.test(pw)) score++;
-  if (score <= 2) return { label: "Weak", color: "bg-red-500", width: "w-1/4" };
+  if (score <= 2) return { label: "Weak", color: "bg-error-soft0", width: "w-1/4" };
   if (score <= 3) return { label: "Medium", color: "bg-yellow-500", width: "w-2/4" };
-  if (score <= 4) return { label: "Strong", color: "bg-green-500", width: "w-3/4" };
-  return { label: "Very Strong", color: "bg-emerald-500", width: "w-full" };
+  if (score <= 4) return { label: "Strong", color: "bg-success", width: "w-3/4" };
+  return { label: "Very Strong", color: "bg-success", width: "w-full" };
 }
 
 export default function PasswordGenerator() {
@@ -97,19 +97,19 @@ export default function PasswordGenerator() {
       ]}
     >
       <div className="space-y-6">
-        <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-between gap-4">
+        <div className="p-4 bg-surface-hover checkerboard rounded-lg flex items-center justify-between gap-4">
           <div className="font-mono text-xl sm:text-2xl break-all select-all">{password || "—"}</div>
           <button
             onClick={copy}
-            className="shrink-0 p-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+            className="shrink-0 p-2 bg-surface-hover rounded-lg hover:bg-border transition-colors"
           >
-            {copied ? <Check className="w-5 h-5 text-green-500" /> : <Copy className="w-5 h-5" />}
+            {copied ? <Check className="w-5 h-5 text-success" /> : <Copy className="w-5 h-5" />}
           </button>
         </div>
 
         {password && (
           <div className="flex items-center gap-3">
-            <div className="flex-1 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+            <div className="flex-1 h-2 bg-surface-hover rounded-full overflow-hidden">
               <div className={`h-full rounded-full transition-all ${strength.color} ${strength.width}`} />
             </div>
             <span className="text-sm font-medium whitespace-nowrap">{strength.label}</span>
@@ -128,7 +128,7 @@ export default function PasswordGenerator() {
             onChange={(e) => setLength(Number(e.target.value))}
             className="w-full accent-accent"
           />
-          <div className="flex justify-between text-xs text-gray-500 mt-1">
+          <div className="flex justify-between text-xs text-text-secondary mt-1">
             <span>4</span><span>128</span>
           </div>
         </div>
@@ -145,7 +145,7 @@ export default function PasswordGenerator() {
               className={`flex items-center gap-2 px-3 py-2.5 rounded-lg border cursor-pointer transition-colors ${
                 value
                   ? "border-accent bg-accent/10"
-                  : "border-gray-300 dark:border-gray-700"
+                  : "border-border"
               }`}
             >
               <input
@@ -170,7 +170,7 @@ export default function PasswordGenerator() {
             onClick={copyShareLink}
             className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 bg-surface border border-border text-text-primary rounded-lg hover:bg-surface-hover transition-colors font-medium text-sm"
           >
-            {copiedLink ? <Check className="w-4 h-4 text-green-500" /> : <Share2 className="w-4 h-4" />}
+            {copiedLink ? <Check className="w-4 h-4 text-success" /> : <Share2 className="w-4 h-4" />}
             {copiedLink ? "Link Copied!" : "Share Preset"}
           </button>
         </div>

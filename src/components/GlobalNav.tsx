@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "./ThemeProvider";
 import { CommandPalette } from "./CommandPalette";
+import { Wordmark } from "./Wordmark";
 import * as LucideIcons from "lucide-react";
 import { tools, categories } from "@/data/tools";
 import { cn } from "@/lib/utils";
@@ -118,26 +119,27 @@ export function GlobalNav() {
         style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
       >
         {/* Desktop Header Layout */}
-        <div className="hidden md:flex max-w-7xl mx-auto px-4 h-14 items-center gap-4">
-          <Link
-            href="/"
-            className="flex items-center gap-2 font-heading font-semibold text-base shrink-0 hover:text-accent transition-colors"
-          >
-            <LucideIcons.Wrench className="w-5 h-5 text-accent" />
-            <span>MultiTool</span>
-          </Link>
+        <div className="hidden md:flex max-w-7xl mx-auto px-4 h-16 items-center gap-3">
+          <Wordmark />
 
           {/* Categories Menu Trigger */}
           <div ref={menuRef} className="relative">
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="flex items-center gap-1.5 text-sm text-text-secondary hover:text-accent px-3 py-1.5 rounded-full hover:bg-surface-hover transition-colors cursor-pointer"
               aria-label="All tools menu"
               aria-expanded={menuOpen}
+              className={cn(
+                "flex items-center gap-1.5 text-sm font-medium px-3.5 py-2 rounded-full min-h-[40px] transition-all duration-200 ease-out cursor-pointer",
+                menuOpen
+                  ? "bg-brand-50 dark:bg-brand-950 text-accent"
+                  : pathname === "/" || pathname.startsWith("/tools") || pathname.startsWith("/category")
+                    ? "bg-accent/10 text-accent"
+                    : "text-text-secondary hover:text-text-primary hover:bg-surface-hover"
+              )}
             >
-              <LucideIcons.Grid3x3 className="w-4 h-4" />
+              <LucideIcons.Grid3x3 className="w-4 h-4" aria-hidden="true" />
               <span>Tools</span>
-              <LucideIcons.ChevronDown className={cn("w-3.5 h-3.5 transition-transform", menuOpen && "rotate-180")} />
+              <LucideIcons.ChevronDown className={cn("w-3.5 h-3.5 transition-transform duration-200", menuOpen && "rotate-180")} />
             </button>
 
             {menuOpen && (
@@ -181,11 +183,19 @@ export function GlobalNav() {
           </div>
 
           {/* Global actions */}
-          <div className="flex items-center gap-2 ml-auto">
-            <CommandPalette showTrigger={true} />
+          <div className="flex items-center gap-1.5 ml-auto">
+            <Link
+              href="/about"
+              className={cn(
+                "hidden lg:inline-flex items-center text-sm font-medium px-3 py-2 rounded-full min-h-[40px] transition-all duration-200 ease-out",
+                pathname === "/about" ? "bg-accent/10 text-accent" : "text-text-secondary hover:text-text-primary hover:bg-surface-hover"
+              )}
+            >
+              About
+            </Link>
             <button
               onClick={toggle}
-              className="p-2 rounded-lg hover:bg-surface-hover transition-colors cursor-pointer"
+              className="p-2 min-w-[40px] min-h-[40px] flex items-center justify-center rounded-[12px] hover:bg-surface-hover transition-all duration-200 ease-out cursor-pointer"
               aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
             >
               {theme === "dark" ? <LucideIcons.Sun className="w-4 h-4" /> : <LucideIcons.Moon className="w-4 h-4" />}
@@ -205,13 +215,7 @@ export function GlobalNav() {
               <span className="font-heading font-semibold text-sm max-w-[150px] sm:max-w-[200px] truncate">{mobileTitle}</span>
             </Link>
           ) : (
-            <Link
-              href="/"
-              className="flex items-center gap-2 font-heading font-bold text-base hover:text-accent active:scale-97 transition-all min-h-[44px]"
-            >
-              <LucideIcons.Wrench className="w-5 h-5 text-accent shrink-0" />
-              <span>MultiTool</span>
-            </Link>
+            <Wordmark />
           )}
 
           <div className="flex items-center gap-0.5">
@@ -274,10 +278,7 @@ export function GlobalNav() {
               >
                 {/* Drawer Header */}
                 <div className="flex items-center justify-between pb-3 border-b border-border mb-3 shrink-0">
-                  <div className="flex items-center gap-2 font-heading font-bold text-sm">
-                    <LucideIcons.Wrench className="w-4 h-4 text-accent" />
-                    <span>MultiTool</span>
-                  </div>
+                  <Wordmark />
                   <button
                     onClick={() => setMobileNavOpen(false)}
                     className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full hover:bg-surface-hover text-text-secondary hover:text-text-primary transition-all cursor-pointer"

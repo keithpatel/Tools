@@ -199,7 +199,7 @@ export default function FaviconGenerator() {
         <DropZone onFiles={handleFiles} accept="image/*" enableCamera />
       ) : (
         <div className="space-y-4">
-          <img src={imageUrl} alt="Source" className="max-h-48 rounded-lg object-contain bg-gray-100 dark:bg-gray-800" />
+          <img src={imageUrl} alt="Source" className="max-h-48 rounded-lg object-contain bg-surface-hover checkerboard" />
 
           <div className="flex flex-col sm:flex-row gap-2">
             <Button onClick={generate} className="w-full sm:w-auto min-h-[44px]">
@@ -224,10 +224,10 @@ export default function FaviconGenerator() {
                       <img
                         src={url}
                         alt={`${size}x${size}`}
-                        className="rounded-lg bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700"
+                        className="rounded-lg bg-surface-hover checkerboard border border-border"
                         style={{ width: Math.min(size * 2, 96), height: Math.min(size * 2, 96) }}
                       />
-                      <span className="text-xs text-gray-500 mt-1">{size}×{size}</span>
+                      <span className="text-xs text-text-secondary mt-1">{size}×{size}</span>
                       <a
                         href={url}
                         download={`favicon-${size}x${size}.png`}
@@ -239,46 +239,46 @@ export default function FaviconGenerator() {
                   ))}
               </div>
               <div className="flex flex-col sm:flex-row gap-2">
-                <Button onClick={downloadAll} className="w-full sm:w-auto min-h-[44px] bg-green-600 hover:opacity-90">
+                <Button onClick={downloadAll} className="w-full sm:w-auto min-h-[44px] bg-brand-600 hover:opacity-90">
                   <Download className="w-4 h-4" /> Download All
                 </Button>
                 <Button onClick={downloadPackage} disabled={packaging} className="w-full sm:w-auto min-h-[44px]">
                   <Package className="w-4 h-4" /> {packaging ? "Packaging..." : "Download full package (ZIP)"}
                 </Button>
               </div>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-text-secondary">
                 Full package: 16/32/48 PNGs, apple-touch-icon (180), android-chrome 192 + 512,
                 favicon.ico, site.webmanifest ({APP_NAME}).
               </p>
 
               {(icon16 || icon180) && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div className="rounded-lg border border-gray-300 dark:border-gray-700 overflow-hidden">
-                    <p className="text-xs font-medium px-3 py-2 bg-gray-100 dark:bg-gray-800 flex items-center gap-1.5">
+                  <div className="rounded-lg border border-border overflow-hidden">
+                    <p className="text-xs font-medium px-3 py-2 bg-surface-hover checkerboard flex items-center gap-1.5">
                       <Monitor className="w-3.5 h-3.5" /> Browser tab preview
                     </p>
-                    <div className="p-3 bg-white dark:bg-gray-900">
+                    <div className="p-3 bg-surface">
                       <div className="flex items-end gap-1">
-                        <div className="flex items-center gap-1.5 px-3 py-2 rounded-t-lg bg-gray-100 dark:bg-gray-800 border border-b-0 border-gray-300 dark:border-gray-700 max-w-[220px]">
+                        <div className="flex items-center gap-1.5 px-3 py-2 rounded-t-lg bg-surface-hover checkerboard border border-b-0 border-border max-w-[220px]">
                           {icon16 && (
                             <img src={icon16} alt="16px favicon" width={16} height={16} className="shrink-0" />
                           )}
                           <span className="text-xs truncate">{APP_NAME}</span>
-                          <span className="text-gray-400 text-xs ml-1">×</span>
+                          <span className="text-text-secondary/70 text-xs ml-1">×</span>
                         </div>
-                        <div className="flex items-center px-3 py-2 rounded-t-lg bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 text-gray-400 text-xs max-w-[160px]">
+                        <div className="flex items-center px-3 py-2 rounded-t-lg bg-surface-hover border-b border-border-soft dark:border-border-soft text-text-secondary/70 text-xs max-w-[160px]">
                           <span className="truncate">New Tab</span>
                         </div>
                       </div>
-                      <div className="h-2 rounded-b-lg bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700" />
+                      <div className="h-2 rounded-b-lg bg-surface-hover checkerboard border border-border" />
                     </div>
                   </div>
 
-                  <div className="rounded-lg border border-gray-300 dark:border-gray-700 overflow-hidden">
-                    <p className="text-xs font-medium px-3 py-2 bg-gray-100 dark:bg-gray-800 flex items-center gap-1.5">
+                  <div className="rounded-lg border border-border overflow-hidden">
+                    <p className="text-xs font-medium px-3 py-2 bg-surface-hover checkerboard flex items-center gap-1.5">
                       <Smartphone className="w-3.5 h-3.5" /> Phone home-screen preview
                     </p>
-                    <div className="p-4 bg-gradient-to-b from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 flex items-center justify-center">
+                    <div className="p-4 bg-gradient-to-b from-surface-hover to-border-soft flex items-center justify-center">
                       <div className="flex flex-col items-center gap-1.5">
                         {icon180 && (
                           <img
@@ -289,7 +289,7 @@ export default function FaviconGenerator() {
                             className="rounded-[18px] shadow-md"
                           />
                         )}
-                        <span className="text-xs text-gray-700 dark:text-gray-200">{APP_NAME}</span>
+                        <span className="text-xs text-text-primary">{APP_NAME}</span>
                       </div>
                     </div>
                   </div>

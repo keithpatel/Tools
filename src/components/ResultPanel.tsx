@@ -1,11 +1,12 @@
 "use client";
 
 import { type ReactNode, useState, useRef, useEffect } from "react";
-import { Download, Copy, Check, Loader2, RotateCcw, Send, ChevronRight } from "lucide-react";
+import { Download, Copy, Check, CheckCircle2, Loader2, RotateCcw, Send, ChevronRight, AlertTriangle, Inbox } from "lucide-react";
 import { useWorkflowStore } from "@/lib/useWorkflowStore";
 import { getCompatibleTargets, getToolSuggestions, type WorkflowOutputType } from "@/data/workflow";
 import { tools } from "@/data/tools";
 import { Button } from "@/components/ui/Button";
+import { useToast } from "@/components/Toast";
 import Link from "next/link";
 
 export function ResultPanel({
@@ -41,8 +42,10 @@ export function ResultPanel({
 }) {
   const [copied, setCopied] = useState(false);
   const [sendOpen, setSendOpen] = useState(false);
+  const [succeeded, setSucceeded] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { sendOutput, pending } = useWorkflowStore();
+  const { toast } = useToast();
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -56,10 +59,32 @@ export function ResultPanel({
 
   const handleCopy = async () => {
     if (!onCopy) return;
-    await onCopy();
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    try {
+      await onCopy();
+      setCopied(true);
+      toast({ tone: "success", title: "Copied to clipboard" });
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      toast({ tone: "error", title: "Copy failed", description: "Please try again." });
+    }
   };
+
+  const handleDownload = () => {
+    if (!onDownload) return;
+    onDownload();
+    setSucceeded(true);
+    toast({ tone: "success", title: "File processed", description: downloadLabel ? `${downloadLabel} started.` : "Your download started." });
+  };
+
+  useEffect(() => {
+    if (error) toast({ tone: "error", title: "Something went wrong", description: error });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [error]);
+
+  // Reset the success state when a new result cycle begins
+  useEffect(() => {
+    if (!children) setSucceeded(false);
+  }, [children]);
 
   const handleSendOutput = () => {
     const output = pending;
@@ -73,7 +98,7 @@ export function ResultPanel({
 
   // Determine the current primary action for the mobile sticky bottom bar
   const stickAction = onDownload
-    ? { label: downloadLabel || "Download", onClick: onDownload, icon: Download }
+    ? { label: downloadLabel || "Download", onClick: handleDownload, icon: Download }
     : onAction
       ? { label: actionLabel || "Process", onClick: onAction, icon: null }
       : null;
@@ -82,40 +107,73 @@ export function ResultPanel({
     <div className="mt-6">
       {!children && !loading && !error && onAction && (
         <div>
-          <Button onClick={onAction} size="lg" className="w-full sm:w-auto min-h-[48px] sm:min-h-[44px]">
+          <Button onClick={onAction} size="lg" className="w-full sm:w-auto">
             {actionLabel || "Process"}
           </Button>
         </div>
       )}
 
+      {!children && !loading && !error && !onAction && (
+        <div className="flex items-center gap-3 rounded-[18px] border border-dashed border-border-soft bg-surface px-5 py-4">
+          <span className="flex items-center justify-center w-9 h-9 rounded-[12px] bg-surface-hover shrink-0">
+            <Inbox className="w-4 h-4 text-text-secondary" aria-hidden="true" />
+          </span>
+          <div>
+            <p className="text-sm font-semibold text-text-primary">No file selected yet</p>
+            <p className="text-xs text-text-secondary mt-0.5">Drop a file above or click to browse to get started.</p>
+          </div>
+        </div>
+      )}
+
       {loading && (
-        <div className="flex items-center gap-3 text-sm text-text-secondary bg-surface rounded-2xl px-5 py-4 border border-border-soft shadow-xs">
-          <Loader2 className="w-5 h-5 animate-spin text-accent" />
+        <div className="flex items-center gap-3 text-sm text-text-secondary bg-surface rounded-[18px] px-5 py-4 border border-border-soft shadow-resting" role="status" aria-live="polite">
+          <Loader2 className="w-5 h-5 animate-spin text-accent shrink-0" aria-hidden="true" />
           <span>{loadingLabel || "Processing..."}</span>
+          <span className="ml-auto hidden sm:block h-1.5 w-32 overflow-hidden rounded-full bg-surface-hover">
+            <span className="block h-full w-1/2 rounded-full bg-accent animate-pulse" />
+          </span>
         </div>
       )}
 
       {error && (
-        <div className="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 px-4 py-3 rounded-2xl border border-red-200 dark:border-red-900">
-          {error}
+        <div className="flex items-start gap-3 text-sm bg-error-soft px-4 py-3.5 rounded-[18px] border border-error-border" role="alert">
+          <AlertTriangle className="w-5 h-5 text-error shrink-0 mt-0.5" aria-hidden="true" />
+          <div className="min-w-0 flex-1">
+            <p className="font-semibold text-text-primary">Something went wrong</p>
+            <p className="text-error-text mt-0.5 leading-relaxed">{error}</p>
+            {onAction && (
+              <Button variant="secondary" size="sm" onClick={onAction} className="mt-2.5">
+                <RotateCcw className="w-3.5 h-3.5" />
+                Try again
+              </Button>
+            )}
+          </div>
         </div>
       )}
 
       {children && !loading && (
         <div className="space-y-4">
-          <div className="relative bg-surface rounded-2xl border border-border-soft shadow-xs p-4 sm:p-5">
+          {(succeeded || onDownload) && (
+            <div className="flex items-center gap-2.5 rounded-[18px] border border-success-border bg-success-soft px-4 py-3" role="status">
+              <CheckCircle2 className="w-5 h-5 text-success shrink-0" aria-hidden="true" />
+              <p className="text-sm font-semibold text-text-primary">
+                {succeeded ? "Done — your file is ready" : "Ready when you are"}
+              </p>
+            </div>
+          )}
+          <div className="relative bg-surface rounded-[18px] border border-border-soft shadow-resting p-4 sm:p-5">
             {children}
 
             <div className="flex flex-col sm:flex-row sm:items-center gap-2 mt-4 pt-4 border-t border-border-soft">
               {onDownload && (
-                <Button onClick={onDownload} className="w-full sm:w-auto min-h-[44px]">
-                  <Download className="w-4 h-4" />
-                  {downloadLabel || "Download"}
+                <Button onClick={handleDownload} variant={succeeded ? "success" : "primary"} className="w-full sm:w-auto">
+                  {succeeded ? <Check className="w-4 h-4" /> : <Download className="w-4 h-4" />}
+                  {succeeded ? "Download again" : downloadLabel || "Download"}
                 </Button>
               )}
               {onCopy && (
                 <Button variant="secondary" onClick={handleCopy} className="w-full sm:w-auto min-h-[44px]">
-                  {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+                  {copied ? <Check className="w-4 h-4 text-success" /> : <Copy className="w-4 h-4" />}
                   {copied ? "Copied" : copyLabel || "Copy"}
                 </Button>
               )}

@@ -133,8 +133,8 @@ export default function ImagesToPDF() {
         outputType="pdf"
       >
         {resultBlob && (
-          <div className="text-sm text-gray-500 dark:text-gray-400 space-y-1">
-            <p className="font-medium text-gray-700 dark:text-gray-300">PDF created successfully</p>
+          <div className="text-sm text-text-secondary dark:text-text-secondary/70 space-y-1">
+            <p className="font-medium text-text-primary">PDF created successfully</p>
             <p>{files.length} page{files.length !== 1 ? "s" : ""} &middot; {(resultBlob.size / 1024).toFixed(1)} KB</p>
           </div>
         )}

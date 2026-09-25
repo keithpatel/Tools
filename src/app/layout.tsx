@@ -11,6 +11,7 @@ import { PageTransition } from "@/components/PageTransition";
 import { WorkflowProvider } from "@/lib/useWorkflowStore";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 import { GlobalPasteHandler } from "@/components/GlobalPasteHandler";
+import { ToastProvider } from "@/components/Toast";
 
 const headingFont = Geist({
   variable: "--font-geist-heading",
@@ -61,16 +62,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-screen flex flex-col" suppressHydrationWarning>
         <ThemeProvider>
           <WorkflowProvider>
-            <GlobalNav />
-            <main className="flex-1">
-              <PageTransition>{children}</PageTransition>
-            </main>
-            <Footer />
-            <InstallPrompt />
-            <ShortcutCheatSheet />
-            <OnboardingTooltip />
-            <ServiceWorkerRegister />
-            <GlobalPasteHandler />
+            <ToastProvider>
+              <GlobalNav />
+              <main className="flex-1">
+                <PageTransition>{children}</PageTransition>
+              </main>
+              <Footer />
+              <InstallPrompt />
+              <ShortcutCheatSheet />
+              <OnboardingTooltip />
+              <ServiceWorkerRegister />
+              <GlobalPasteHandler />
+            </ToastProvider>
           </WorkflowProvider>
         </ThemeProvider>
       </body>

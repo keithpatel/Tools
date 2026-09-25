@@ -50,16 +50,16 @@ export default function RegexTester() {
     >
       <div className="space-y-4">
         <div>
-          <label className="text-xs text-gray-500 block mb-1">Regex Pattern</label>
+          <label className="text-xs text-text-secondary block mb-1">Regex Pattern</label>
           <div className="flex gap-2">
             <input
-              className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-accent"
+              className="flex-1 px-3 py-2 border border-border rounded-lg bg-surface text-sm font-mono focus:outline-none focus:ring-2 focus:ring-accent"
               placeholder="/pattern/"
               value={pattern}
               onChange={(e) => setPattern(e.target.value)}
             />
             <input
-              className="w-24 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-accent"
+              className="w-24 px-3 py-2 border border-border rounded-lg bg-surface text-sm font-mono focus:outline-none focus:ring-2 focus:ring-accent"
               placeholder="gmi"
               value={flags}
               onChange={(e) => setFlags(e.target.value.replace(/[^gimsuy]/g, ""))}
@@ -67,9 +67,9 @@ export default function RegexTester() {
           </div>
         </div>
         <div>
-          <label className="text-xs text-gray-500 block mb-1">Test String</label>
+          <label className="text-xs text-text-secondary block mb-1">Test String</label>
           <textarea
-            className="w-full h-40 p-4 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 resize-y focus:outline-none focus:ring-2 focus:ring-accent font-mono text-sm"
+            className="w-full h-40 p-4 border border-border rounded-lg bg-surface resize-y focus:outline-none focus:ring-2 focus:ring-accent font-mono text-sm"
             placeholder="Enter test string..."
             value={testStr}
             onChange={(e) => setTestStr(e.target.value)}
@@ -77,19 +77,19 @@ export default function RegexTester() {
         </div>
         {testStr && pattern && (
           <div>
-            <div className="text-xs text-gray-500 mb-1">
+            <div className="text-xs text-text-secondary mb-1">
               {result.count} match{result.count !== 1 ? "es" : ""}
               {result.count > 0 && (
                 <span className="ml-2 font-mono">
                   {result.matches.slice(0, 20).map((m, i) => (
-                    <span key={i} className="inline-block bg-gray-200 dark:bg-gray-700 rounded px-1.5 py-0.5 mr-1 mb-1 text-xs">&quot;{m}&quot;</span>
+                    <span key={i} className="inline-block bg-surface-hover rounded px-1.5 py-0.5 mr-1 mb-1 text-xs">&quot;{m}&quot;</span>
                   ))}
-                  {result.matches.length > 20 && <span className="text-gray-400">+{result.matches.length - 20} more</span>}
+                  {result.matches.length > 20 && <span className="text-text-secondary/70">+{result.matches.length - 20} more</span>}
                 </span>
               )}
             </div>
-            <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg text-sm whitespace-pre-wrap break-all font-mono leading-relaxed">
-              {highlighted || <span className="text-gray-400">No matches</span>}
+            <div className="p-4 bg-surface-hover checkerboard rounded-lg text-sm whitespace-pre-wrap break-all font-mono leading-relaxed">
+              {highlighted || <span className="text-text-secondary/70">No matches</span>}
             </div>
           </div>
         )}

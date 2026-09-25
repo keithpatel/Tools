@@ -71,7 +71,7 @@ export default function QRCodeGenerator() {
     <ToolLayout title="" description="">
       <div className="flex gap-2">
         <input
-          className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
+          className="flex-1 px-3 py-2 border border-border rounded-lg bg-surface text-sm focus:outline-none focus:ring-2 focus:ring-accent"
           placeholder="Enter text or URL..."
           value={text}
           onChange={(e) => setText(e.target.value)}
@@ -84,7 +84,7 @@ export default function QRCodeGenerator() {
             className="flex items-center gap-1.5 px-3 py-2 text-xs font-medium border border-border bg-surface rounded-lg hover:bg-surface-hover text-text-secondary transition-colors"
             title="Share URL with this QR code text"
           >
-            {copiedLink ? <Check className="w-3.5 h-3.5 text-green-500" /> : <Share2 className="w-3.5 h-3.5" />}
+            {copiedLink ? <Check className="w-3.5 h-3.5 text-success" /> : <Share2 className="w-3.5 h-3.5" />}
             {copiedLink ? "Copied" : "Share"}
           </button>
         )}
@@ -107,7 +107,7 @@ export default function QRCodeGenerator() {
       >
         {dataUrl && (
           <div className="flex flex-col items-center">
-            <img src={dataUrl} alt="QR Code" className="w-48 h-48 border border-gray-300 dark:border-gray-700 rounded-lg" />
+            <img src={dataUrl} alt="QR Code" className="w-48 h-48 border border-border rounded-lg" />
           </div>
         )}
       </ResultPanel>

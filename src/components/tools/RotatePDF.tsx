@@ -127,7 +127,7 @@ export default function RotatePDF() {
           <button
             onClick={save}
             disabled={saving}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 bg-green-600 text-white rounded-xl hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-semibold transition-all min-h-[48px] cursor-pointer"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 bg-brand-600 text-white rounded-xl hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-semibold transition-all min-h-[48px] cursor-pointer"
           >
             <Download className="w-4 h-4" />
             {saving ? "Saving..." : "Save & Download"}
@@ -141,7 +141,7 @@ export default function RotatePDF() {
             <button
               onClick={save}
               disabled={saving}
-              className="w-full flex items-center justify-center gap-2 px-5 py-3.5 bg-green-600 text-white rounded-xl hover:opacity-90 active:scale-[0.98] text-sm font-semibold transition-all shadow-md min-h-[48px] disabled:opacity-50 cursor-pointer"
+              className="w-full flex items-center justify-center gap-2 px-5 py-3.5 bg-brand-600 text-white rounded-xl hover:opacity-90 active:scale-[0.98] text-sm font-semibold transition-all shadow-md min-h-[48px] disabled:opacity-50 cursor-pointer"
             >
               <Download className="w-4 h-4" />
               {saving ? "Saving PDF..." : "Save & Download"}

@@ -229,7 +229,7 @@ export default function CropPDF() {
             </div>
             <button
               onClick={reset}
-              className="text-xs text-text-secondary hover:text-red-500 transition-colors px-2 py-1"
+              className="text-xs text-text-secondary hover:text-error transition-colors px-2 py-1"
             >
               Change file
             </button>
@@ -239,7 +239,7 @@ export default function CropPDF() {
             <div className="grid lg:grid-cols-12 gap-6">
               {/* Preview canvas with crop overlay */}
               <div className="lg:col-span-7 p-6 rounded-2xl border border-border-soft bg-surface flex flex-col items-center justify-center">
-                <div className="relative inline-block border border-border rounded-lg overflow-hidden bg-white shadow-md">
+                <div className="relative inline-block border border-border rounded-lg overflow-hidden bg-surface shadow-md">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   {previewSrc && (
                     <img
@@ -435,7 +435,7 @@ export default function CropPDF() {
           >
             {resultBlob && (
               <div className="text-center py-4 space-y-2">
-                <div className="w-12 h-12 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center mx-auto">
+                <div className="w-12 h-12 rounded-full bg-success-soft text-success flex items-center justify-center mx-auto">
                   <CheckCircle2 className="w-6 h-6" />
                 </div>
                 <h4 className="text-sm font-heading font-semibold text-text-primary">

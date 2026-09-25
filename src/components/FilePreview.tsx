@@ -94,12 +94,12 @@ function SortableItem({
         </div>
       )}
 
-      {/* File thumbnail / icon */}
-      <div className="w-10 h-10 shrink-0 rounded-lg overflow-hidden bg-border/50 flex items-center justify-center">
+      {/* File thumbnail / icon — checkerboard behind transparent images */}
+      <div className="w-10 h-10 shrink-0 rounded-[10px] overflow-hidden border border-border-soft checkerboard bg-surface flex items-center justify-center">
         {isImage && preview ? (
           <img src={preview} alt="" className="w-full h-full object-cover" />
         ) : (
-          <FileText className="w-5 h-5 text-text-secondary" />
+          <FileText className="w-5 h-5 text-text-secondary" aria-hidden="true" />
         )}
       </div>
 
@@ -113,10 +113,10 @@ function SortableItem({
       <button
         type="button"
         onClick={() => onRemove(index)}
-        className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center hover:bg-border rounded-xl text-text-secondary hover:text-red-500 transition-colors cursor-pointer"
+        className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center hover:bg-border rounded-xl text-text-secondary hover:text-error transition-colors cursor-pointer"
         aria-label={`Remove ${file.name}`}
       >
-        <Trash2 className="w-4 h-4 text-red-500" />
+        <Trash2 className="w-4 h-4 text-error" />
       </button>
     </div>
   );
@@ -218,7 +218,7 @@ export function FilePreview({
       )}
 
       {(overMaxFiles || overMaxSize) && (
-        <div className="text-xs text-red-500 bg-red-50 dark:bg-red-950/30 px-3 py-1.5 rounded-lg">
+        <div className="text-xs text-error-text bg-error-soft border border-error-border px-3 py-1.5 rounded-lg">
           {overMaxFiles && `Maximum ${maxFiles} files allowed. Remove some to continue.`}
           {overMaxSize && `Total size exceeds ${maxSizeMB}MB limit.`}
         </div>

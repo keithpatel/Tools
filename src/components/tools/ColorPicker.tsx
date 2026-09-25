@@ -270,7 +270,7 @@ export default function ColorPicker() {
             <canvas
               ref={canvasRef}
               onClick={handleCanvasClick}
-              className="max-h-64 rounded-lg object-contain bg-gray-100 dark:bg-gray-800 cursor-crosshair"
+              className="max-h-64 rounded-lg object-contain bg-surface-hover checkerboard cursor-crosshair"
               style={{ maxWidth: "100%" }}
             />
             <img
@@ -312,14 +312,14 @@ export default function ColorPicker() {
           </div>
 
           {!eyeDropperSupported && (
-            <p className="text-xs text-amber-500">EyeDropper API not supported in your browser. Click the image to pick colors.</p>
+            <p className="text-xs text-warning">EyeDropper API not supported in your browser. Click the image to pick colors.</p>
           )}
 
           {c && (
-            <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg space-y-2">
+            <div className="p-4 bg-surface-hover checkerboard rounded-lg space-y-2">
               <div className="flex items-center gap-3">
                 <div
-                  className="w-12 h-12 rounded-lg border border-gray-300 dark:border-gray-600"
+                  className="w-12 h-12 rounded-lg border border-border-soft dark:border-border"
                   style={{ backgroundColor: hex }}
                 />
                 <div className="text-sm font-mono space-y-0.5">
@@ -340,18 +340,18 @@ export default function ColorPicker() {
                     key={i}
                     onClick={() => copyText(p.hex, `swatch-${i}`)}
                     title="Click to copy HEX"
-                    className="flex items-center gap-2 p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors min-h-[44px] text-left"
+                    className="flex items-center gap-2 p-2 rounded-lg bg-surface-hover checkerboard hover:bg-border transition-colors min-h-[44px] text-left"
                   >
                     <span
-                      className="w-10 h-10 rounded-md border border-gray-300 dark:border-gray-600 shrink-0"
+                      className="w-10 h-10 rounded-md border border-border-soft dark:border-border shrink-0"
                       style={{ backgroundColor: p.hex }}
                     />
                     <span className="text-xs font-mono leading-tight">
                       <span className="block font-bold">{p.hex}</span>
-                      <span className="block text-gray-500">rgb({p.r}, {p.g}, {p.b})</span>
-                      <span className="inline-flex items-center gap-1 text-gray-400">
+                      <span className="block text-text-secondary">rgb({p.r}, {p.g}, {p.b})</span>
+                      <span className="inline-flex items-center gap-1 text-text-secondary/70">
                         {copiedKey === `swatch-${i}` ? (
-                          <><Check className="w-3 h-3 text-green-500" /> copied</>
+                          <><Check className="w-3 h-3 text-success" /> copied</>
                         ) : (
                           "click to copy"
                         )}
@@ -361,13 +361,13 @@ export default function ColorPicker() {
                 ))}
               </div>
 
-              <div className="border border-gray-300 dark:border-gray-700 rounded-lg overflow-hidden">
-                <div className="flex flex-wrap gap-1.5 p-2 bg-gray-100 dark:bg-gray-800">
+              <div className="border border-border rounded-lg overflow-hidden">
+                <div className="flex flex-wrap gap-1.5 p-2 bg-surface-hover checkerboard">
                   {tabs.map((t) => (
                     <button
                       key={t.id}
                       onClick={() => setActiveTab(t.id)}
-                      className={`px-3 py-2 sm:py-1.5 rounded-lg text-xs font-medium transition-colors min-h-[38px] sm:min-h-0 ${activeTab === t.id ? "bg-accent text-white" : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"}`}
+                      className={`px-3 py-2 sm:py-1.5 rounded-lg text-xs font-medium transition-colors min-h-[38px] sm:min-h-0 ${activeTab === t.id ? "bg-accent text-white" : "bg-surface-hover hover:bg-border"}`}
                     >
                       {t.label}
                     </button>
@@ -375,12 +375,12 @@ export default function ColorPicker() {
                 </div>
                 <div className="p-3 space-y-3">
                   {activeTab === "ase" ? (
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-text-secondary">
                       Adobe Swatch Exchange binary with {palette.length} RGB colors. Use download
                       below to get palette.ase (ASEF v1.0, COLOR blocks).
                     </p>
                   ) : (
-                    <pre className="text-xs font-mono whitespace-pre-wrap break-all bg-gray-100 dark:bg-gray-900 p-3 rounded-lg max-h-56 overflow-auto">
+                    <pre className="text-xs font-mono whitespace-pre-wrap break-all bg-surface-hover p-3 rounded-lg max-h-56 overflow-auto">
                       {exportContent}
                     </pre>
                   )}
@@ -397,7 +397,7 @@ export default function ColorPicker() {
                           className="w-full sm:w-auto min-h-[44px]"
                         >
                           {copiedKey === `export-${activeTab}` ? (
-                            <><Check className="w-4 h-4 text-green-500" /> Copied</>
+                            <><Check className="w-4 h-4 text-success" /> Copied</>
                           ) : (
                             <><Copy className="w-4 h-4" /> Copy snippet</>
                           )}

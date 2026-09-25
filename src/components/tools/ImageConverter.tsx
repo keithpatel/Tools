@@ -261,8 +261,8 @@ export default function ImageConverter() {
       description="Convert images between PNG, JPG, WebP, and AVIF formats. All processing is local."
     >
       {showUnsupportedNote && (
-        <div className="flex items-start gap-2 text-xs sm:text-sm bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900 rounded-xl px-3 py-2.5 mb-4">
-          <p className="flex-1 text-amber-800 dark:text-amber-200">
+        <div className="flex items-start gap-2 text-xs sm:text-sm bg-warning-soft border border-warning-border rounded-xl px-3 py-2.5 mb-4">
+          <p className="flex-1 text-warning-text">
             Note: TIFF (.tif / .tiff) and HEIC (.heic / .heif) are not supported because browsers provide no native decoder for them.
           </p>
           <Button variant="ghost" size="sm" onClick={() => setShowUnsupportedNote(false)} aria-label="Dismiss note" className="min-h-[44px] sm:min-h-0">
@@ -275,14 +275,14 @@ export default function ImageConverter() {
         <DropZone onFiles={handleFiles} accept="image/*,.gif,.bmp,.ico" multiple enableCamera />
       ) : (
         <div className="space-y-4">
-          <img src={imageUrl} alt="Original" className="max-h-48 rounded-lg object-contain bg-gray-100 dark:bg-gray-800" />
+          <img src={imageUrl} alt="Original" className="max-h-48 rounded-lg object-contain bg-surface-hover checkerboard" />
 
           <div>
             <label className="text-sm font-medium">Target Format</label>
             <select
               value={format}
               onChange={(e) => setFormat(e.target.value)}
-              className="w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-sm mt-1 focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
+              className="w-full p-2 border border-border rounded-lg bg-surface text-sm mt-1 focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
             >
               {FORMATS.map((f) => (
                 <option key={f.mime} value={f.mime} disabled={f.mime === "image/avif" && !avifSupported}>
@@ -290,7 +290,7 @@ export default function ImageConverter() {
                 </option>
               ))}
             </select>
-            <p className="text-xs text-gray-500 mt-1">GIF, BMP, and ICO files are accepted as input and decoded with the browser image loader.</p>
+            <p className="text-xs text-text-secondary mt-1">GIF, BMP, and ICO files are accepted as input and decoded with the browser image loader.</p>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-2">
@@ -302,20 +302,20 @@ export default function ImageConverter() {
             </Button>
           </div>
 
-          {error && <p className="text-sm text-red-500">{error}</p>}
+          {error && <p className="text-sm text-error-text">{error}</p>}
 
           {resultUrl && (
             <div>
-              <p className="text-xs text-gray-500 mb-1">Converted (.{resultExt})</p>
+              <p className="text-xs text-text-secondary mb-1">Converted (.{resultExt})</p>
               {resultExt !== "ico" ? (
-                <img src={resultUrl} alt="Converted" className="max-h-48 rounded-lg object-contain bg-gray-100 dark:bg-gray-800 mb-2" />
+                <img src={resultUrl} alt="Converted" className="max-h-48 rounded-lg object-contain bg-surface-hover checkerboard mb-2" />
               ) : (
-                <p className="text-xs text-gray-500 mb-2">ICO preview is not shown; download to verify the icon.</p>
+                <p className="text-xs text-text-secondary mb-2">ICO preview is not shown; download to verify the icon.</p>
               )}
               <a
                 href={resultUrl}
                 download={`converted.${resultExt}`}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium transition-colors min-h-[44px]"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-brand-600 text-white rounded-lg hover:bg-brand-700 text-sm font-medium transition-colors min-h-[44px]"
               >
                 <Download className="w-4 h-4" /> Download
               </a>
@@ -323,7 +323,7 @@ export default function ImageConverter() {
           )}
 
           {batch.length > 1 && (
-            <div className="space-y-2 border-t border-gray-200 dark:border-gray-700 pt-4">
+            <div className="space-y-2 border-t border-border-soft pt-4">
               <div className="flex flex-col sm:flex-row sm:items-center gap-2">
                 <p className="text-sm font-medium">
                   Batch ({batch.length} files{batchDone > 0 ? `, ${batchDone} converted` : ""})
@@ -342,18 +342,18 @@ export default function ImageConverter() {
               {batch.map((item) => (
                 <div
                   key={item.id}
-                  className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-sm p-2 rounded-lg bg-gray-50 dark:bg-gray-800/50"
+                  className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-sm p-2 rounded-lg bg-surface-hover"
                 >
                   <span className="font-medium truncate flex-1">{item.file.name}</span>
-                  <span className="text-xs text-gray-500">
+                  <span className="text-xs text-text-secondary">
                     {item.resultUrl ? `converted.${item.resultExt}` : item.error ? "" : "pending"}
                   </span>
-                  {item.error && <span className="text-xs text-red-500">{item.error}</span>}
+                  {item.error && <span className="text-xs text-error-text">{item.error}</span>}
                   {item.resultUrl && (
                     <a
                       href={item.resultUrl}
                       download={`converted-${item.file.name.replace(/\.[^.]+$/, "")}.${item.resultExt}`}
-                      className="inline-flex items-center gap-1 text-xs font-medium text-green-700 dark:text-green-400 min-h-[44px] sm:min-h-0 items-center"
+                      className="inline-flex items-center gap-1 text-xs font-medium text-success-text dark:text-success-text min-h-[44px] sm:min-h-0 items-center"
                     >
                       <Download className="w-4 h-4" /> Download
                     </a>

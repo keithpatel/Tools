@@ -110,22 +110,28 @@ export function CommandPalette({
 
       {open && (
         <div
-          className="fixed inset-0 z-50 flex items-start justify-center p-0 sm:p-4 pt-0 sm:pt-[15vh] bg-black/60 backdrop-blur-xs"
+          className="fixed inset-0 z-50 flex items-start justify-center p-0 sm:p-4 pt-0 sm:pt-[15vh] bg-black/60 backdrop-blur-xs animate-pop-in"
           onClick={() => setOpen(false)}
         >
           <div
-            className="w-full h-full sm:h-auto sm:max-h-[80vh] sm:max-w-lg bg-surface-raised sm:rounded-2xl shadow-2xl border-0 sm:border border-border flex flex-col overflow-hidden"
+            className="w-full h-full sm:h-auto sm:max-h-[80vh] sm:max-w-lg bg-surface-raised sm:rounded-[18px] shadow-modal border-0 sm:border border-border flex flex-col overflow-hidden animate-pop-in"
             style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
             onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Search tools"
           >
             <Command label="Tool search" className="flex flex-col h-full sm:h-auto">
-              <div className="flex items-center border-b border-border px-3 sm:px-4 py-2.5 sm:py-3 shrink-0 gap-2">
-                <LucideIcons.Search className="w-5 h-5 sm:w-4 sm:h-4 text-text-secondary shrink-0" />
+              <div className="flex items-center border-b border-border-soft px-3 sm:px-4 py-2.5 sm:py-3 shrink-0 gap-2">
+                <span className="flex items-center justify-center w-8 h-8 rounded-[10px] bg-brand-50 dark:bg-brand-950 shrink-0">
+                  <LucideIcons.Search className="w-4 h-4 text-accent" aria-hidden="true" />
+                </span>
                 <Command.Input
                   autoFocus
                   placeholder={"Search " + tools.length + " tools..."}
                   className="w-full bg-transparent px-2 py-1.5 text-base sm:text-sm outline-none placeholder:text-text-secondary text-text-primary"
                 />
+                <kbd className="hidden sm:inline-flex text-[10px] font-semibold text-text-secondary bg-surface-hover px-1.5 py-0.5 rounded-md border border-border shrink-0">esc</kbd>
                 <button
                   type="button"
                   onClick={() => setOpen(false)}
@@ -134,9 +140,15 @@ export function CommandPalette({
                   Cancel
                 </button>
               </div>
-              <Command.List className="flex-1 sm:max-h-80 overflow-y-auto p-2 pb-24 sm:pb-2">
-                <Command.Empty className="text-center text-sm text-text-secondary py-8">
-                  No tools found.
+              <Command.List className="flex-1 sm:max-h-80 overflow-y-auto p-2 pb-24 sm:pb-2 [&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-2 [&_[cmdk-group-heading]]:text-[11px] [&_[cmdk-group-heading]]:font-semibold [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-wider [&_[cmdk-group-heading]]:text-text-secondary">
+                <Command.Empty>
+                  <div className="text-center py-10 px-4">
+                    <span className="inline-flex items-center justify-center w-11 h-11 rounded-2xl bg-surface-hover mb-3">
+                      <LucideIcons.SearchX className="w-5 h-5 text-text-secondary" aria-hidden="true" />
+                    </span>
+                    <p className="text-sm font-semibold text-text-primary">No tools found</p>
+                    <p className="text-xs text-text-secondary mt-1">Try a different keyword or browse categories.</p>
+                  </div>
                 </Command.Empty>
                 {recentTools.length > 0 && (
                   <Command.Group heading="Recent">
@@ -147,11 +159,13 @@ export function CommandPalette({
                         <Command.Item
                           key={tool.slug}
                           onSelect={() => run(tool.slug)}
-                          className="flex items-center gap-3 px-3 py-3 sm:py-2 rounded-xl text-sm cursor-pointer aria-selected:bg-surface-hover min-h-[44px]"
+                          className="flex items-center gap-3 px-3 py-2.5 rounded-[14px] text-sm cursor-pointer aria-selected:bg-accent/10 aria-selected:text-accent min-h-[44px] transition-colors duration-150"
                         >
-                          <Icon className="w-4 h-4 shrink-0" style={{ color: cat.color }} />
-                          <span className="truncate">{tool.name}</span>
-                          <span className="ml-auto text-[10px] uppercase tracking-wider opacity-60 shrink-0" style={{ color: cat.color }}>
+                          <span className="flex items-center justify-center w-8 h-8 rounded-[10px] shrink-0" style={{ backgroundColor: `${cat.color}14` }}>
+                            <Icon className="w-4 h-4" style={{ color: cat.color }} aria-hidden="true" />
+                          </span>
+                          <span className="truncate font-medium">{tool.name}</span>
+                          <span className="ml-auto text-[10px] font-semibold uppercase tracking-wider opacity-70 shrink-0" style={{ color: cat.color }}>
                             {cat.label}
                           </span>
                         </Command.Item>
@@ -167,11 +181,11 @@ export function CommandPalette({
                         <Command.Item
                           key={tool.slug}
                           onSelect={() => run(tool.slug)}
-                          className="flex items-center gap-3 px-3 py-3 sm:py-2 rounded-xl text-sm cursor-pointer aria-selected:bg-surface-hover min-h-[44px]"
+                          className="flex items-center gap-3 px-3 py-2.5 rounded-[14px] text-sm cursor-pointer aria-selected:bg-accent/10 aria-selected:text-accent min-h-[44px] transition-colors duration-150"
                         >
-                          <LucideIcons.Clock className="w-4 h-4 text-text-secondary shrink-0" />
-                          <span className="truncate">{tool.name}</span>
-                          <span className="ml-auto text-[10px] uppercase tracking-wider opacity-60 shrink-0" style={{ color: cat.color }}>
+                          <LucideIcons.Clock className="w-4 h-4 text-text-secondary shrink-0" aria-hidden="true" />
+                          <span className="truncate font-medium">{tool.name}</span>
+                          <span className="ml-auto text-[10px] font-semibold uppercase tracking-wider opacity-70 shrink-0" style={{ color: cat.color }}>
                             {cat.label}
                           </span>
                         </Command.Item>
@@ -189,10 +203,12 @@ export function CommandPalette({
                           <Command.Item
                             key={tool.slug}
                             onSelect={() => run(tool.slug)}
-                            className="flex items-center gap-3 px-3 py-3 sm:py-2 rounded-xl text-sm cursor-pointer aria-selected:bg-surface-hover min-h-[44px]"
+                            className="flex items-center gap-3 px-3 py-2.5 rounded-[14px] text-sm cursor-pointer aria-selected:bg-accent/10 aria-selected:text-accent min-h-[44px] transition-colors duration-150"
                           >
-                            <Icon className="w-4 h-4 shrink-0" style={{ color: cat.color }} />
-                            <span className="truncate">{tool.name}</span>
+                            <span className="flex items-center justify-center w-8 h-8 rounded-[10px] shrink-0" style={{ backgroundColor: `${cat.color}14` }}>
+                              <Icon className="w-4 h-4" style={{ color: cat.color }} aria-hidden="true" />
+                            </span>
+                            <span className="truncate font-medium">{tool.name}</span>
                           </Command.Item>
                         );
                       })}
@@ -200,6 +216,11 @@ export function CommandPalette({
                   );
                 })}
               </Command.List>
+              <div className="hidden sm:flex items-center gap-4 px-4 py-2.5 border-t border-border-soft text-[11px] text-text-secondary shrink-0">
+                <span className="inline-flex items-center gap-1"><kbd className="bg-surface-hover px-1.5 py-0.5 rounded border border-border font-semibold">↑↓</kbd> navigate</span>
+                <span className="inline-flex items-center gap-1"><kbd className="bg-surface-hover px-1.5 py-0.5 rounded border border-border font-semibold">↵</kbd> open</span>
+                <span className="inline-flex items-center gap-1"><kbd className="bg-surface-hover px-1.5 py-0.5 rounded border border-border font-semibold">esc</kbd> close</span>
+              </div>
             </Command>
           </div>
         </div>

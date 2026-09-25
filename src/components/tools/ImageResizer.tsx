@@ -217,7 +217,7 @@ export default function ImageResizer() {
         <DropZone onFiles={handleFiles} accept="image/*" multiple enableCamera />
       ) : (
         <div className="space-y-4">
-          <img src={imageUrl} alt="Original" className="max-h-48 rounded-lg object-contain bg-gray-100 dark:bg-gray-800" />
+          <img src={imageUrl} alt="Original" className="max-h-48 rounded-lg object-contain bg-surface-hover checkerboard" />
           <img ref={imgRef} src={imageUrl} alt="" className="hidden" aria-hidden />
 
           <div className="flex flex-col sm:flex-row gap-2">
@@ -250,7 +250,7 @@ export default function ImageResizer() {
                 onChange={(e) => setPercent(Number(e.target.value))}
                 className="w-full mt-1 accent-accent"
               />
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-text-secondary mt-1">
                 Output: {singleDims.w}x{singleDims.h}px
               </p>
             </div>
@@ -261,7 +261,7 @@ export default function ImageResizer() {
                 <select
                   value={preset}
                   onChange={(e) => handlePresetChange(e.target.value)}
-                  className="w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-sm mt-1 focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
+                  className="w-full p-2 border border-border rounded-lg bg-surface text-sm mt-1 focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
                 >
                   <option value="">Custom size...</option>
                   {SOCIAL_PRESETS.map((p) => (
@@ -280,12 +280,12 @@ export default function ImageResizer() {
                     min={1}
                     value={width}
                     onChange={(e) => handleWidthChange(Number(e.target.value))}
-                    className="w-28 p-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
+                    className="w-28 p-2 border border-border rounded-lg bg-surface text-sm focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
                   />
                 </div>
                 <button
                   onClick={() => setLockAspect(!lockAspect)}
-                  className="p-2 mb-0.5 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+                  className="p-2 mb-0.5 rounded-lg hover:bg-border transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
                   title={lockAspect ? "Unlock aspect ratio" : "Lock aspect ratio"}
                 >
                   {lockAspect ? <Lock className="w-4 h-4" /> : <Unlock className="w-4 h-4" />}
@@ -297,7 +297,7 @@ export default function ImageResizer() {
                     min={1}
                     value={height}
                     onChange={(e) => handleHeightChange(Number(e.target.value))}
-                    className="w-28 p-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
+                    className="w-28 p-2 border border-border rounded-lg bg-surface text-sm focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
                   />
                 </div>
               </div>
@@ -317,12 +317,12 @@ export default function ImageResizer() {
 
           {resultUrl && (
             <div>
-              <p className="text-xs text-gray-500 mb-1">Result ({singleDims.w}x{singleDims.h})</p>
-              <img src={resultUrl} alt="Resized" className="max-h-48 rounded-lg object-contain bg-gray-100 dark:bg-gray-800 mb-2" />
+              <p className="text-xs text-text-secondary mb-1">Result ({singleDims.w}x{singleDims.h})</p>
+              <img src={resultUrl} alt="Resized" className="max-h-48 rounded-lg object-contain bg-surface-hover checkerboard mb-2" />
               <a
                 href={resultUrl}
                 download={`resized-${file.name}`}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium transition-colors min-h-[44px]"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-brand-600 text-white rounded-lg hover:bg-brand-700 text-sm font-medium transition-colors min-h-[44px]"
               >
                 <Download className="w-4 h-4" /> Download
               </a>
@@ -330,7 +330,7 @@ export default function ImageResizer() {
           )}
 
           {batch.length > 1 && (
-            <div className="space-y-2 border-t border-gray-200 dark:border-gray-700 pt-4">
+            <div className="space-y-2 border-t border-border-soft pt-4">
               <div className="flex flex-col sm:flex-row sm:items-center gap-2">
                 <p className="text-sm font-medium">
                   Batch ({batch.length} files{batchDone > 0 ? `, ${batchDone} resized` : ""})
@@ -349,18 +349,18 @@ export default function ImageResizer() {
               {batch.map((item) => (
                 <div
                   key={item.id}
-                  className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-sm p-2 rounded-lg bg-gray-50 dark:bg-gray-800/50"
+                  className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-sm p-2 rounded-lg bg-surface-hover"
                 >
                   <span className="font-medium truncate flex-1">{item.file.name}</span>
-                  <span className="text-xs text-gray-500">
+                  <span className="text-xs text-text-secondary">
                     {item.resultUrl ? `${item.resultW}x${item.resultH}px` : "pending"}
                   </span>
-                  {item.error && <span className="text-xs text-red-500">{item.error}</span>}
+                  {item.error && <span className="text-xs text-error-text">{item.error}</span>}
                   {item.resultUrl && (
                     <a
                       href={item.resultUrl}
                       download={`resized-${item.file.name}`}
-                      className="inline-flex items-center gap-1 text-xs font-medium text-green-700 dark:text-green-400 min-h-[44px] sm:min-h-0 items-center"
+                      className="inline-flex items-center gap-1 text-xs font-medium text-success-text dark:text-success-text min-h-[44px] sm:min-h-0 items-center"
                     >
                       <Download className="w-4 h-4" /> Download
                     </a>

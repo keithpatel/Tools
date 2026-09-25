@@ -210,7 +210,7 @@ export default function ImageFilters() {
               style={{ clipPath: `inset(0 ${100 - compare}% 0 0)` }}
             />
             <div
-              className="absolute top-0 bottom-0 w-0.5 bg-white shadow-md pointer-events-none"
+              className="absolute top-0 bottom-0 w-0.5 bg-surface shadow-md pointer-events-none"
               style={{ left: `${compare}%` }}
             />
             <span className="absolute top-2 left-2 text-[11px] font-medium px-2 py-1 rounded-md bg-black/60 text-white pointer-events-none">

@@ -22,6 +22,7 @@ export function DropZone({
   const inputRef = useRef<HTMLInputElement>(null);
   const cameraRef = useRef<HTMLInputElement>(null);
   const [dragging, setDragging] = useState(false);
+  const [accepted, setAccepted] = useState(false);
 
   const isImagePicker = accept?.includes("image") || false;
 
@@ -36,23 +37,34 @@ export function DropZone({
     return () => window.removeEventListener("tool-paste-files", handlePasteFiles);
   }, [onFiles]);
 
+  const flashAccepted = useCallback(() => {
+    setAccepted(true);
+    window.setTimeout(() => setAccepted(false), 550);
+  }, []);
+
   const handleDrop = useCallback(
     (e: React.DragEvent) => {
       e.preventDefault();
       setDragging(false);
       const files = Array.from(e.dataTransfer.files);
-      if (files.length) onFiles(files);
+      if (files.length) {
+        flashAccepted();
+        onFiles(files);
+      }
     },
-    [onFiles]
+    [flashAccepted, onFiles]
   );
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const files = Array.from(e.target.files || []);
-      if (files.length) onFiles(files);
+      if (files.length) {
+        flashAccepted();
+        onFiles(files);
+      }
       e.target.value = "";
     },
-    [onFiles]
+    [flashAccepted, onFiles]
   );
 
   const icon = isImagePicker ? ImagePlus : FileUp;
@@ -64,14 +76,17 @@ export function DropZone({
       <button
         type="button"
         onClick={() => inputRef.current?.click()}
-        className="md:hidden w-full active:scale-[0.98] transition-transform cursor-pointer"
+        className="md:hidden w-full active:scale-[0.98] transition-all duration-200 ease-out cursor-pointer"
         aria-label="Tap to upload files from device"
       >
-        <div className="border-2 border-dashed border-accent/30 rounded-2xl bg-surface p-6 flex flex-col items-center justify-center text-center min-h-[140px] hover:border-accent/60">
-          <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center mb-2.5">
-            <IconGlyph className="w-6 h-6 text-accent" />
+        <div className={cn(
+          "border-2 border-dashed rounded-[18px] bg-surface p-6 flex flex-col items-center justify-center text-center min-h-[140px] transition-all duration-200 ease-out",
+          accepted ? "animate-accept border-accent bg-brand-50 dark:bg-brand-950" : "border-accent/30 hover:border-accent/60 hover:bg-brand-50/50 dark:hover:bg-brand-950/40"
+        )}>
+          <div className="w-12 h-12 rounded-[14px] bg-brand-50 dark:bg-brand-950 border border-brand-200/50 dark:border-brand-800/50 flex items-center justify-center mb-2.5">
+            <IconGlyph className="w-6 h-6 text-accent" aria-hidden="true" />
           </div>
-          <p className="font-semibold text-text-primary text-base">
+          <p className="font-semibold tracking-tight text-text-primary text-base">
             Tap to upload {accept?.includes("pdf") ? "PDF" : accept?.includes("image") ? "image" : multiple ? "files" : "file"}
           </p>
           <p className="text-xs text-text-secondary mt-1">
@@ -94,6 +109,15 @@ export function DropZone({
 
       {/* Desktop Drag & Drop Zone (hidden on mobile) */}
       <div
+        role="button"
+        tabIndex={0}
+        aria-label={label || "Drop files here or click to browse"}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            inputRef.current?.click();
+          }
+        }}
         onDragOver={(e) => {
           e.preventDefault();
           setDragging(true);
@@ -102,26 +126,29 @@ export function DropZone({
         onDrop={handleDrop}
         onClick={() => inputRef.current?.click()}
         className={cn(
-          "hidden md:flex flex-col items-center justify-center gap-1 border border-dashed rounded-2xl p-12 text-center cursor-pointer transition-all duration-200 min-h-[220px]",
+          "hidden md:flex flex-col items-center justify-center gap-1.5 border-2 border-dashed rounded-[18px] p-12 text-center cursor-pointer transition-all duration-200 ease-out min-h-[220px]",
           dragging
-            ? "border-accent bg-accent/5 scale-[1.01] shadow-sm"
-            : "border-border hover:border-accent/50 hover:bg-surface/80"
+            ? "border-accent bg-brand-50 dark:bg-brand-950 scale-[1.01] shadow-hover"
+            : accepted
+              ? "animate-accept border-accent bg-brand-50 dark:bg-brand-950"
+              : "border-border-soft hover:border-accent/50 hover:bg-brand-50/50 dark:hover:bg-brand-950/30 hover:shadow-resting"
         )}
       >
         <div
           className={cn(
-            "w-14 h-14 rounded-full flex items-center justify-center mb-2 transition-colors",
-            dragging ? "bg-accent/15" : "bg-surface-hover"
+            "w-14 h-14 rounded-[16px] flex items-center justify-center mb-2 transition-all duration-200 ease-out border",
+            dragging ? "bg-accent/15 border-accent/30 scale-105" : "bg-surface-hover border-transparent"
           )}
         >
-          <Upload className={cn("w-6 h-6", dragging ? "text-accent" : "text-text-secondary")} />
+          <Upload className={cn("w-6 h-6", dragging ? "text-accent" : "text-text-secondary")} aria-hidden="true" />
         </div>
-        <p className="text-sm font-medium text-text-primary">{label || "Drop files here or click to browse"}</p>
-        <div className="flex items-center gap-2 mt-1">
+        <p className="text-[15px] font-semibold tracking-tight text-text-primary">{label || "Drop files here or click to browse"}</p>
+        <p className="text-xs text-text-secondary">Your files stay on this device — nothing is uploaded</p>
+        <div className="flex items-center gap-2 mt-1.5">
           {accept && (
-            <span className="text-xs text-text-secondary/60">Accepts {accept.replace(/,/g, ", ")}</span>
+            <span className="text-xs text-text-secondary/70">Accepts {accept.replace(/,/g, ", ")}</span>
           )}
-          <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-surface border border-border text-text-secondary/75">
+          <span className="text-[11px] font-semibold px-2 py-0.5 rounded-md bg-surface-hover border border-border-soft text-text-secondary">
             or Ctrl+V
           </span>
         </div>

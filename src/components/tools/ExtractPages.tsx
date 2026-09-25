@@ -232,7 +232,7 @@ export default function ExtractPages() {
             </div>
             <button
               onClick={reset}
-              className="text-xs text-text-secondary hover:text-red-500 transition-colors px-2 py-1"
+              className="text-xs text-text-secondary hover:text-error transition-colors px-2 py-1"
             >
               Change file
             </button>
@@ -310,7 +310,7 @@ export default function ExtractPages() {
                           : "border-border-soft hover:border-border opacity-70 hover:opacity-100"
                       }`}
                     >
-                      <div className="relative aspect-[3/4] bg-white rounded-lg overflow-hidden flex items-center justify-center">
+                      <div className="relative aspect-[3/4] bg-surface rounded-lg overflow-hidden flex items-center justify-center">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={p.src}
@@ -353,7 +353,7 @@ export default function ExtractPages() {
           >
             {resultBlob && (
               <div className="text-center py-4 space-y-2">
-                <div className="w-12 h-12 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center mx-auto">
+                <div className="w-12 h-12 rounded-full bg-success-soft text-success flex items-center justify-center mx-auto">
                   <FileCheck className="w-6 h-6" />
                 </div>
                 <h4 className="text-sm font-heading font-semibold text-text-primary">

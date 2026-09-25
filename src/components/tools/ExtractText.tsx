@@ -63,7 +63,7 @@ export default function ExtractText() {
           <button
             onClick={extract}
             disabled={extracting}
-            className="px-5 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium transition-colors"
+            className="px-5 py-2.5 bg-brand-600 text-white rounded-lg hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium transition-colors"
           >
             {extracting ? "Extracting..." : "Extract Text"}
           </button>
@@ -72,27 +72,27 @@ export default function ExtractText() {
       {pages.length > 0 && (
         <div className="mt-6 space-y-6">
           <div className="flex items-center justify-between">
-            <p className="text-sm text-gray-500">{pages.length} page{pages.length !== 1 ? "s" : ""} extracted</p>
+            <p className="text-sm text-text-secondary">{pages.length} page{pages.length !== 1 ? "s" : ""} extracted</p>
             <button
               onClick={copyAll}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 text-sm font-medium transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-surface-hover rounded-lg hover:bg-border text-sm font-medium transition-colors"
             >
-              {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+              {copied ? <Check className="w-4 h-4 text-success" /> : <Copy className="w-4 h-4" />}
               {copied ? "Copied!" : "Copy All"}
             </button>
           </div>
           <textarea
-            className="w-full h-80 p-4 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 font-mono text-sm resize-y focus:outline-none focus:ring-2 focus:ring-accent"
+            className="w-full h-80 p-4 border border-border rounded-lg bg-surface font-mono text-sm resize-y focus:outline-none focus:ring-2 focus:ring-accent"
             value={fullText}
             readOnly
           />
           <div className="space-y-4">
             {pages.map((p) => (
-              <details key={p.page} className="border border-gray-200 dark:border-gray-700 rounded-lg">
-                <summary className="px-4 py-2.5 bg-gray-50 dark:bg-gray-800 cursor-pointer text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+              <details key={p.page} className="border border-border-soft rounded-lg">
+                <summary className="px-4 py-2.5 bg-surface-hover cursor-pointer text-sm font-medium hover:bg-border rounded-lg transition-colors">
                   Page {p.page}
                 </summary>
-                <pre className="px-4 py-3 text-sm whitespace-pre-wrap font-mono text-gray-600 dark:text-gray-400">{p.text || "(no text found)"}</pre>
+                <pre className="px-4 py-3 text-sm whitespace-pre-wrap font-mono text-text-secondary dark:text-text-secondary/70">{p.text || "(no text found)"}</pre>
               </details>
             ))}
           </div>

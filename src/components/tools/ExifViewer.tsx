@@ -205,37 +205,37 @@ export default function ExifViewer() {
         <DropZone onFiles={handleFiles} accept="image/*" enableCamera />
       ) : (
         <div className="space-y-4">
-          <img src={imageUrl} alt="Uploaded" className="max-h-48 rounded-lg object-contain bg-gray-100 dark:bg-gray-800" />
+          <img src={imageUrl} alt="Uploaded" className="max-h-48 rounded-lg object-contain bg-surface-hover checkerboard" />
 
           {loading ? (
-            <p className="text-sm text-gray-500">Reading EXIF data...</p>
+            <p className="text-sm text-text-secondary">Reading EXIF data...</p>
           ) : (
             <>
               {exifData && Object.keys(exifData).length > 0 ? (
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm border-collapse">
                     <thead>
-                      <tr className="bg-gray-100 dark:bg-gray-800">
-                        <th className="text-left p-2 border border-gray-300 dark:border-gray-700 font-medium">Tag</th>
-                        <th className="text-left p-2 border border-gray-300 dark:border-gray-700 font-medium">Value</th>
+                      <tr className="bg-surface-hover checkerboard">
+                        <th className="text-left p-2 border border-border font-medium">Tag</th>
+                        <th className="text-left p-2 border border-border font-medium">Value</th>
                       </tr>
                     </thead>
                     <tbody>
                       {Object.entries(exifData).map(([key, val]) => (
-                        <tr key={key} className="border-b border-gray-200 dark:border-gray-800">
-                          <td className="p-2 border border-gray-300 dark:border-gray-700 text-gray-500 text-xs">{formatKey(key)}</td>
-                          <td className="p-2 border border-gray-300 dark:border-gray-700 font-mono text-xs break-all">{String(val)}</td>
+                        <tr key={key} className="border-b border-border-soft dark:border-border-soft">
+                          <td className="p-2 border border-border text-text-secondary text-xs">{formatKey(key)}</td>
+                          <td className="p-2 border border-border font-mono text-xs break-all">{String(val)}</td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
                 </div>
               ) : (
-                <p className="text-sm text-gray-500">No EXIF data found.</p>
+                <p className="text-sm text-text-secondary">No EXIF data found.</p>
               )}
 
               {hasGps && (
-                <div className="p-4 rounded-lg border border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/30 space-y-2">
+                <div className="p-4 rounded-lg border border-warning-border bg-warning-soft space-y-2">
                   <p className="text-sm font-medium flex items-center gap-1.5">
                     <MapPin className="w-4 h-4" /> Location found in EXIF
                   </p>
@@ -247,20 +247,20 @@ export default function ExifViewer() {
                       href={osmUrl}
                       target="_blank"
                       rel="noopener"
-                      className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 sm:py-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 text-sm font-medium transition-colors min-h-[44px] sm:min-h-0"
+                      className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 sm:py-2 bg-surface-hover rounded-lg hover:bg-border text-sm font-medium transition-colors min-h-[44px] sm:min-h-0"
                     >
                       <MapPin className="w-4 h-4" /> View on OpenStreetMap
                     </a>
-                    <Button onClick={stripLocation} className="w-full sm:w-auto min-h-[44px] bg-red-600 hover:opacity-90">
+                    <Button onClick={stripLocation} className="w-full sm:w-auto min-h-[44px] bg-error hover:opacity-90">
                       <Trash2 className="w-4 h-4" /> Strip location data
                     </Button>
                   </div>
                 </div>
               )}
 
-              <div className="p-4 rounded-lg bg-gray-100 dark:bg-gray-800 space-y-3">
+              <div className="p-4 rounded-lg bg-surface-hover checkerboard space-y-3">
                 <p className="text-sm font-medium">Edit writable text fields</p>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-text-secondary">
                   Browsers cannot rewrite JPEG EXIF segments without a segment writer; canvas
                   re-encode always drops metadata. Your edits are saved to an XMP sidecar file
                   alongside the cleaned image.
@@ -274,7 +274,7 @@ export default function ExifViewer() {
                         setEditedFields((prev) => ({ ...prev, [field]: e.target.value }))
                       }
                       placeholder={`Enter ${field}`}
-                      className="w-full p-2.5 sm:p-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-accent mt-1"
+                      className="w-full p-2.5 sm:p-2 border border-border rounded-lg bg-surface text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-accent mt-1"
                     />
                   </div>
                 ))}
@@ -300,13 +300,13 @@ export default function ExifViewer() {
 
               {cleanedUrl && (
                 <div>
-                  <p className="text-xs text-gray-500 mb-1">Cleaned (no EXIF)</p>
-                  <img src={cleanedUrl} alt="Cleaned" className="max-h-48 rounded-lg object-contain bg-gray-100 dark:bg-gray-800 mb-2" />
+                  <p className="text-xs text-text-secondary mb-1">Cleaned (no EXIF)</p>
+                  <img src={cleanedUrl} alt="Cleaned" className="max-h-48 rounded-lg object-contain bg-surface-hover checkerboard mb-2" />
                   <div className="flex flex-col sm:flex-row gap-2">
                     <a
                       href={cleanedUrl}
                       download={`noexif-${file.name}`}
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 sm:py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium transition-colors min-h-[44px]"
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 sm:py-2 bg-brand-600 text-white rounded-lg hover:bg-brand-700 text-sm font-medium transition-colors min-h-[44px]"
                     >
                       <Download className="w-4 h-4" /> Download cleaned image
                     </a>
@@ -321,19 +321,19 @@ export default function ExifViewer() {
         </div>
       )}
 
-      <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-800 space-y-3">
+      <div className="mt-8 pt-6 border-t border-border-soft dark:border-border-soft space-y-3">
         <h3 className="text-sm font-semibold">Batch strip EXIF</h3>
-        <p className="text-xs text-gray-500">Strip metadata from multiple images at once, then download individually or as a ZIP.</p>
+        <p className="text-xs text-text-secondary">Strip metadata from multiple images at once, then download individually or as a ZIP.</p>
         <DropZone onFiles={handleBatchFiles} accept="image/*" multiple label="Drop multiple images here to batch-strip" />
         {batchFiles.length > 0 && (
           <div className="space-y-3">
-            <p className="text-xs text-gray-500">{batchFiles.length} file(s) selected.</p>
+            <p className="text-xs text-text-secondary">{batchFiles.length} file(s) selected.</p>
             <div className="flex flex-col sm:flex-row gap-2">
               <Button onClick={batchStrip} disabled={batchProcessing} className="w-full sm:w-auto min-h-[44px]">
                 {batchProcessing ? "Stripping..." : `Strip ${batchFiles.length} file(s)`}
               </Button>
               {batchResults.length > 0 && (
-                <Button onClick={downloadBatchZip} className="w-full sm:w-auto min-h-[44px] bg-green-600 hover:opacity-90">
+                <Button onClick={downloadBatchZip} className="w-full sm:w-auto min-h-[44px] bg-brand-600 hover:opacity-90">
                   <Archive className="w-4 h-4" /> Download ZIP
                 </Button>
               )}
@@ -342,7 +342,7 @@ export default function ExifViewer() {
               <ul className="space-y-1.5">
                 {batchResults.map((r, i) => (
                   <li key={i} className="flex items-center gap-2 text-sm">
-                    <span className="truncate flex-1 text-gray-600 dark:text-gray-300">{r.name}</span>
+                    <span className="truncate flex-1 text-text-secondary">{r.name}</span>
                     <a href={r.url} download={r.name} className="inline-flex items-center gap-1 text-xs text-accent hover:underline p-2 min-h-[36px]">
                       <Download className="w-3.5 h-3.5" /> Download
                     </a>

@@ -86,7 +86,7 @@ export default function CodeMinifier() {
     >
       <div className="flex flex-wrap gap-2 items-center mb-4">
         <select
-          className="flex-1 sm:flex-none px-3.5 py-2.5 sm:py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px] sm:min-h-0"
+          className="flex-1 sm:flex-none px-3.5 py-2.5 sm:py-2 border border-border rounded-lg bg-surface text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px] sm:min-h-0"
           value={language}
           onChange={(e) => setLanguage(e.target.value as Language)}
         >
@@ -94,21 +94,21 @@ export default function CodeMinifier() {
           <option value="css">CSS</option>
           <option value="js">JavaScript</option>
         </select>
-        <button onClick={minify} className="flex-1 sm:flex-none px-4 py-2.5 sm:py-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 text-sm font-medium transition-colors min-h-[44px] sm:min-h-0 flex items-center justify-center">Minify</button>
-        <button onClick={beautify} className="flex-1 sm:flex-none px-4 py-2.5 sm:py-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 text-sm font-medium transition-colors min-h-[44px] sm:min-h-0 flex items-center justify-center">Beautify</button>
+        <button onClick={minify} className="flex-1 sm:flex-none px-4 py-2.5 sm:py-2 bg-surface-hover rounded-lg hover:bg-border text-sm font-medium transition-colors min-h-[44px] sm:min-h-0 flex items-center justify-center">Minify</button>
+        <button onClick={beautify} className="flex-1 sm:flex-none px-4 py-2.5 sm:py-2 bg-surface-hover rounded-lg hover:bg-border text-sm font-medium transition-colors min-h-[44px] sm:min-h-0 flex items-center justify-center">Beautify</button>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <div className="text-xs text-gray-500 mb-1">Input ({input.length} chars)</div>
+          <div className="text-xs text-text-secondary mb-1">Input ({input.length} chars)</div>
           <textarea
-            className="w-full h-48 sm:h-64 p-3.5 sm:p-4 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 resize-y focus:outline-none focus:ring-2 focus:ring-accent font-mono text-base sm:text-sm"
+            className="w-full h-48 sm:h-64 p-3.5 sm:p-4 border border-border rounded-lg bg-surface resize-y focus:outline-none focus:ring-2 focus:ring-accent font-mono text-base sm:text-sm"
             placeholder="Paste your code here..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
           />
         </div>
         <div>
-          <div className="text-xs text-gray-500 mb-1">
+          <div className="text-xs text-text-secondary mb-1">
             Output ({output.length} chars)
             {input.length > 0 && output.length > 0 && (
               <span className="ml-2">
@@ -121,12 +121,12 @@ export default function CodeMinifier() {
               <button
                 onClick={copy}
                 aria-label="Copy output"
-                className="w-9 h-9 sm:w-8 sm:h-8 flex items-center justify-center bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                className="w-9 h-9 sm:w-8 sm:h-8 flex items-center justify-center bg-surface-hover rounded-lg hover:bg-border transition-colors"
               >
-                {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+                {copied ? <Check className="w-4 h-4 text-success" /> : <Copy className="w-4 h-4" />}
               </button>
             </div>
-            <pre className="w-full h-full p-3.5 sm:p-4 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-x-auto overflow-y-auto text-xs sm:text-sm font-mono whitespace-pre-wrap break-all">{output}</pre>
+            <pre className="w-full h-full p-3.5 sm:p-4 bg-surface-hover checkerboard rounded-lg overflow-x-auto overflow-y-auto text-xs sm:text-sm font-mono whitespace-pre-wrap break-all">{output}</pre>
           </div>
         </div>
       </div>

@@ -26,31 +26,31 @@ export default function WordCounter() {
       ]}
     >
       <textarea
-        className="w-full h-48 p-4 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 resize-y focus:outline-none focus:ring-2 focus:ring-accent"
+        className="w-full h-48 p-4 border border-border rounded-lg bg-surface resize-y focus:outline-none focus:ring-2 focus:ring-accent"
         placeholder="Paste or type your text here..."
         value={text}
         onChange={(e) => setText(e.target.value)}
       />
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-4">
-        <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 text-center">
+        <div className="bg-surface-hover checkerboard rounded-lg p-4 text-center">
           <div className="text-2xl font-bold">{words}</div>
-          <div className="text-xs text-gray-500">Words</div>
+          <div className="text-xs text-text-secondary">Words</div>
         </div>
-        <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 text-center">
+        <div className="bg-surface-hover checkerboard rounded-lg p-4 text-center">
           <div className="text-2xl font-bold">{charsWithSpaces}</div>
-          <div className="text-xs text-gray-500">Chars (with spaces)</div>
+          <div className="text-xs text-text-secondary">Chars (with spaces)</div>
         </div>
-        <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 text-center">
+        <div className="bg-surface-hover checkerboard rounded-lg p-4 text-center">
           <div className="text-2xl font-bold">{charsWithoutSpaces}</div>
-          <div className="text-xs text-gray-500">Chars (no spaces)</div>
+          <div className="text-xs text-text-secondary">Chars (no spaces)</div>
         </div>
-        <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 text-center">
+        <div className="bg-surface-hover checkerboard rounded-lg p-4 text-center">
           <div className="text-2xl font-bold">{sentences}</div>
-          <div className="text-xs text-gray-500">Sentences</div>
+          <div className="text-xs text-text-secondary">Sentences</div>
         </div>
-        <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 text-center col-span-2 sm:col-span-4">
+        <div className="bg-surface-hover checkerboard rounded-lg p-4 text-center col-span-2 sm:col-span-4">
           <div className="text-2xl font-bold">{paragraphs}</div>
-          <div className="text-xs text-gray-500">Paragraphs</div>
+          <div className="text-xs text-text-secondary">Paragraphs</div>
         </div>
       </div>
     </ToolLayout>

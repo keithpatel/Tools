@@ -94,8 +94,8 @@ export default function SplitPDF() {
       <DropZone onFiles={onFiles} accept=".pdf" label="Drop a PDF here or click to browse" />
       {file && (
         <div className="mt-6 space-y-4">
-          <p className="text-sm text-gray-500">
-            <span className="font-medium text-gray-700 dark:text-gray-300">{file.name}</span> &mdash; {pageCount} page{pageCount !== 1 ? "s" : ""}
+          <p className="text-sm text-text-secondary">
+            <span className="font-medium text-text-primary">{file.name}</span> &mdash; {pageCount} page{pageCount !== 1 ? "s" : ""}
           </p>
           <div>
             <label className="block text-xs text-text-secondary font-medium mb-1.5">Page ranges (e.g. 1-3,5,7-9)</label>
@@ -109,7 +109,7 @@ export default function SplitPDF() {
               <button
                 onClick={extractRange}
                 disabled={splitting || !rangeInput}
-                className="px-5 py-2.5 bg-green-600 text-white rounded-xl hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-semibold transition-colors min-h-[44px] cursor-pointer"
+                className="px-5 py-2.5 bg-brand-600 text-white rounded-xl hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-semibold transition-colors min-h-[44px] cursor-pointer"
               >
                 {splitting ? "Extracting..." : "Extract Pages"}
               </button>
@@ -134,7 +134,7 @@ export default function SplitPDF() {
             <button
               onClick={rangeInput ? extractRange : splitAll}
               disabled={splitting}
-              className="w-full flex items-center justify-center gap-2 px-5 py-3.5 bg-green-600 text-white rounded-xl hover:opacity-90 active:scale-[0.98] text-sm font-semibold transition-all shadow-md min-h-[48px] disabled:opacity-50 cursor-pointer"
+              className="w-full flex items-center justify-center gap-2 px-5 py-3.5 bg-brand-600 text-white rounded-xl hover:opacity-90 active:scale-[0.98] text-sm font-semibold transition-all shadow-md min-h-[48px] disabled:opacity-50 cursor-pointer"
             >
               <Split className="w-4 h-4" />
               {splitting ? "Splitting..." : rangeInput ? "Extract Specified Pages" : "Split All Pages"}

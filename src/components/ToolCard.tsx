@@ -13,7 +13,7 @@ export function ToolCard({ tool }: { tool: Tool }) {
   const isFav = favorites.includes(tool.slug);
 
   return (
-    <div className="group relative block p-3.5 sm:p-4 rounded-2xl border border-border-soft bg-surface shadow-xs hover:shadow-md hover:-translate-y-0.5 hover:border-accent/30 transition-all duration-200">
+    <div className="group relative block p-3.5 sm:p-4 rounded-[18px] border border-border-soft bg-surface shadow-resting hover:shadow-hover hover:-translate-y-0.5 hover:border-accent/40 transition-all duration-200 ease-out">
       <button
         onClick={(e) => {
           e.preventDefault();
@@ -33,11 +33,14 @@ export function ToolCard({ tool }: { tool: Tool }) {
       </button>
       <Link href={`/tools/${tool.slug}`} className="block pr-8 sm:pr-6 min-h-[44px]">
         <div className="flex items-start gap-3">
-          <div className="p-2.5 rounded-xl shrink-0" style={{ backgroundColor: `${cat.color}12` }}>
-            <Icon className="w-5 h-5" style={{ color: cat.color }} />
+          <div
+            className="flex items-center justify-center w-10 h-10 rounded-[14px] shrink-0 border border-transparent transition-all duration-200 ease-out group-hover:scale-[1.03]"
+            style={{ backgroundColor: `${cat.color}14`, borderColor: `${cat.color}22` }}
+          >
+            <Icon className="w-5 h-5" style={{ color: cat.color }} aria-hidden="true" />
           </div>
           <div className="min-w-0 flex-1">
-            <h3 className="font-heading font-semibold text-sm group-hover:text-accent transition-colors truncate">
+            <h3 className="font-heading font-semibold tracking-tight text-sm group-hover:text-accent transition-colors duration-200 truncate">
               {tool.name}
             </h3>
             <p className="text-xs text-text-secondary mt-0.5 line-clamp-2 leading-relaxed">

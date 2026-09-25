@@ -62,16 +62,16 @@ export default function BMICalculator() {
         <div>
           <div className="flex items-center gap-2 mb-2">
             <span className="text-sm font-medium">Weight</span>
-            <div className="flex bg-gray-200 dark:bg-gray-700 rounded-lg p-0.5">
+            <div className="flex bg-surface-hover rounded-lg p-0.5">
               <button
                 onClick={() => setWeightUnit("kg")}
-                className={`px-3 py-1 text-xs rounded-md transition-colors ${weightUnit === "kg" ? "bg-white dark:bg-gray-600 font-medium shadow-sm" : ""}`}
+                className={`px-3 py-1 text-xs rounded-md transition-colors ${weightUnit === "kg" ? "bg-surface dark:bg-surface-hover font-medium shadow-sm" : ""}`}
               >
                 kg
               </button>
               <button
                 onClick={() => setWeightUnit("lbs")}
-                className={`px-3 py-1 text-xs rounded-md transition-colors ${weightUnit === "lbs" ? "bg-white dark:bg-gray-600 font-medium shadow-sm" : ""}`}
+                className={`px-3 py-1 text-xs rounded-md transition-colors ${weightUnit === "lbs" ? "bg-surface dark:bg-surface-hover font-medium shadow-sm" : ""}`}
               >
                 lbs
               </button>
@@ -81,7 +81,7 @@ export default function BMICalculator() {
             type="number"
             value={weight}
             onChange={(e) => setWeight(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-accent"
+            className="w-full px-3 py-2 border border-border rounded-lg bg-surface focus:outline-none focus:ring-2 focus:ring-accent"
             placeholder={weightUnit === "kg" ? "Weight in kg" : "Weight in lbs"}
           />
         </div>
@@ -89,16 +89,16 @@ export default function BMICalculator() {
         <div>
           <div className="flex items-center gap-2 mb-2">
             <span className="text-sm font-medium">Height</span>
-            <div className="flex bg-gray-200 dark:bg-gray-700 rounded-lg p-0.5">
+            <div className="flex bg-surface-hover rounded-lg p-0.5">
               <button
                 onClick={() => setHeightUnit("cm")}
-                className={`px-3 py-1 text-xs rounded-md transition-colors ${heightUnit === "cm" ? "bg-white dark:bg-gray-600 font-medium shadow-sm" : ""}`}
+                className={`px-3 py-1 text-xs rounded-md transition-colors ${heightUnit === "cm" ? "bg-surface dark:bg-surface-hover font-medium shadow-sm" : ""}`}
               >
                 cm
               </button>
               <button
                 onClick={() => setHeightUnit("ftin")}
-                className={`px-3 py-1 text-xs rounded-md transition-colors ${heightUnit === "ftin" ? "bg-white dark:bg-gray-600 font-medium shadow-sm" : ""}`}
+                className={`px-3 py-1 text-xs rounded-md transition-colors ${heightUnit === "ftin" ? "bg-surface dark:bg-surface-hover font-medium shadow-sm" : ""}`}
               >
                 ft / in
               </button>
@@ -109,7 +109,7 @@ export default function BMICalculator() {
               type="number"
               value={height}
               onChange={(e) => setHeight(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-accent"
+              className="w-full px-3 py-2 border border-border rounded-lg bg-surface focus:outline-none focus:ring-2 focus:ring-accent"
               placeholder="Height in cm"
             />
           ) : (
@@ -118,14 +118,14 @@ export default function BMICalculator() {
                 type="number"
                 value={heightFt}
                 onChange={(e) => setHeightFt(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-accent"
+                className="w-full px-3 py-2 border border-border rounded-lg bg-surface focus:outline-none focus:ring-2 focus:ring-accent"
                 placeholder="ft"
               />
               <input
                 type="number"
                 value={heightIn}
                 onChange={(e) => setHeightIn(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-accent"
+                className="w-full px-3 py-2 border border-border rounded-lg bg-surface focus:outline-none focus:ring-2 focus:ring-accent"
                 placeholder="in"
               />
             </div>
@@ -142,7 +142,7 @@ export default function BMICalculator() {
         {bmi !== null && cat && (
           <div className="space-y-4">
             <div className="text-center">
-              <div className="text-sm text-gray-500">Your BMI</div>
+              <div className="text-sm text-text-secondary">Your BMI</div>
               <div className={`text-4xl font-bold ${cat.color}`}>{bmi}</div>
               <div className={`text-sm font-medium ${cat.color} mt-1`}>{cat.label}</div>
             </div>
@@ -153,13 +153,13 @@ export default function BMICalculator() {
                 style={{ left: `${Math.min(Math.max(cat.position, 0), 100)}%` }}
               />
             </div>
-            <div className="flex justify-between text-[10px] text-gray-500 -mt-2">
+            <div className="flex justify-between text-[10px] text-text-secondary -mt-2">
               <span>18.5</span><span>25</span><span>30</span><span>35</span><span>40</span>
             </div>
 
             {range && (
-              <div className="p-3 bg-gray-100 dark:bg-gray-800 rounded-lg text-center">
-                <div className="text-xs text-gray-500">Healthy weight range for your height</div>
+              <div className="p-3 bg-surface-hover rounded-lg text-center">
+                <div className="text-xs text-text-secondary">Healthy weight range for your height</div>
                 <div className="text-lg font-bold mt-0.5">{range.min} kg – {range.max} kg</div>
               </div>
             )}

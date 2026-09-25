@@ -146,7 +146,7 @@ export default function UnitConverter() {
               className={`px-3 py-1.5 text-sm rounded-lg border transition-colors ${
                 categoryKey === key
                   ? "border-accent bg-accent/10 text-accent font-medium"
-                  : "border-gray-300 dark:border-gray-700 hover:border-gray-400"
+                  : "border-border hover:border-accent/40"
               }`}
             >
               {c.label}
@@ -160,7 +160,7 @@ export default function UnitConverter() {
             <select
               value={fromValue}
               onChange={(e) => setFromValue(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-accent"
+              className="w-full px-3 py-2 border border-border rounded-lg bg-surface focus:outline-none focus:ring-2 focus:ring-accent"
             >
               {cat.units.map((u) => (
                 <option key={u.value} value={u.value}>{u.label}</option>
@@ -170,7 +170,7 @@ export default function UnitConverter() {
 
           <button
             onClick={() => { setFromValue(toValue); setToValue(fromValue); }}
-            className="flex items-center justify-center p-2 mb-0.5 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+            className="flex items-center justify-center p-2 mb-0.5 rounded-lg bg-surface-hover hover:bg-border transition-colors"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
@@ -182,7 +182,7 @@ export default function UnitConverter() {
             <select
               value={toValue}
               onChange={(e) => setToValue(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-accent"
+              className="w-full px-3 py-2 border border-border rounded-lg bg-surface focus:outline-none focus:ring-2 focus:ring-accent"
             >
               {cat.units.map((u) => (
                 <option key={u.value} value={u.value}>{u.label}</option>
@@ -197,13 +197,13 @@ export default function UnitConverter() {
             type="number"
             value={inputVal}
             onChange={(e) => setInputVal(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-accent"
+            className="w-full px-3 py-2 border border-border rounded-lg bg-surface focus:outline-none focus:ring-2 focus:ring-accent"
           />
         </div>
 
         {result !== "" && (
-          <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg text-center">
-            <div className="text-sm text-gray-500 mb-1">Result</div>
+          <div className="p-4 bg-surface-hover checkerboard rounded-lg text-center">
+            <div className="text-sm text-text-secondary mb-1">Result</div>
             <div className="text-2xl font-bold">
               {inputVal} {fromUnit.label} = {result} {toUnit.label}
             </div>

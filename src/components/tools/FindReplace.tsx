@@ -38,25 +38,25 @@ export default function FindReplace() {
       description="Find and replace text with optional regex support."
     >
       <textarea
-        className="w-full h-32 p-4 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 resize-y focus:outline-none focus:ring-2 focus:ring-accent"
+        className="w-full h-32 p-4 border border-border rounded-lg bg-surface resize-y focus:outline-none focus:ring-2 focus:ring-accent"
         placeholder="Input text..."
         value={input}
         onChange={(e) => setInput(e.target.value)}
       />
       <div className="flex flex-wrap gap-4 mt-4 items-end">
         <div className="flex-1 min-w-[150px]">
-          <label className="block text-xs text-gray-500 mb-1">Find</label>
+          <label className="block text-xs text-text-secondary mb-1">Find</label>
           <input
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-accent"
+            className="w-full px-3 py-2 border border-border rounded-lg bg-surface focus:outline-none focus:ring-2 focus:ring-accent"
             placeholder="Text to find..."
             value={find}
             onChange={(e) => setFind(e.target.value)}
           />
         </div>
         <div className="flex-1 min-w-[150px]">
-          <label className="block text-xs text-gray-500 mb-1">Replace with</label>
+          <label className="block text-xs text-text-secondary mb-1">Replace with</label>
           <input
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-accent"
+            className="w-full px-3 py-2 border border-border rounded-lg bg-surface focus:outline-none focus:ring-2 focus:ring-accent"
             placeholder="Replacement text..."
             value={replace}
             onChange={(e) => setReplace(e.target.value)}
@@ -73,8 +73,8 @@ export default function FindReplace() {
         </label>
       </div>
       {find && (
-        <div className="mt-4 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
-          <div className="text-xs text-gray-500 mb-1">Result ({count} replacement{count !== 1 ? "s" : ""})</div>
+        <div className="mt-4 p-4 bg-surface-hover checkerboard rounded-lg">
+          <div className="text-xs text-text-secondary mb-1">Result ({count} replacement{count !== 1 ? "s" : ""})</div>
           <div className="whitespace-pre-wrap break-all">{result}</div>
         </div>
       )}

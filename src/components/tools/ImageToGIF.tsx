@@ -244,7 +244,7 @@ export default function ImageToGIF() {
                     type="button"
                     onClick={() => removeFrame(i)}
                     aria-label="Remove frame"
-                    className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-950/30 text-red-500 transition-colors min-w-[36px] min-h-[36px] flex items-center justify-center"
+                    className="p-2 rounded-lg hover:bg-error-soft dark:hover:bg-error-soft text-error-text transition-colors min-w-[36px] min-h-[36px] flex items-center justify-center"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -305,7 +305,7 @@ export default function ImageToGIF() {
               className={`relative inline-flex h-6 w-10 shrink-0 items-center rounded-full transition-colors ${loop ? "bg-accent" : "bg-border"}`}
             >
               <span
-                className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-sm transition-transform ${loop ? "translate-x-[18px]" : "translate-x-[2px]"}`}
+                className={`inline-block h-5 w-5 transform rounded-full bg-surface shadow-sm transition-transform ${loop ? "translate-x-[18px]" : "translate-x-[2px]"}`}
               />
             </button>
           </div>

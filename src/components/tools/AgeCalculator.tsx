@@ -88,7 +88,7 @@ export default function AgeCalculator() {
               type="date"
               value={dob}
               onChange={(e) => setDob(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-accent"
+              className="w-full px-3 py-2 border border-border rounded-lg bg-surface focus:outline-none focus:ring-2 focus:ring-accent"
             />
           </div>
           <div>
@@ -97,7 +97,7 @@ export default function AgeCalculator() {
               type="date"
               value={asOf}
               onChange={(e) => setAsOf(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-accent"
+              className="w-full px-3 py-2 border border-border rounded-lg bg-surface focus:outline-none focus:ring-2 focus:ring-accent"
             />
           </div>
         </div>
@@ -120,21 +120,21 @@ export default function AgeCalculator() {
                 { label: "Minutes", value: result.minutes },
                 { label: "Seconds", value: result.seconds },
               ].map(({ label, value }) => (
-                <div key={label} className="bg-gray-100 dark:bg-gray-800 rounded-lg p-3 text-center">
+                <div key={label} className="bg-surface-hover checkerboard rounded-lg p-3 text-center">
                   <div className="text-xl sm:text-2xl font-bold">{value}</div>
-                  <div className="text-xs text-gray-500 mt-0.5">{label}</div>
+                  <div className="text-xs text-text-secondary mt-0.5">{label}</div>
                 </div>
               ))}
             </div>
 
-            <div className="mt-4 p-3 bg-gray-100 dark:bg-gray-800 rounded-lg text-center">
-              <div className="text-xs text-gray-500">Total time alive</div>
+            <div className="mt-4 p-3 bg-surface-hover checkerboard rounded-lg text-center">
+              <div className="text-xs text-text-secondary">Total time alive</div>
               <div className="text-sm font-mono mt-1">{msToString(result.totalMs)}</div>
             </div>
 
             {birthday && (
               <div className="mt-3 p-3 bg-accent/10 border border-accent/20 rounded-lg text-center">
-                <div className="text-xs text-gray-500">Next Birthday</div>
+                <div className="text-xs text-text-secondary">Next Birthday</div>
                 <div className="text-lg font-bold mt-1">{birthday.date.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" })}</div>
                 <div className="text-sm text-accent font-medium mt-1">{birthday.days === 0 ? "Today!" : `in ${birthday.days} day${birthday.days === 1 ? "" : "s"}`}</div>
               </div>

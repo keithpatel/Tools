@@ -189,7 +189,7 @@ function Toggle({ checked, onChange, label, description }: { checked: boolean; o
         }`}
       >
         <span
-          className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-sm transition-transform duration-200 ${
+          className={`inline-block h-5 w-5 transform rounded-full bg-surface shadow-sm transition-transform duration-200 ${
             checked ? "translate-x-[18px]" : "translate-x-[2px]"
           }`}
         />
@@ -663,7 +663,7 @@ export default function VideoToFrames() {
           </div>
 
           {(hugeExtraction || tooLarge || tooLong) && (
-            <div className="flex items-start gap-2.5 text-xs text-amber-700 dark:text-amber-400 bg-amber-50/80 dark:bg-amber-950/30 px-4 py-3 rounded-2xl border border-amber-200/70 dark:border-amber-900">
+            <div className="flex items-start gap-2.5 text-xs text-warning-text bg-warning-soft px-4 py-3 rounded-2xl border border-warning-border">
               <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
               <span>
                 {hugeExtraction && `This will extract ~${estimatedCount.toLocaleString()} frames. `}
@@ -675,7 +675,7 @@ export default function VideoToFrames() {
           )}
 
           {error && (
-            <div className="text-sm text-red-600 dark:text-red-400 bg-red-50/80 dark:bg-red-950/30 px-4 py-3 rounded-2xl border border-red-200/70 dark:border-red-900">
+            <div className="text-sm text-error-text bg-error-soft/80 dark:bg-error-soft px-4 py-3 rounded-2xl border border-red-200/70 dark:border-red-900">
               {error}
             </div>
           )}

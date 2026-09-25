@@ -1,44 +1,39 @@
 import Link from "next/link";
-import { categories, tools } from "@/data/tools";
-import { Wrench } from "lucide-react";
+import { tools } from "@/data/tools";
+import { ShieldCheck } from "lucide-react";
+import { Wordmark } from "./Wordmark";
 
 export function Footer() {
   return (
     <footer className="border-t border-border-soft mt-12 sm:mt-20 bg-surface pb-28 md:pb-14">
       <div className="max-w-7xl mx-auto px-4 py-10 sm:py-14">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 sm:gap-8 mb-8 sm:mb-10">
-          {categories.map((cat) => {
-            const items = tools.filter((t) => t.category === cat.id);
-            return (
-              <div key={cat.id}>
-                <h3 className="text-xs font-heading font-semibold uppercase tracking-wider mb-3" style={{ color: cat.color }}>
-                  {cat.label}
-                </h3>
-                <ul className="space-y-1.5 sm:space-y-2">
-                  {items.map((tool) => (
-                    <li key={tool.id}>
-                      <Link
-                        href={`/tools/${tool.slug}`}
-                        className="text-xs text-text-secondary hover:text-accent transition-colors py-1 inline-block"
-                      >
-                        {tool.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            );
-          })}
-        </div>
-        <div className="border-t border-border-soft pt-8 text-center space-y-2.5">
-          <div className="flex items-center justify-center gap-2 text-sm font-heading font-semibold text-text-primary">
-            <Wrench className="w-4 h-4 text-accent" />
-            MultiTool
+        <div className="pt-2">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <Wordmark />
+            <nav className="flex items-center gap-1 text-xs" aria-label="Footer">
+              {[
+                { label: "All Tools", href: "/" },
+                { label: "About", href: "/about" },
+                { label: "Privacy", href: "/about" },
+                { label: "Contact", href: "/about" },
+              ].map((l) => (
+                <Link
+                  key={l.label}
+                  href={l.href}
+                  className="px-3 py-2 min-h-[36px] inline-flex items-center rounded-full text-text-secondary hover:text-accent hover:bg-surface-hover transition-all duration-200 ease-out font-medium"
+                >
+                  {l.label}
+                </Link>
+              ))}
+            </nav>
           </div>
-          <p className="text-xs text-text-secondary">
-            All processing happens locally in your browser. No files are uploaded to any server.
-          </p>
-          <p className="text-xs text-text-secondary/60">{tools.length} free, privacy-first online tools.</p>
+          <div className="text-center space-y-2 mt-6">
+            <p className="inline-flex items-center gap-1.5 text-xs font-medium text-success-text bg-success-soft border border-success-border rounded-full px-3 py-1.5">
+              <ShieldCheck className="w-3.5 h-3.5" aria-hidden="true" />
+              All processing happens locally in your browser. No files are uploaded to any server.
+            </p>
+            <p className="text-xs text-text-secondary/60">{tools.length} free, privacy-first online tools.</p>
+          </div>
         </div>
       </div>
     </footer>

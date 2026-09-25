@@ -50,18 +50,18 @@ export default function BarcodeGenerator() {
     >
       <div className="flex gap-2">
         <input
-          className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
+          className="flex-1 px-3 py-2 border border-border rounded-lg bg-surface text-sm focus:outline-none focus:ring-2 focus:ring-accent"
           placeholder="Enter barcode content..."
           value={text}
           onChange={(e) => setText(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && generate()}
         />
-        <button onClick={generate} className="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 text-sm font-medium transition-colors">Generate</button>
+        <button onClick={generate} className="px-4 py-2 bg-surface-hover rounded-lg hover:bg-border text-sm font-medium transition-colors">Generate</button>
       </div>
       {generated && text && (
         <div className="mt-6 flex flex-col items-center gap-4">
-          <svg ref={svgRef} className="border border-gray-300 dark:border-gray-700 rounded-lg bg-white" />
-          <button onClick={download} className="flex items-center gap-1.5 px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 text-sm font-medium transition-colors">
+          <svg ref={svgRef} className="border border-border rounded-lg bg-surface" />
+          <button onClick={download} className="flex items-center gap-1.5 px-4 py-2 bg-surface-hover rounded-lg hover:bg-border text-sm font-medium transition-colors">
             <Download className="w-4 h-4" /> Download SVG
           </button>
         </div>

@@ -31,19 +31,19 @@ export default function SlugGenerator() {
       ]}
     >
       <input
-        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-accent"
+        className="w-full px-4 py-3 border border-border rounded-lg bg-surface focus:outline-none focus:ring-2 focus:ring-accent"
         placeholder="Type your title or text here..."
         value={input}
         onChange={(e) => setInput(e.target.value)}
       />
       {input && (
-        <div className="mt-4 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-between gap-4">
+        <div className="mt-4 p-4 bg-surface-hover checkerboard rounded-lg flex items-center justify-between gap-4">
           <div className="font-mono text-sm break-all">{slug}</div>
           <button
             onClick={copy}
-            className="shrink-0 p-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+            className="shrink-0 p-2 bg-surface-hover rounded-lg hover:bg-border transition-colors"
           >
-            {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+            {copied ? <Check className="w-4 h-4 text-success" /> : <Copy className="w-4 h-4" />}
           </button>
         </div>
       )}

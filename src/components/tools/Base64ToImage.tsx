@@ -110,11 +110,11 @@ export default function Base64ToImage() {
           placeholder="Paste your data:image/...;base64,... string here..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="w-full h-32 p-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-xs font-mono resize-y focus:outline-none focus:ring-2 focus:ring-accent"
+          className="w-full h-32 p-3 border border-border rounded-lg bg-surface text-xs font-mono resize-y focus:outline-none focus:ring-2 focus:ring-accent"
         />
 
         {showSizeWarning && (
-          <div className="flex items-start gap-2 text-sm bg-amber-50 dark:bg-amber-950/30 border border-amber-300 dark:border-amber-800 text-amber-800 dark:text-amber-200 px-4 py-3 rounded-lg">
+          <div className="flex items-start gap-2 text-sm bg-warning-soft border border-warning-border text-warning-text px-4 py-3 rounded-lg">
             <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" />
             <p>
               This input exceeds ~1MB ({input.length.toLocaleString()} chars). Very large data URIs
@@ -137,19 +137,19 @@ export default function Base64ToImage() {
           </Button>
         </div>
 
-        {error && <p className="text-sm text-red-500">{error}</p>}
+        {error && <p className="text-sm text-error-text">{error}</p>}
 
         {imageUrl && (
           <div>
-            <p className="text-xs text-gray-500 mb-1">Decoded Image ({mimeType})</p>
-            <img src={imageUrl} alt="Decoded" className="max-h-64 rounded-lg object-contain bg-gray-100 dark:bg-gray-800 mb-2" />
+            <p className="text-xs text-text-secondary mb-1">Decoded Image ({mimeType})</p>
+            <img src={imageUrl} alt="Decoded" className="max-h-64 rounded-lg object-contain bg-surface-hover checkerboard mb-2" />
             <div className="flex flex-col sm:flex-row gap-2">
               <Button variant="primary" size="md" onClick={handleDownload} className="w-full sm:w-auto">
                 <Download className="w-4 h-4" /> Download
               </Button>
               <Button variant="secondary" size="md" onClick={handleCopyImage} disabled={copying} className="w-full sm:w-auto">
                 {copyMsg === "Image copied to clipboard." ? (
-                  <Check className="w-4 h-4 text-green-500" />
+                  <Check className="w-4 h-4 text-success" />
                 ) : copyMsg ? (
                   <Clipboard className="w-4 h-4" />
                 ) : (
@@ -159,7 +159,7 @@ export default function Base64ToImage() {
               </Button>
             </div>
             {copyMsg && (
-              <p className={`text-xs mt-2 ${copyMsg === "Image copied to clipboard." ? "text-green-500" : "text-gray-500"}`}>
+              <p className={`text-xs mt-2 ${copyMsg === "Image copied to clipboard." ? "text-success" : "text-text-secondary"}`}>
                 {copyMsg}
               </p>
             )}

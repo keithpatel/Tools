@@ -1,0 +1,199 @@
+/* ─── MultiTool Design Tokens (source of truth) ───
+   Tailwind v4 is CSS-first: these vars are re-emitted via @theme in
+   globals.css. Keep this file as the single place to tune palette,
+   type, radius, elevation, and dark-mode accents. */
+
+:root {
+  /* Brand — refined indigo built around #5555e6 (AA on white at 600+) */
+  --brand-50: #eef0fe;
+  --brand-100: #e0e3fd;
+  --brand-200: #c6cbfb;
+  --brand-300: #a3a9f7;
+  --brand-400: #7f83f1;
+  --brand-500: #6363e8;
+  --brand-600: #5555e6;
+  --brand-700: #4746c9;
+  --brand-800: #3a3aa0;
+  --brand-900: #33337e;
+  --brand-950: #1f1f4d;
+
+  /* Primary alias (light mode: 600; dark mode overrides below) */
+  --accent: var(--brand-600);
+  --accent-light: var(--brand-400);
+  --accent-dark: var(--brand-700);
+
+  /* Neutral "ink" scale — warm-tinted, intentional (not default gray) */
+  --ink-50: #fafafb;
+  --ink-100: #f4f4f6;
+  --ink-200: #e6e6eb;
+  --ink-300: #d5d5dd;
+  --ink-400: #a3a3b2;
+  --ink-500: #71717f;
+  --ink-600: #54545f;
+  --ink-700: #3f3f49;
+  --ink-800: #26262e;
+  --ink-900: #17171c;
+  --ink-950: #0a0a0d;
+
+  /* Canvas / surfaces — light */
+  --canvas: #f6f6f8;
+  --surface: #ffffff;
+  --surface-raised: #ffffff;
+  --surface-hover: #f1f1f5;
+  --border-default: rgba(28, 28, 40, 0.11);
+  --border-soft: rgba(28, 28, 40, 0.06);
+  --text-primary: #17171c;
+  --text-secondary: #5d5d6e;
+
+  /* Semantic — light */
+  --success: #16a34a;
+  --success-soft: #eafaf0;
+  --success-border: #bbe6c9;
+  --success-text: #146c35;
+  --warning: #b45309;
+  --warning-soft: #fdf3e3;
+  --warning-border: #f2d9ae;
+  --warning-text: #8a430a;
+  --error: #dc2626;
+  --error-soft: #fdeeee;
+  --error-border: #f5c6c6;
+  --error-text: #a11a1a;
+  --info: #0284c7;
+  --info-soft: #e9f5fd;
+  --info-border: #bfe2f5;
+  --info-text: #0b5d8a;
+
+  /* Typography */
+  --font-heading: var(--font-geist-heading), "Inter", sans-serif;
+  --font-body: var(--font-geist-body), "Inter", sans-serif;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --leading-tight: 1.18;
+  --leading-body: 1.6;
+  --tracking-heading: -0.022em;
+  --tracking-body: 0em;
+
+  /* Spacing — 4/8px grid (reference; Tailwind scale used in components) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+
+  /* Radius — one soft-rounded style used everywhere */
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --radius-full: 999px;
+
+  /* Elevation — 3 levels */
+  --shadow-resting: 0 1px 2px 0 rgba(16, 16, 24, 0.05), 0 0 0 1px rgba(16, 16, 24, 0.02);
+  --shadow-hover: 0 4px 16px 0 rgba(16, 16, 24, 0.08), 0 1px 4px 0 rgba(16, 16, 24, 0.04);
+  --shadow-modal: 0 8px 32px 0 rgba(16, 16, 24, 0.1), 0 2px 8px 0 rgba(16, 16, 24, 0.05);
+
+  /* Focus ring */
+  --ring: color-mix(in srgb, var(--brand-600) 70%, transparent);
+
+  /* Category accents (kept distinct per category, tuned for AA on tint bg) */
+  --cat-pdf: #be185d;
+  --cat-image: #b45309;
+  --cat-text: #1d4ed8;
+  --cat-developer: #6d28d9;
+  --cat-utility: #047857;
+  --cat-video: #0d9488;
+}
+
+.dark {
+  /* Brand accent lightened for dark backgrounds (AA on #09090b) */
+  --accent: var(--brand-300);
+  --accent-light: var(--brand-200);
+  --accent-dark: var(--brand-400);
+
+  --canvas: #09090b;
+  --surface: #101014;
+  --surface-raised: #18181d;
+  --surface-hover: #232329;
+  --border-default: rgba(255, 255, 255, 0.11);
+  --border-soft: rgba(255, 255, 255, 0.07);
+  --text-primary: #f2f2f5;
+  --text-secondary: #a7a7b5;
+
+  --success: #4ade80;
+  --success-soft: rgba(34, 197, 94, 0.12);
+  --success-border: rgba(34, 197, 94, 0.3);
+  --success-text: #86efac;
+  --warning: #fbbf24;
+  --warning-soft: rgba(251, 191, 36, 0.12);
+  --warning-border: rgba(251, 191, 36, 0.3);
+  --warning-text: #fcd34d;
+  --error: #f87171;
+  --error-soft: rgba(248, 113, 113, 0.12);
+  --error-border: rgba(248, 113, 113, 0.3);
+  --error-text: #fca5a5;
+  --info: #38bdf8;
+  --info-soft: rgba(56, 189, 248, 0.12);
+  --info-border: rgba(56, 189, 248, 0.3);
+  --info-text: #7dd3fc;
+
+  --ring: color-mix(in srgb, var(--brand-300) 70%, transparent);
+
+  --shadow-resting: 0 1px 2px 0 rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(0, 0, 0, 0.2);
+  --shadow-hover: 0 4px 16px 0 rgba(0, 0, 0, 0.55), 0 1px 4px 0 rgba(0, 0, 0, 0.3);
+  --shadow-modal: 0 8px 32px 0 rgba(0, 0, 0, 0.6), 0 2px 8px 0 rgba(0, 0, 0, 0.35);
+
+  --cat-pdf: #f472b6;
+  --cat-image: #fbbf24;
+  --cat-text: #93c5fd;
+  --cat-developer: #c4b5fd;
+  --cat-utility: #6ee7b7;
+  --cat-video: #5eead4;
+}
+
+/* ─── Decorative utilities ─── */
+
+/* Checkerboard for transparent-image previews */
+.checkerboard {
+  background-image:
+    linear-gradient(45deg, color-mix(in srgb, var(--text-primary) 8%, transparent) 25%, transparent 25%),
+    linear-gradient(-45deg, color-mix(in srgb, var(--text-primary) 8%, transparent) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, color-mix(in srgb, var(--text-primary) 8%, transparent) 75%),
+    linear-gradient(-45deg, transparent 75%, color-mix(in srgb, var(--text-primary) 8%, transparent) 75%);
+  background-size: 16px 16px;
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+}
+
+/* Film-grain overlay (SVG noise, 3-4% opacity) */
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grain::after { display: none; }
+}
+
+/* Palette / toast entrance */
+@keyframes pop-in {
+  from { opacity: 0; transform: scale(0.97) translateY(6px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.animate-pop-in { animation: pop-in 0.16s ease-out both; }
+
+/* Accepted-file pulse for drop zones */
+@keyframes accept-pulse {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 45%, transparent); }
+  100% { box-shadow: 0 0 0 12px transparent; }
+}
+.animate-accept { animation: accept-pulse 0.5s ease-out 1; }

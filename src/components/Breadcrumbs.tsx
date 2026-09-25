@@ -8,7 +8,7 @@ export function Breadcrumbs({ category, toolName }: { category?: string; toolNam
   const cat = categories.find((c) => c.id === category);
 
   return (
-    <nav className="flex items-center gap-1.5 text-xs text-text-secondary mb-4" aria-label="Breadcrumb">
+    <nav className="flex items-center gap-1.5 text-xs text-text-secondary mb-4 rounded-full" aria-label="Breadcrumb">
       {/* Mobile Breadcrumb (Back arrow + category and tool name) */}
       <div className="flex md:hidden items-center gap-2">
         <Link
@@ -27,27 +27,31 @@ export function Breadcrumbs({ category, toolName }: { category?: string; toolNam
       </div>
 
       {/* Desktop Breadcrumb */}
-      <div className="hidden md:flex items-center gap-1.5">
-        <Link href="/" className="hover:text-accent transition-colors">
-          <Home className="w-3.5 h-3.5" />
-        </Link>
-        <ChevronRight className="w-3 h-3" />
+      <ol className="hidden md:flex items-center gap-1.5 bg-surface border border-border-soft rounded-full px-3 py-1.5 shadow-resting">
+        <li>
+          <Link href="/" className="flex items-center gap-1.5 hover:text-accent transition-colors duration-200" aria-label="Home">
+            <Home className="w-3.5 h-3.5" aria-hidden="true" />
+          </Link>
+        </li>
+        <ChevronRight className="w-3 h-3 opacity-40" aria-hidden="true" />
         {cat ? (
           <>
-            <Link href={`/category/${cat.id}`} className="hover:text-accent transition-colors capitalize">
-              {cat.label}
-            </Link>
+            <li>
+              <Link href={`/category/${cat.id}`} className="font-medium hover:text-accent transition-colors duration-200 capitalize">
+                {cat.label}
+              </Link>
+            </li>
             {toolName && (
               <>
-                <ChevronRight className="w-3 h-3" />
-                <span className="text-text-primary">{toolName}</span>
+                <ChevronRight className="w-3 h-3 opacity-40" aria-hidden="true" />
+                <li aria-current="page" className="text-text-primary font-semibold truncate max-w-[220px]">{toolName}</li>
               </>
             )}
           </>
         ) : (
-          <span className="text-text-primary">All Tools</span>
+          <li aria-current="page" className="text-text-primary font-semibold">All Tools</li>
         )}
-      </div>
+      </ol>
     </nav>
   );
 }

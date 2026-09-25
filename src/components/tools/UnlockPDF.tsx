@@ -175,7 +175,7 @@ export default function UnlockPDF() {
             </div>
             <button
               onClick={reset}
-              className="text-xs text-text-secondary hover:text-red-500 transition-colors px-2 py-1"
+              className="text-xs text-text-secondary hover:text-error transition-colors px-2 py-1"
             >
               Change file
             </button>
@@ -191,7 +191,7 @@ export default function UnlockPDF() {
               {needsPassword ? (
                 <div>
                   <label className="block text-xs font-medium text-text-primary mb-1.5">
-                    Enter Document Password <span className="text-red-500">*</span>
+                    Enter Document Password <span className="text-error-text">*</span>
                   </label>
                   <div className="relative max-w-md">
                     <input
@@ -225,7 +225,7 @@ export default function UnlockPDF() {
 
               {/* Legal disclosure requirement */}
               <div className="flex items-start gap-2.5 p-3 rounded-xl bg-surface-raised border border-border-soft text-text-secondary text-xs">
-                <ShieldAlert className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+                <ShieldAlert className="w-4 h-4 text-warning shrink-0 mt-0.5" />
                 <span>
                   Notice: Only unlock PDF files that you own or have authorized permission to remove restrictions from.
                 </span>
@@ -248,7 +248,7 @@ export default function UnlockPDF() {
           >
             {resultBlob && (
               <div className="text-center py-4 space-y-2">
-                <div className="w-12 h-12 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center mx-auto">
+                <div className="w-12 h-12 rounded-full bg-success-soft text-success flex items-center justify-center mx-auto">
                   <Unlock className="w-6 h-6" />
                 </div>
                 <h4 className="text-sm font-heading font-semibold text-text-primary">

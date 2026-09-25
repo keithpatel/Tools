@@ -97,18 +97,18 @@ export default function ReorderPDF() {
       <DropZone onFiles={onFiles} accept=".pdf" label="Drop a PDF here or click to browse" />
       {loaded && pages.length > 0 && (
         <div className="mt-6">
-          <p className="text-sm text-gray-500 mb-3">{pages.length} page{pages.length !== 1 ? "s" : ""}</p>
+          <p className="text-sm text-text-secondary mb-3">{pages.length} page{pages.length !== 1 ? "s" : ""}</p>
           <div className="space-y-2 mb-4">
             {pages.map((p, i) => (
-              <div key={i} className="flex items-center gap-3 bg-gray-50 dark:bg-gray-800 rounded-lg p-2 pr-3">
-                <img src={p.src} alt={`Page ${p.index}`} className="w-14 h-auto rounded border border-gray-200 dark:border-gray-700" />
+              <div key={i} className="flex items-center gap-3 bg-surface-hover dark:bg-surface-hover rounded-lg p-2 pr-3">
+                <img src={p.src} alt={`Page ${p.index}`} className="w-14 h-auto rounded border border-border-soft" />
                 <span className="text-sm flex-1">Page {p.index}</span>
                 <div className="flex items-center gap-1 sm:gap-1">
                   <button
                     onClick={() => moveUp(i)}
                     disabled={i === 0}
                     aria-label={`Move page ${p.index} up`}
-                    className="w-10 h-10 sm:w-8 sm:h-8 flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg disabled:opacity-30 transition-colors"
+                    className="w-10 h-10 sm:w-8 sm:h-8 flex items-center justify-center hover:bg-border rounded-lg disabled:opacity-30 transition-colors"
                   >
                     <ChevronUp className="w-5 h-5 sm:w-4 sm:h-4" />
                   </button>
@@ -116,16 +116,16 @@ export default function ReorderPDF() {
                     onClick={() => moveDown(i)}
                     disabled={i === pages.length - 1}
                     aria-label={`Move page ${p.index} down`}
-                    className="w-10 h-10 sm:w-8 sm:h-8 flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg disabled:opacity-30 transition-colors"
+                    className="w-10 h-10 sm:w-8 sm:h-8 flex items-center justify-center hover:bg-border rounded-lg disabled:opacity-30 transition-colors"
                   >
                     <ChevronDown className="w-5 h-5 sm:w-4 sm:h-4" />
                   </button>
                   <button
                     onClick={() => removePage(i)}
                     aria-label={`Remove page ${p.index}`}
-                    className="w-10 h-10 sm:w-8 sm:h-8 flex items-center justify-center hover:bg-red-100 dark:hover:bg-red-950/30 rounded-lg transition-colors ml-1"
+                    className="w-10 h-10 sm:w-8 sm:h-8 flex items-center justify-center hover:bg-red-100 dark:hover:bg-error-soft rounded-lg transition-colors ml-1"
                   >
-                    <Trash2 className="w-5 h-5 sm:w-4 sm:h-4 text-red-500" />
+                    <Trash2 className="w-5 h-5 sm:w-4 sm:h-4 text-error-text" />
                   </button>
                 </div>
               </div>
@@ -135,7 +135,7 @@ export default function ReorderPDF() {
           <button
             onClick={save}
             disabled={saving}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 sm:py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed text-base sm:text-sm font-medium transition-colors shadow-sm"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 sm:py-2.5 bg-brand-600 text-white rounded-lg hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed text-base sm:text-sm font-medium transition-colors shadow-sm"
           >
             <Download className="w-4 h-4" />
             {saving ? "Saving..." : "Save & Download"}
@@ -143,13 +143,13 @@ export default function ReorderPDF() {
 
           {/* Mobile sticky action bar */}
           <div
-            className="sm:hidden fixed bottom-0 left-0 right-0 p-3 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-t border-gray-200 dark:border-gray-800 z-50 flex gap-2"
+            className="sm:hidden fixed bottom-0 left-0 right-0 p-3 bg-surface/95 dark:bg-surface/95 backdrop-blur-md border-t border-border-soft dark:border-border-soft z-50 flex gap-2"
             style={{ paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }}
           >
             <button
               onClick={save}
               disabled={saving}
-              className="w-full h-12 inline-flex items-center justify-center gap-2 bg-green-600 text-white rounded-xl font-medium text-base active:bg-green-700 disabled:opacity-50 transition-colors shadow-lg"
+              className="w-full h-12 inline-flex items-center justify-center gap-2 bg-brand-600 text-white rounded-xl font-medium text-base active:bg-brand-700 disabled:opacity-50 transition-colors shadow-lg"
             >
               <Download className="w-5 h-5" />
               {saving ? "Saving..." : "Save & Download"}

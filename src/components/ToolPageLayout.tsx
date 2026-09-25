@@ -57,49 +57,61 @@ function InfoSection({ slug }: { slug: string }) {
       </button>
 
       {open && (
-        <div className="space-y-8 mt-5">
-          <div className="space-y-3">
-            <h2 className="text-lg font-heading font-semibold">About This Tool</h2>
-            {tm.body.map((p, i) => (
-              <p key={i} className="text-sm text-text-secondary leading-relaxed">{p}</p>
-            ))}
+        <div className="mt-5 grid gap-4 md:grid-cols-2">
+          <div className="rounded-[18px] border border-border-soft bg-surface shadow-resting p-5">
+            <h2 className="text-[15px] font-heading font-semibold tracking-tight mb-2">About This Tool</h2>
+            <div className="space-y-2.5">
+              {tm.body.map((p, i) => (
+                <p key={i} className="text-sm text-text-secondary leading-relaxed">{p}</p>
+              ))}
+            </div>
+            {tm.benefits && tm.benefits.length > 0 && (
+              <div className="mt-4 pt-4 border-t border-border-soft">
+                <h3 className="text-sm font-heading font-semibold mb-2">Key Benefits</h3>
+                <ul className="space-y-1.5 text-sm text-text-secondary">
+                  {tm.benefits.map((b, i) => (
+                    <li key={i} className="flex items-start gap-2">
+                      <LucideIcons.Check className="w-4 h-4 text-success shrink-0 mt-0.5" aria-hidden="true" />
+                      <span>{b}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
 
-          {tm.howTo.length > 0 && (
-            <div>
-              <h2 className="text-lg font-heading font-semibold mb-3">How to Use</h2>
-              <ol className="list-decimal list-inside space-y-2 text-sm text-text-secondary">
-                {tm.howTo.map((step, i) => (
-                  <li key={i}>{step}</li>
-                ))}
-              </ol>
-            </div>
-          )}
-
-          {tm.benefits && tm.benefits.length > 0 && (
-            <div>
-              <h2 className="text-lg font-heading font-semibold mb-3">Key Benefits</h2>
-              <ul className="list-disc list-inside space-y-2 text-sm text-text-secondary">
-                {tm.benefits.map((b, i) => (
-                  <li key={i}>{b}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {tm.faq.length > 0 && (
-            <div>
-              <h2 className="text-lg font-heading font-semibold mb-4">Frequently Asked Questions</h2>
-              <div className="space-y-4">
-                {tm.faq.map((item, i) => (
-                  <div key={i}>
-                    <h3 className="text-sm font-medium mb-1">{item.q}</h3>
-                    <p className="text-sm text-text-secondary leading-relaxed">{item.a}</p>
-                  </div>
-                ))}
+          <div className="space-y-4">
+            {tm.howTo.length > 0 && (
+              <div className="rounded-[18px] border border-border-soft bg-surface shadow-resting p-5">
+                <h2 className="text-[15px] font-heading font-semibold tracking-tight mb-3">How to Use</h2>
+                <ol className="space-y-2.5">
+                  {tm.howTo.map((step, i) => (
+                    <li key={i} className="flex items-start gap-2.5 text-sm text-text-secondary">
+                      <span className="flex items-center justify-center w-5 h-5 rounded-full bg-brand-50 dark:bg-brand-950 text-brand-700 dark:text-brand-200 text-[11px] font-bold shrink-0 mt-0.5">{i + 1}</span>
+                      <span>{step}</span>
+                    </li>
+                  ))}
+                </ol>
               </div>
-            </div>
-          )}
+            )}
+
+            {tm.faq.length > 0 && (
+              <div className="rounded-[18px] border border-border-soft bg-surface shadow-resting p-5">
+                <h2 className="text-[15px] font-heading font-semibold tracking-tight mb-3">Frequently Asked Questions</h2>
+                <div className="divide-y divide-border-soft">
+                  {tm.faq.map((item, i) => (
+                    <details key={i} className="group py-2.5 first:pt-0 last:pb-0">
+                      <summary className="flex items-center justify-between gap-2 text-sm font-medium text-text-primary cursor-pointer list-none min-h-[36px] [&::-webkit-details-marker]:hidden">
+                        {item.q}
+                        <LucideIcons.ChevronDown className="w-4 h-4 text-text-secondary shrink-0 transition-transform duration-200 group-open:rotate-180" aria-hidden="true" />
+                      </summary>
+                      <p className="text-sm text-text-secondary leading-relaxed mt-1.5 pr-6">{item.a}</p>
+                    </details>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       )}
     </section>
@@ -151,14 +163,14 @@ export function ToolPageLayout({ slug, children }: { slug: string; children: Rea
       <Breadcrumbs category={tool.category} toolName={tool.name} />
 
       {chainInput && sourceTool && (
-        <div className="mb-4 flex items-center gap-2 text-sm bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-300 px-4 py-2 rounded-xl border border-blue-200 dark:border-blue-900">
+        <div className="mb-4 flex items-center gap-2 text-sm bg-info-soft text-info-text px-4 py-2.5 rounded-[14px] border border-info-border">
           <LucideIcons.ArrowRight className="w-4 h-4 shrink-0" />
           <span>
             Output from <strong>{sourceTool.name}</strong> loaded — ready to process
           </span>
           <button
             onClick={() => setChainInput(null)}
-            className="ml-auto p-1 hover:bg-blue-100 dark:hover:bg-blue-900 rounded transition-colors"
+            className="ml-auto p-2 min-w-[36px] min-h-[36px] flex items-center justify-center hover:bg-info-soft rounded-lg transition-all duration-200 cursor-pointer"
             aria-label="Dismiss"
           >
             <LucideIcons.X className="w-4 h-4" />
@@ -170,37 +182,43 @@ export function ToolPageLayout({ slug, children }: { slug: string; children: Rea
         <CategorySidebar currentSlug={slug} />
 
         <div className="flex-1 min-w-0 pb-28 md:pb-8">
-          <div className="flex items-center gap-3 sm:gap-4 mb-2.5 sm:mb-2">
-            <div className="p-2 sm:p-2.5 rounded-2xl shrink-0 shadow-xs bg-surface" style={{ boxShadow: `0 0 0 1px ${cat?.color}22, 0 4px 16px 0 ${cat?.color}14` }}>
-              <Icon className="w-5 h-5" style={{ color: cat?.color }} />
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <h1 className="text-xl sm:text-2xl font-heading font-bold tracking-tight truncate" id="tool-top">{tool.name}</h1>
-                <button
-                  onClick={() =>
-                    setFavorites((prev: string[]) =>
-                      isFav ? prev.filter((s) => s !== slug) : [...prev, slug]
-                    )
-                  }
-                  className="p-2 min-w-[40px] min-h-[40px] flex items-center justify-center rounded-lg hover:bg-surface-hover transition-colors cursor-pointer"
-                  aria-label={isFav ? "Remove from favorites" : "Add to favorites"}
-                >
-                  <LucideIcons.Star
-                    className={`w-4 h-4 ${isFav ? "fill-amber-400 text-amber-400" : "text-text-secondary/40 hover:text-amber-400"}`}
-                  />
-                </button>
+          <div className="rounded-[18px] border border-border-soft bg-surface shadow-resting p-4 sm:p-5 mb-3 md:mb-5">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div
+                className="flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-[14px] shrink-0 border"
+                style={{ backgroundColor: `${cat?.color}14`, borderColor: `${cat?.color}26` }}
+              >
+                <Icon className="w-5 h-5 sm:w-6 sm:h-6" style={{ color: cat?.color }} aria-hidden="true" />
               </div>
-              <p className="text-xs sm:text-sm text-text-secondary mt-0.5 line-clamp-2">{tool.description}</p>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <h1 className="text-xl sm:text-2xl font-heading font-bold tracking-tight truncate" id="tool-top">{tool.name}</h1>
+                  <button
+                    onClick={() =>
+                      setFavorites((prev: string[]) =>
+                        isFav ? prev.filter((s) => s !== slug) : [...prev, slug]
+                      )
+                    }
+                    className="p-2 min-w-[40px] min-h-[40px] flex items-center justify-center rounded-[12px] hover:bg-surface-hover transition-all duration-200 ease-out cursor-pointer"
+                    aria-label={isFav ? "Remove from favorites" : "Add to favorites"}
+                  >
+                    <LucideIcons.Star
+                      className={`w-4 h-4 ${isFav ? "fill-amber-400 text-amber-400" : "text-text-secondary/40 hover:text-amber-400"}`}
+                    />
+                  </button>
+                </div>
+                <p className="text-xs sm:text-sm text-text-secondary mt-0.5 line-clamp-2">{tool.description}</p>
+              </div>
+            </div>
+            <div className="mt-3 pt-3 border-t border-border-soft flex items-center gap-2 text-xs">
+              <span className="inline-flex items-center gap-1.5 font-semibold text-success-text bg-success-soft border border-success-border rounded-full px-3 py-1.5">
+                <LucideIcons.Lock className="w-3.5 h-3.5" aria-hidden="true" />
+                Processed locally — your files never leave your device
+              </span>
             </div>
           </div>
 
-          <div className="inline-flex items-center gap-1.5 text-xs text-green-700 dark:text-green-400 bg-green-50/70 dark:bg-green-950/30 px-3 py-1.5 rounded-full mb-3 md:mb-6">
-            <LucideIcons.Shield className="w-3.5 h-3.5" />
-            Runs entirely in your browser — files are never uploaded
-          </div>
-
-          <div ref={toolRef}>
+          <div ref={toolRef} className="rounded-[18px] border border-border-soft bg-surface-raised shadow-resting p-4 sm:p-6">
             <ChainInputContext.Provider value={chainInput}>
               {children}
             </ChainInputContext.Provider>
@@ -218,19 +236,21 @@ export function ToolPageLayout({ slug, children }: { slug: string; children: Rea
 
           {meta && <InfoSection slug={slug} />}
 
-          <RelatedTools slug={slug} />
+          <div className="rounded-[18px] border border-border-soft bg-surface shadow-resting p-4 sm:p-5 mt-4">
+            <RelatedTools slug={slug} bare />
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-function RelatedTools({ slug }: { slug: string }) {
+function RelatedTools({ slug, bare = false }: { slug: string; bare?: boolean }) {
   const related = getRelatedTools(slug, 4);
   if (related.length === 0) return null;
-  return (
-    <section className="mt-8 md:mt-10 border-t border-border-soft pt-4 md:pt-6">
-      <h2 className="text-lg font-heading font-semibold mb-1">You Might Also Need</h2>
+  const body = (
+    <>
+      <h2 className="text-[15px] font-heading font-semibold tracking-tight mb-1">You Might Also Need</h2>
       <p className="text-sm text-text-secondary mb-4">Related free tools that run in your browser.</p>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {related.map((t) => {
@@ -240,19 +260,25 @@ function RelatedTools({ slug }: { slug: string }) {
             <Link
               key={t.slug}
               href={`/tools/${t.slug}`}
-              className="flex items-center gap-3 p-3 rounded-xl border border-border-soft bg-surface hover:border-accent/40 transition-colors"
+              className="group flex items-center gap-3 p-3 rounded-[14px] border border-border-soft bg-surface hover:border-accent/40 hover:shadow-hover hover:-translate-y-px transition-all duration-200 ease-out min-h-[44px]"
             >
-              <span className="p-2 rounded-lg shrink-0" style={{ backgroundColor: `${rc?.color}15` }}>
+              <span className="flex items-center justify-center w-9 h-9 rounded-[12px] shrink-0 border" style={{ backgroundColor: `${rc?.color}14`, borderColor: `${rc?.color}22` }}>
                 <Icon className="w-4 h-4" style={{ color: rc?.color }} aria-hidden="true" />
               </span>
               <span className="min-w-0">
-                <span className="block text-sm font-medium truncate">{t.name}</span>
+                <span className="block text-sm font-semibold truncate group-hover:text-accent transition-colors duration-200">{t.name}</span>
                 <span className="block text-xs text-text-secondary truncate">{t.description}</span>
               </span>
             </Link>
           );
         })}
       </div>
+    </>
+  );
+  if (bare) return <section aria-label="Related tools">{body}</section>;
+  return (
+    <section aria-label="Related tools" className="mt-8 md:mt-10 border-t border-border-soft pt-4 md:pt-6">
+      {body}
     </section>
   );
 }

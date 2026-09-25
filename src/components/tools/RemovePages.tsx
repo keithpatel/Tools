@@ -257,7 +257,7 @@ export default function RemovePages() {
             </div>
             <button
               onClick={reset}
-              className="text-xs text-text-secondary hover:text-red-500 transition-colors px-2 py-1"
+              className="text-xs text-text-secondary hover:text-error transition-colors px-2 py-1"
             >
               Change file
             </button>
@@ -325,11 +325,11 @@ export default function RemovePages() {
                       onClick={() => togglePageRemoval(p.page)}
                       className={`group relative rounded-xl border-2 overflow-hidden transition-all text-left bg-surface-raised p-1.5 focus:outline-none ${
                         isMarked
-                          ? "border-red-500/70 bg-red-500/5 shadow-sm opacity-80"
+                          ? "border-red-500/70 bg-error-soft0/5 shadow-sm opacity-80"
                           : "border-border-soft hover:border-border"
                       }`}
                     >
-                      <div className="relative aspect-[3/4] bg-white rounded-lg overflow-hidden flex items-center justify-center">
+                      <div className="relative aspect-[3/4] bg-surface rounded-lg overflow-hidden flex items-center justify-center">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={p.src}
@@ -342,22 +342,22 @@ export default function RemovePages() {
                         <div
                           className={`absolute top-1.5 right-1.5 w-6 h-6 rounded-md flex items-center justify-center transition-colors ${
                             isMarked
-                              ? "bg-red-500 text-white"
-                              : "bg-black/30 text-white group-hover:bg-red-500"
+                              ? "bg-error-soft0 text-white"
+                              : "bg-black/30 text-white group-hover:bg-error-soft0"
                           }`}
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </div>
 
                         {p.isBlank && !isMarked && (
-                          <div className="absolute bottom-1.5 left-1.5 right-1.5 text-[9px] font-semibold bg-amber-500/90 text-white text-center py-0.5 rounded">
+                          <div className="absolute bottom-1.5 left-1.5 right-1.5 text-[9px] font-semibold bg-warning-soft0/90 text-white text-center py-0.5 rounded">
                             Blank Page
                           </div>
                         )}
                       </div>
                       <div
                         className={`mt-1 text-center text-[11px] font-medium ${
-                          isMarked ? "text-red-500 line-through" : "text-text-secondary"
+                          isMarked ? "text-error-text line-through" : "text-text-secondary"
                         }`}
                       >
                         Page {p.page}
@@ -388,7 +388,7 @@ export default function RemovePages() {
           >
             {resultBlob && (
               <div className="text-center py-4 space-y-2">
-                <div className="w-12 h-12 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center mx-auto">
+                <div className="w-12 h-12 rounded-full bg-success-soft text-success flex items-center justify-center mx-auto">
                   <FileX className="w-6 h-6" />
                 </div>
                 <h4 className="text-sm font-heading font-semibold text-text-primary">

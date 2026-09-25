@@ -201,9 +201,9 @@ export default function CompareSlider() {
               style={{ clipPath: `inset(0 ${100 - slider}% 0 0)` }}
               draggable={false}
             />
-            <div className="absolute top-0 bottom-0 w-0.5 bg-white shadow-[0_0_8px_rgba(0,0,0,0.5)]" style={{ left: `${slider}%` }}>
-              <span className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center">
-                <Columns2 className="w-5 h-5 text-gray-700" />
+            <div className="absolute top-0 bottom-0 w-0.5 bg-surface shadow-[0_0_8px_rgba(0,0,0,0.5)]" style={{ left: `${slider}%` }}>
+              <span className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-surface shadow-lg flex items-center justify-center">
+                <Columns2 className="w-5 h-5 text-text-primary" />
               </span>
             </div>
             <span className="absolute top-2 left-2 text-[11px] font-semibold bg-black/60 text-white rounded px-2 py-1">Before</span>
@@ -276,7 +276,7 @@ export default function CompareSlider() {
                   className="w-full font-mono text-xs rounded-xl border border-border-soft bg-surface-hover p-3 text-text-primary"
                 />
                 <Button variant="secondary" size="sm" onClick={copyEmbed} className="mt-2">
-                  {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+                  {copied ? <Check className="w-4 h-4 text-success" /> : <Copy className="w-4 h-4" />}
                   {copied ? "Copied" : "Copy embed HTML"}
                 </Button>
               </div>

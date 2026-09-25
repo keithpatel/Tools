@@ -128,7 +128,7 @@ export default function CollageMaker() {
                 ref={(el) => { if (el) imagesRef.current[i] = el; }}
                 src={url}
                 alt={`Image ${i + 1}`}
-                className="w-20 h-20 rounded-lg object-cover bg-gray-100 dark:bg-gray-800"
+                className="w-20 h-20 rounded-lg object-cover bg-surface-hover checkerboard"
               />
             ))}
           </div>
@@ -153,7 +153,7 @@ export default function CollageMaker() {
                 className={`inline-flex items-center justify-center gap-1.5 px-3 py-2 sm:py-1.5 rounded-lg text-xs font-medium transition-colors min-h-[38px] sm:min-h-0 ${
                   layout.label === l.label
                     ? "bg-accent text-white"
-                    : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
+                    : "bg-surface-hover hover:bg-border"
                 }`}
               >
                 <LayoutGrid className="w-3.5 h-3.5" /> {l.label}
@@ -168,14 +168,14 @@ export default function CollageMaker() {
             </div>
             <div className="sm:col-span-1">
               <label className="text-xs font-medium">Background / border color</label>
-              <input type="color" value={bgColor} onChange={(e) => setBgColor(e.target.value)} className="w-full h-11 sm:h-9 p-0.5 border border-gray-300 dark:border-gray-700 rounded-lg cursor-pointer mt-1" />
+              <input type="color" value={bgColor} onChange={(e) => setBgColor(e.target.value)} className="w-full h-11 sm:h-9 p-0.5 border border-border rounded-lg cursor-pointer mt-1" />
             </div>
             <div className="sm:col-span-1">
               <label className="text-xs font-medium">Export scale</label>
               <select
                 value={scale}
                 onChange={(e) => setScale(Number(e.target.value) as 1 | 2 | 3)}
-                className="w-full p-2.5 sm:p-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-accent mt-1 min-h-[44px] sm:min-h-0"
+                className="w-full p-2.5 sm:p-2 border border-border rounded-lg bg-surface text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-accent mt-1 min-h-[44px] sm:min-h-0"
               >
                 <option value={1}>1x</option>
                 <option value={2}>2x</option>
@@ -203,12 +203,12 @@ export default function CollageMaker() {
 
           {resultUrl && (
             <div>
-              <p className="text-xs text-gray-500 mb-1">Collage ({layout.label}, {scale}x)</p>
-              <img src={resultUrl} alt="Collage" className="max-w-full max-h-64 rounded-lg object-contain bg-gray-100 dark:bg-gray-800 mb-3 mx-auto sm:mx-0" />
+              <p className="text-xs text-text-secondary mb-1">Collage ({layout.label}, {scale}x)</p>
+              <img src={resultUrl} alt="Collage" className="max-w-full max-h-64 rounded-lg object-contain bg-surface-hover checkerboard mb-3 mx-auto sm:mx-0" />
               <a
                 href={resultUrl}
                 download="collage.png"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 sm:py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-base sm:text-sm font-medium transition-colors min-h-[44px]"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 sm:py-2 bg-brand-600 text-white rounded-lg hover:bg-brand-700 text-base sm:text-sm font-medium transition-colors min-h-[44px]"
               >
                 <Download className="w-4 h-4" /> Download Collage
               </a>

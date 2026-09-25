@@ -41,25 +41,25 @@ export default function HTMLToMarkdown() {
       description="Convert HTML code to clean Markdown."
     >
       <textarea
-        className="w-full h-48 p-4 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 resize-y font-mono text-sm focus:outline-none focus:ring-2 focus:ring-accent"
+        className="w-full h-48 p-4 border border-border rounded-lg bg-surface resize-y font-mono text-sm focus:outline-none focus:ring-2 focus:ring-accent"
         placeholder="Paste HTML here..."
         value={html}
         onChange={(e) => setHtml(e.target.value)}
       />
       {(markdown || html) && (
         <div className="mt-4 relative">
-          <div className="text-xs text-gray-500 mb-1">Markdown Output</div>
+          <div className="text-xs text-text-secondary mb-1">Markdown Output</div>
           <textarea
-            className="w-full h-48 p-4 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 resize-y font-mono text-sm focus:outline-none focus:ring-2 focus:ring-accent"
+            className="w-full h-48 p-4 border border-border rounded-lg bg-surface resize-y font-mono text-sm focus:outline-none focus:ring-2 focus:ring-accent"
             value={markdown}
             readOnly
           />
           {markdown && (
             <button
               onClick={copy}
-              className="absolute top-8 right-2 p-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+              className="absolute top-8 right-2 p-2 bg-surface-hover rounded-lg hover:bg-border transition-colors"
             >
-              {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+              {copied ? <Check className="w-4 h-4 text-success" /> : <Copy className="w-4 h-4" />}
             </button>
           )}
         </div>

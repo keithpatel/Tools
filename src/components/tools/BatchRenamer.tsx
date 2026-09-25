@@ -196,7 +196,7 @@ export default function BatchRenamer() {
                 className={`relative inline-flex h-6 w-10 shrink-0 items-center rounded-full transition-colors ${keepOriginal ? "bg-accent" : "bg-border"}`}
               >
                 <span
-                  className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-sm transition-transform ${keepOriginal ? "translate-x-[18px]" : "translate-x-[2px]"}`}
+                  className={`inline-block h-5 w-5 transform rounded-full bg-surface shadow-sm transition-transform ${keepOriginal ? "translate-x-[18px]" : "translate-x-[2px]"}`}
                 />
               </button>
             </div>
@@ -218,7 +218,7 @@ export default function BatchRenamer() {
                     type="button"
                     onClick={() => removeFile(i)}
                     aria-label={`Remove ${f.name}`}
-                    className="text-xs text-red-500 hover:underline shrink-0 min-w-[44px] min-h-[32px]"
+                    className="text-xs text-error-text hover:underline shrink-0 min-w-[44px] min-h-[32px]"
                   >
                     Remove
                   </button>
