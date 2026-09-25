@@ -4,9 +4,9 @@ import { Wrench } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="border-t border-border-soft mt-20 bg-surface">
-      <div className="max-w-7xl mx-auto px-4 py-14">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8 mb-10">
+    <footer className="border-t border-border-soft mt-12 sm:mt-20 bg-surface pb-28 md:pb-14">
+      <div className="max-w-7xl mx-auto px-4 py-10 sm:py-14">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 sm:gap-8 mb-8 sm:mb-10">
           {categories.map((cat) => {
             const items = tools.filter((t) => t.category === cat.id);
             return (
@@ -14,12 +14,12 @@ export function Footer() {
                 <h3 className="text-xs font-heading font-semibold uppercase tracking-wider mb-3" style={{ color: cat.color }}>
                   {cat.label}
                 </h3>
-                <ul className="space-y-2">
+                <ul className="space-y-1.5 sm:space-y-2">
                   {items.map((tool) => (
                     <li key={tool.id}>
                       <Link
                         href={`/tools/${tool.slug}`}
-                        className="text-xs text-text-secondary hover:text-accent transition-colors"
+                        className="text-xs text-text-secondary hover:text-accent transition-colors py-1 inline-block"
                       >
                         {tool.name}
                       </Link>

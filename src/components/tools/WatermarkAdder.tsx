@@ -97,40 +97,40 @@ export default function WatermarkAdder() {
         <DropZone onFiles={handleFiles} accept="image/*" enableCamera />
       ) : (
         <div className="space-y-4">
-          <img ref={imgRef} src={imageUrl} alt="Original" className="max-h-48 rounded-lg object-contain bg-gray-100 dark:bg-gray-800" />
+          <img ref={imgRef} src={imageUrl} alt="Original" className="max-w-full max-h-56 sm:max-h-48 rounded-lg object-contain bg-gray-100 dark:bg-gray-800 mx-auto sm:mx-0" />
 
           <div className="flex gap-2">
             <button
               onClick={() => setMode("text")}
-              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${mode === "text" ? "bg-accent text-white" : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"}`}
+              className={`flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-4 py-2.5 sm:py-2 rounded-lg text-sm font-medium transition-colors min-h-[44px] sm:min-h-0 ${mode === "text" ? "bg-accent text-white" : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"}`}
             >
               <Type className="w-4 h-4" /> Text
             </button>
             <button
               onClick={() => setMode("image")}
-              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${mode === "image" ? "bg-accent text-white" : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"}`}
+              className={`flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-4 py-2.5 sm:py-2 rounded-lg text-sm font-medium transition-colors min-h-[44px] sm:min-h-0 ${mode === "image" ? "bg-accent text-white" : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"}`}
             >
               <ImageIcon className="w-4 h-4" /> Image
             </button>
           </div>
 
           {mode === "text" ? (
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="text-xs font-medium">Text</label>
-                <input value={text} onChange={(e) => setText(e.target.value)} className="w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-accent" />
+                <input value={text} onChange={(e) => setText(e.target.value)} className="w-full p-2.5 sm:p-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-accent" />
               </div>
               <div>
                 <label className="text-xs font-medium">Font Size</label>
-                <input type="number" min={8} max={200} value={fontSize} onChange={(e) => setFontSize(Number(e.target.value))} className="w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-accent" />
+                <input type="number" min={8} max={200} value={fontSize} onChange={(e) => setFontSize(Number(e.target.value))} className="w-full p-2.5 sm:p-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-accent" />
               </div>
               <div>
                 <label className="text-xs font-medium">Color</label>
-                <input type="color" value={color} onChange={(e) => setColor(e.target.value)} className="w-full h-9 p-0.5 border border-gray-300 dark:border-gray-700 rounded-lg cursor-pointer" />
+                <input type="color" value={color} onChange={(e) => setColor(e.target.value)} className="w-full h-11 sm:h-9 p-0.5 border border-gray-300 dark:border-gray-700 rounded-lg cursor-pointer" />
               </div>
               <div>
                 <label className="text-xs font-medium">Opacity: {Math.round(opacity * 100)}%</label>
-                <input type="range" min={0} max={1} step={0.05} value={opacity} onChange={(e) => setOpacity(Number(e.target.value))} className="w-full mt-1" />
+                <input type="range" min={0} max={1} step={0.05} value={opacity} onChange={(e) => setOpacity(Number(e.target.value))} className="w-full h-7 sm:h-5 mt-1" />
               </div>
             </div>
           ) : (
@@ -141,8 +141,8 @@ export default function WatermarkAdder() {
               ) : (
                 <div className="flex items-center gap-3">
                   <img src={logoUrl} alt="Logo" className="w-16 h-16 rounded-lg object-contain bg-gray-100 dark:bg-gray-800" />
-                  <span className="text-sm text-gray-500">{logoFile.name}</span>
-                  <button onClick={() => { setLogoFile(null); setLogoUrl(""); }} className="text-xs text-red-500 hover:underline">Remove</button>
+                  <span className="text-sm text-gray-500 truncate flex-1">{logoFile.name}</span>
+                  <button onClick={() => { setLogoFile(null); setLogoUrl(""); }} className="text-xs text-red-500 hover:underline p-2 min-h-[44px] flex items-center">Remove</button>
                 </div>
               )}
             </div>
@@ -155,7 +155,7 @@ export default function WatermarkAdder() {
                 <button
                   key={p}
                   onClick={() => setPosition(p)}
-                  className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors ${position === p ? "bg-accent text-white" : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"}`}
+                  className={`px-3 py-2 sm:py-1 rounded-lg text-xs font-medium transition-colors min-h-[38px] sm:min-h-0 flex items-center justify-center ${position === p ? "bg-accent text-white" : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"}`}
                 >
                   {p}
                 </button>
@@ -163,11 +163,11 @@ export default function WatermarkAdder() {
             </div>
           </div>
 
-          <div className="flex gap-2">
-            <button onClick={applyWatermark} className="px-5 py-2 bg-accent text-white rounded-lg hover:opacity-90 text-sm font-medium transition-all">
+          <div className="flex flex-col sm:flex-row gap-2">
+            <button onClick={applyWatermark} className="w-full sm:w-auto px-5 py-3 sm:py-2 bg-accent text-white rounded-lg hover:opacity-90 text-base sm:text-sm font-medium transition-all min-h-[44px] flex items-center justify-center">
               Apply Watermark
             </button>
-            <button onClick={() => { setFile(null); setImageUrl(""); setResultUrl(""); }} className="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 text-sm transition-colors">
+            <button onClick={() => { setFile(null); setImageUrl(""); setResultUrl(""); }} className="w-full sm:w-auto px-4 py-3 sm:py-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 text-base sm:text-sm transition-colors min-h-[44px] flex items-center justify-center">
               Reset
             </button>
           </div>
@@ -175,8 +175,8 @@ export default function WatermarkAdder() {
           {resultUrl && (
             <div>
               <p className="text-xs text-gray-500 mb-1">Result</p>
-              <img src={resultUrl} alt="Watermarked" className="max-h-48 rounded-lg object-contain bg-gray-100 dark:bg-gray-800 mb-2" />
-              <a href={resultUrl} download={`watermarked-${file.name}`} className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium transition-colors">
+              <img src={resultUrl} alt="Watermarked" className="max-w-full max-h-56 sm:max-h-48 rounded-lg object-contain bg-gray-100 dark:bg-gray-800 mb-3 mx-auto sm:mx-0" />
+              <a href={resultUrl} download={`watermarked-${file.name}`} className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 sm:py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-base sm:text-sm font-medium transition-colors min-h-[44px]">
                 <Download className="w-4 h-4" /> Download
               </a>
             </div>

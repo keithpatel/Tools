@@ -265,13 +265,14 @@ export default function CropPDF() {
                 </div>
 
                 {/* Page pagination */}
-                <div className="flex items-center gap-3 mt-4">
+                <div className="flex items-center justify-center gap-3 mt-4">
                   <button
                     disabled={currentPage <= 1}
                     onClick={() => changePage(currentPage - 1)}
-                    className="p-1.5 rounded-lg border border-border-soft hover:bg-surface-hover disabled:opacity-30"
+                    aria-label="Previous page"
+                    className="w-10 h-10 sm:w-8 sm:h-8 flex items-center justify-center rounded-lg border border-border-soft hover:bg-surface-hover disabled:opacity-30 transition-colors"
                   >
-                    <ChevronLeft className="w-4 h-4" />
+                    <ChevronLeft className="w-5 h-5 sm:w-4 sm:h-4" />
                   </button>
                   <span className="text-xs font-medium text-text-secondary">
                     Page {currentPage} of {totalPages}
@@ -279,15 +280,16 @@ export default function CropPDF() {
                   <button
                     disabled={currentPage >= totalPages}
                     onClick={() => changePage(currentPage + 1)}
-                    className="p-1.5 rounded-lg border border-border-soft hover:bg-surface-hover disabled:opacity-30"
+                    aria-label="Next page"
+                    className="w-10 h-10 sm:w-8 sm:h-8 flex items-center justify-center rounded-lg border border-border-soft hover:bg-surface-hover disabled:opacity-30 transition-colors"
                   >
-                    <ChevronRight className="w-4 h-4" />
+                    <ChevronRight className="w-5 h-5 sm:w-4 sm:h-4" />
                   </button>
                 </div>
               </div>
 
               {/* Crop controls */}
-              <div className="lg:col-span-5 p-6 rounded-2xl border border-border-soft bg-surface space-y-6">
+              <div className="lg:col-span-5 p-4 sm:p-6 rounded-2xl border border-border-soft bg-surface space-y-5 sm:space-y-6">
                 <div className="flex items-center justify-between pb-2 border-b border-border-soft">
                   <div className="flex items-center gap-2">
                     <Crop className="w-4 h-4 text-accent" />
@@ -299,9 +301,9 @@ export default function CropPDF() {
                       <button
                         key={u}
                         onClick={() => setUnit(u)}
-                        className={`text-[11px] px-2 py-0.5 rounded font-medium ${
+                        className={`text-xs px-2.5 py-1 sm:text-[11px] sm:px-2 sm:py-0.5 rounded font-medium min-h-[32px] sm:min-h-0 flex items-center justify-center ${
                           unit === u
-                            ? "bg-surface text-accent shadow-xs"
+                            ? "bg-surface text-accent shadow-xs font-semibold"
                             : "text-text-secondary hover:text-text-primary"
                         }`}
                       >
@@ -317,25 +319,25 @@ export default function CropPDF() {
                   <div className="grid grid-cols-2 gap-2">
                     <button
                       onClick={() => applyPreset("tight")}
-                      className="text-xs px-2.5 py-1.5 rounded-lg border border-border-soft hover:bg-surface-hover text-text-secondary hover:text-text-primary text-left"
+                      className="text-xs px-2.5 py-2.5 sm:py-1.5 rounded-lg border border-border-soft hover:bg-surface-hover text-text-secondary hover:text-text-primary text-left min-h-[38px] flex items-center"
                     >
                       Tight (20pt / ~0.3&quot;)
                     </button>
                     <button
                       onClick={() => applyPreset("standard")}
-                      className="text-xs px-2.5 py-1.5 rounded-lg border border-border-soft hover:bg-surface-hover text-text-secondary hover:text-text-primary text-left"
+                      className="text-xs px-2.5 py-2.5 sm:py-1.5 rounded-lg border border-border-soft hover:bg-surface-hover text-text-secondary hover:text-text-primary text-left min-h-[38px] flex items-center"
                     >
                       Standard (36pt / 0.5&quot;)
                     </button>
                     <button
                       onClick={() => applyPreset("headerFooter")}
-                      className="text-xs px-2.5 py-1.5 rounded-lg border border-border-soft hover:bg-surface-hover text-text-secondary hover:text-text-primary text-left"
+                      className="text-xs px-2.5 py-2.5 sm:py-1.5 rounded-lg border border-border-soft hover:bg-surface-hover text-text-secondary hover:text-text-primary text-left min-h-[38px] flex items-center"
                     >
                       Trim Header/Footer
                     </button>
                     <button
                       onClick={() => applyPreset("reset")}
-                      className="text-xs px-2.5 py-1.5 rounded-lg border border-border-soft hover:bg-surface-hover text-text-secondary hover:text-text-primary text-left"
+                      className="text-xs px-2.5 py-2.5 sm:py-1.5 rounded-lg border border-border-soft hover:bg-surface-hover text-text-secondary hover:text-text-primary text-left min-h-[38px] flex items-center"
                     >
                       Reset (0pt)
                     </button>
@@ -352,7 +354,7 @@ export default function CropPDF() {
                       min={0}
                       value={ptToUnit(topPt, unit)}
                       onChange={(e) => setTopPt(unitToPt(parseFloat(e.target.value) || 0, unit))}
-                      className="w-full px-3 py-1.5 text-xs rounded-lg border border-border-soft bg-surface-raised text-text-primary focus:outline-none focus:ring-2 focus:ring-accent/25"
+                      className="w-full px-3 py-2 sm:py-1.5 text-base sm:text-xs rounded-lg border border-border-soft bg-surface-raised text-text-primary focus:outline-none focus:ring-2 focus:ring-accent/25"
                     />
                   </div>
                   <div>
@@ -363,7 +365,7 @@ export default function CropPDF() {
                       min={0}
                       value={ptToUnit(bottomPt, unit)}
                       onChange={(e) => setBottomPt(unitToPt(parseFloat(e.target.value) || 0, unit))}
-                      className="w-full px-3 py-1.5 text-xs rounded-lg border border-border-soft bg-surface-raised text-text-primary focus:outline-none focus:ring-2 focus:ring-accent/25"
+                      className="w-full px-3 py-2 sm:py-1.5 text-base sm:text-xs rounded-lg border border-border-soft bg-surface-raised text-text-primary focus:outline-none focus:ring-2 focus:ring-accent/25"
                     />
                   </div>
                   <div>
@@ -374,7 +376,7 @@ export default function CropPDF() {
                       min={0}
                       value={ptToUnit(leftPt, unit)}
                       onChange={(e) => setLeftPt(unitToPt(parseFloat(e.target.value) || 0, unit))}
-                      className="w-full px-3 py-1.5 text-xs rounded-lg border border-border-soft bg-surface-raised text-text-primary focus:outline-none focus:ring-2 focus:ring-accent/25"
+                      className="w-full px-3 py-2 sm:py-1.5 text-base sm:text-xs rounded-lg border border-border-soft bg-surface-raised text-text-primary focus:outline-none focus:ring-2 focus:ring-accent/25"
                     />
                   </div>
                   <div>
@@ -385,7 +387,7 @@ export default function CropPDF() {
                       min={0}
                       value={ptToUnit(rightPt, unit)}
                       onChange={(e) => setRightPt(unitToPt(parseFloat(e.target.value) || 0, unit))}
-                      className="w-full px-3 py-1.5 text-xs rounded-lg border border-border-soft bg-surface-raised text-text-primary focus:outline-none focus:ring-2 focus:ring-accent/25"
+                      className="w-full px-3 py-2 sm:py-1.5 text-base sm:text-xs rounded-lg border border-border-soft bg-surface-raised text-text-primary focus:outline-none focus:ring-2 focus:ring-accent/25"
                     />
                   </div>
                 </div>
@@ -403,7 +405,7 @@ export default function CropPDF() {
                       <button
                         key={item.id}
                         onClick={() => setScope(item.id as Scope)}
-                        className={`text-xs px-3 py-2 rounded-lg border text-left transition-colors ${
+                        className={`text-xs px-3 py-2.5 sm:py-2 rounded-lg border text-left transition-colors min-h-[44px] flex items-center ${
                           scope === item.id
                             ? "border-accent bg-accent/10 text-accent font-medium"
                             : "border-border-soft hover:bg-surface-hover text-text-secondary"

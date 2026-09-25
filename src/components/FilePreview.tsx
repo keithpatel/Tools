@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { Trash2, GripVertical, FileText, Image as ImageIcon } from "lucide-react";
+import { Trash2, GripVertical, FileText, Image as ImageIcon, ChevronUp, ChevronDown } from "lucide-react";
 import {
   DndContext,
   closestCenter,
@@ -23,11 +23,17 @@ function SortableItem({
   file,
   preview,
   index,
+  total,
+  onMoveUp,
+  onMoveDown,
   onRemove,
 }: {
   file: File;
   preview?: string;
   index: number;
+  total: number;
+  onMoveUp?: (i: number) => void;
+  onMoveDown?: (i: number) => void;
   onRemove: (i: number) => void;
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
@@ -49,15 +55,47 @@ function SortableItem({
     <div
       ref={setNodeRef}
       style={style}
-      className={`flex items-center gap-3 bg-surface-hover rounded-lg px-3 py-2 ${
-        isDragging ? "opacity-50 shadow-md" : ""
+      className={`w-full flex items-center gap-2 sm:gap-3 bg-surface-hover rounded-xl px-2 sm:px-3 py-2 transition-all ${
+        isDragging ? "opacity-50 shadow-md ring-2 ring-accent" : ""
       }`}
     >
-      <button {...attributes} {...listeners} className="cursor-grab p-1 text-text-secondary hover:text-text-primary">
+      {/* Touch-Friendly Drag Handle */}
+      <button
+        {...attributes}
+        {...listeners}
+        type="button"
+        className="cursor-grab active:cursor-grabbing p-2 min-w-[40px] min-h-[44px] flex items-center justify-center text-text-secondary hover:text-text-primary touch-none"
+        aria-label="Drag to reorder"
+      >
         <GripVertical className="w-4 h-4" />
       </button>
 
-      <div className="w-10 h-10 shrink-0 rounded overflow-hidden bg-border flex items-center justify-center">
+      {/* Up/Down tap buttons for mobile where drag-and-drop is tricky */}
+      {(onMoveUp || onMoveDown) && total > 1 && (
+        <div className="flex flex-col gap-0.5 sm:hidden shrink-0">
+          <button
+            type="button"
+            disabled={index === 0}
+            onClick={() => onMoveUp?.(index)}
+            className="p-1 min-w-[28px] min-h-[20px] flex items-center justify-center rounded hover:bg-surface disabled:opacity-20 text-text-secondary"
+            aria-label="Move up"
+          >
+            <ChevronUp className="w-3.5 h-3.5" />
+          </button>
+          <button
+            type="button"
+            disabled={index === total - 1}
+            onClick={() => onMoveDown?.(index)}
+            className="p-1 min-w-[28px] min-h-[20px] flex items-center justify-center rounded hover:bg-surface disabled:opacity-20 text-text-secondary"
+            aria-label="Move down"
+          >
+            <ChevronDown className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      )}
+
+      {/* File thumbnail / icon */}
+      <div className="w-10 h-10 shrink-0 rounded-lg overflow-hidden bg-border/50 flex items-center justify-center">
         {isImage && preview ? (
           <img src={preview} alt="" className="w-full h-full object-cover" />
         ) : (
@@ -65,14 +103,18 @@ function SortableItem({
         )}
       </div>
 
+      {/* File details */}
       <div className="flex-1 min-w-0">
         <div className="text-sm font-medium truncate">{file.name}</div>
         <div className="text-xs text-text-secondary">{sizeStr}</div>
       </div>
 
+      {/* Remove Button */}
       <button
+        type="button"
         onClick={() => onRemove(index)}
-        className="p-1.5 hover:bg-border rounded transition-colors"
+        className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center hover:bg-border rounded-xl text-text-secondary hover:text-red-500 transition-colors cursor-pointer"
+        aria-label={`Remove ${file.name}`}
       >
         <Trash2 className="w-4 h-4 text-red-500" />
       </button>
@@ -121,6 +163,34 @@ export function FilePreview({
     [files, previews, onReorder]
   );
 
+  const handleMoveUp = useCallback(
+    (index: number) => {
+      if (index <= 0) return;
+      const newFiles = [...files];
+      const newPreviews = [...previews];
+      const [movedFile] = newFiles.splice(index, 1);
+      const [movedPreview] = newPreviews.splice(index, 1);
+      newFiles.splice(index - 1, 0, movedFile);
+      newPreviews.splice(index - 1, 0, movedPreview);
+      onReorder(newFiles, newPreviews);
+    },
+    [files, previews, onReorder]
+  );
+
+  const handleMoveDown = useCallback(
+    (index: number) => {
+      if (index >= files.length - 1) return;
+      const newFiles = [...files];
+      const newPreviews = [...previews];
+      const [movedFile] = newFiles.splice(index, 1);
+      const [movedPreview] = newPreviews.splice(index, 1);
+      newFiles.splice(index + 1, 0, movedFile);
+      newPreviews.splice(index + 1, 0, movedPreview);
+      onReorder(newFiles, newPreviews);
+    },
+    [files, previews, onReorder]
+  );
+
   const totalSize = files.reduce((acc, f) => acc + f.size, 0);
   const totalSizeStr =
     totalSize < 1024 * 1024
@@ -133,10 +203,10 @@ export function FilePreview({
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between text-sm">
-        <span className="font-medium">
+        <span className="font-semibold text-text-primary">
           {files.length} file{files.length !== 1 ? "s" : ""} selected
         </span>
-        <span className="text-text-secondary">{totalSizeStr}</span>
+        <span className="text-text-secondary text-xs">{totalSizeStr}</span>
       </div>
 
       {acceptLabel && (
@@ -159,9 +229,18 @@ export function FilePreview({
           items={files.map((_, i) => `file-${i}`)}
           strategy={verticalListSortingStrategy}
         >
-          <div className="space-y-1.5 max-h-64 overflow-y-auto">
+          <div className="space-y-2 max-h-72 overflow-y-auto pr-0.5">
             {files.map((file, i) => (
-              <SortableItem key={`file-${i}`} file={file} preview={previews[i]} index={i} onRemove={onRemove} />
+              <SortableItem
+                key={`file-${i}`}
+                file={file}
+                preview={previews[i]}
+                index={i}
+                total={files.length}
+                onMoveUp={handleMoveUp}
+                onMoveDown={handleMoveDown}
+                onRemove={onRemove}
+              />
             ))}
           </div>
         </SortableContext>

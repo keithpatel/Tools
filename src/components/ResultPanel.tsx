@@ -81,8 +81,8 @@ export function ResultPanel({
   return (
     <div className="mt-6">
       {!children && !loading && !error && onAction && (
-        <div className="hidden md:block">
-          <Button onClick={onAction} size="lg">
+        <div>
+          <Button onClick={onAction} size="lg" className="w-full sm:w-auto min-h-[48px] sm:min-h-[44px]">
             {actionLabel || "Process"}
           </Button>
         </div>
@@ -103,31 +103,31 @@ export function ResultPanel({
 
       {children && !loading && (
         <div className="space-y-4">
-          <div className="relative bg-surface rounded-2xl border border-border-soft shadow-xs p-5">
+          <div className="relative bg-surface rounded-2xl border border-border-soft shadow-xs p-4 sm:p-5">
             {children}
 
-            <div className="flex flex-wrap items-center gap-2 mt-4 pt-4 border-t border-border-soft">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 mt-4 pt-4 border-t border-border-soft">
               {onDownload && (
-                <Button onClick={onDownload}>
+                <Button onClick={onDownload} className="w-full sm:w-auto min-h-[44px]">
                   <Download className="w-4 h-4" />
                   {downloadLabel || "Download"}
                 </Button>
               )}
               {onCopy && (
-                <Button variant="secondary" onClick={handleCopy}>
+                <Button variant="secondary" onClick={handleCopy} className="w-full sm:w-auto min-h-[44px]">
                   {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
                   {copied ? "Copied" : copyLabel || "Copy"}
                 </Button>
               )}
 
               {targets.length > 0 && (
-                <div className="relative ml-auto" ref={dropdownRef}>
-                  <Button variant="secondary" onClick={() => setSendOpen(!sendOpen)}>
+                <div className="relative sm:ml-auto w-full sm:w-auto" ref={dropdownRef}>
+                  <Button variant="secondary" onClick={() => setSendOpen(!sendOpen)} className="w-full sm:w-auto min-h-[44px]">
                     <Send className="w-4 h-4" />
                     Send to...
                   </Button>
                   {sendOpen && (
-                    <div className="absolute right-0 top-full mt-1 w-52 bg-surface-raised rounded-2xl shadow-xl border border-border z-50 py-1">
+                    <div className="absolute right-0 top-full mt-1 w-full sm:w-56 bg-surface-raised rounded-2xl shadow-xl border border-border z-50 py-1 max-h-60 overflow-y-auto">
                       {targets.map((slug) => {
                         const t = tools.find((tool) => tool.slug === slug);
                         if (!t) return null;
@@ -136,7 +136,7 @@ export function ResultPanel({
                             key={slug}
                             href={`/tools/${slug}`}
                             onClick={handleSendOutput}
-                            className="flex items-center gap-2 px-4 py-2 text-sm text-text-primary hover:bg-surface-hover transition-colors"
+                            className="flex items-center gap-2 px-4 py-2.5 text-sm text-text-primary hover:bg-surface-hover transition-colors min-h-[44px]"
                           >
                             <ChevronRight className="w-3.5 h-3.5 text-text-secondary" />
                             {t.name}
@@ -149,7 +149,7 @@ export function ResultPanel({
               )}
 
               {onReset && (
-                <Button variant="ghost" onClick={onReset}>
+                <Button variant="ghost" onClick={onReset} className="w-full sm:w-auto min-h-[44px]">
                   <RotateCcw className="w-4 h-4" />
                   {resetLabel || "Start Over"}
                 </Button>
@@ -169,7 +169,7 @@ export function ResultPanel({
                       key={slug}
                       href={`/tools/${slug}`}
                       onClick={handleSendOutput}
-                      className="inline-flex items-center gap-1 px-3 py-1 bg-surface-hover rounded-full hover:bg-border text-xs text-text-secondary transition-colors"
+                      className="inline-flex items-center gap-1 px-3 py-1.5 bg-surface-hover rounded-full hover:bg-border text-xs text-text-secondary transition-colors min-h-[32px]"
                     >
                       {t.name}
                       <Send className="w-3 h-3" />
@@ -185,12 +185,12 @@ export function ResultPanel({
       {/* Mobile sticky bottom action bar */}
       {stickAction && !loading && !error && (
         <div
-          className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-surface/95 backdrop-blur-md border-t border-border px-4 pt-3 pb-3"
-          style={{ paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 0.75rem)" }}
+          className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-surface/95 backdrop-blur-md border-t border-border px-4 py-2.5 shadow-2xl"
+          style={{ paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 0.6rem)" }}
         >
           <button
             onClick={stickAction.onClick}
-            className="w-full flex items-center justify-center gap-2 px-5 py-3.5 bg-accent text-white rounded-xl hover:opacity-90 active:scale-[0.97] text-sm font-semibold transition-all shadow-lg min-h-[48px]"
+            className="w-full flex items-center justify-center gap-2 px-5 py-3.5 bg-accent text-white rounded-xl hover:opacity-90 active:scale-[0.98] text-sm font-semibold transition-all shadow-md min-h-[48px] cursor-pointer"
           >
             {stickAction.icon && <stickAction.icon className="w-4 h-4" />}
             {stickAction.label}

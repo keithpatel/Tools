@@ -85,19 +85,20 @@ function MobileSheet({
                   placeholder="Search 50+ offline tools..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-8 py-2 text-sm rounded-lg border border-border bg-surface-raised text-text-primary focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent/50 transition-all"
+                  className="w-full pl-9 pr-8 py-2.5 text-base sm:text-sm rounded-xl border border-border bg-surface-raised text-text-primary focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent/50 transition-all placeholder:text-text-secondary/70"
                 />
                 {searchQuery && (
                   <button
                     onClick={() => setSearchQuery("")}
-                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-text-secondary hover:text-text-primary p-0.5"
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-text-secondary hover:text-text-primary p-1 min-w-[32px] min-h-[32px] flex items-center justify-center cursor-pointer"
+                    aria-label="Clear search"
                   >
                     <LucideIcons.X className="w-3.5 h-3.5" />
                   </button>
                 )}
               </div>
             </div>
-            <div className="overflow-y-auto px-4 py-4 space-y-4 flex-1">
+            <div className="overflow-y-auto px-4 py-4 space-y-4 flex-1 pb-16">
               {searchQuery ? (
                 <div>
                   <h3 className="text-xs font-semibold uppercase tracking-wider text-text-secondary mb-2">
@@ -114,7 +115,7 @@ function MobileSheet({
                             href={`/tools/${t.slug}`}
                             onClick={onClose}
                             className={cn(
-                              "flex items-center gap-3 p-2.5 rounded-xl text-sm transition-all duration-150 active:scale-99",
+                              "flex items-center gap-3 p-3 rounded-xl text-sm transition-all duration-150 active:scale-99 min-h-[44px]",
                               active
                                 ? "bg-accent/15 text-accent font-semibold"
                                 : "text-text-secondary hover:bg-surface-hover hover:text-text-primary"
@@ -151,7 +152,7 @@ function MobileSheet({
                             href={`/tools/${s.slug}`}
                             onClick={onClose}
                             className={cn(
-                              "flex items-center gap-3 p-2.5 rounded-xl text-sm transition-all duration-150 active:scale-99",
+                              "flex items-center gap-3 p-3 rounded-xl text-sm transition-all duration-150 active:scale-99 min-h-[44px]",
                               active
                                 ? "bg-accent/15 text-accent font-semibold"
                                 : "text-text-secondary hover:bg-surface-hover hover:text-text-primary"

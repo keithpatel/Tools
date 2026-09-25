@@ -68,9 +68,9 @@ export default function PDFToImages() {
           <button
             onClick={convert}
             disabled={converting}
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium transition-colors"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 sm:py-2.5 bg-green-600 text-white rounded-xl sm:rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed text-base sm:text-sm font-medium transition-colors min-h-[48px] sm:min-h-0 shadow-sm"
           >
-            {converting && <Loader2 className="w-4 h-4 animate-spin" />}
+            {converting && <Loader2 className="w-5 h-5 sm:w-4 sm:h-4 animate-spin" />}
             {converting ? `Converting (${progress}%)...` : "Convert to Images"}
           </button>
           {converting && (
@@ -78,18 +78,39 @@ export default function PDFToImages() {
               <div className="bg-green-600 h-2 rounded-full transition-all" style={{ width: `${progress}%` }} />
             </div>
           )}
+
+          {/* Mobile sticky action */}
+          <div
+            className="sm:hidden fixed bottom-0 left-0 right-0 p-3 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-t border-gray-200 dark:border-gray-800 z-50 flex gap-2"
+            style={{ paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }}
+          >
+            <button
+              onClick={convert}
+              disabled={converting}
+              className="w-full h-12 inline-flex items-center justify-center gap-2 bg-green-600 text-white rounded-xl font-medium text-base active:bg-green-700 disabled:opacity-50 transition-colors shadow-lg"
+            >
+              {converting && <Loader2 className="w-5 h-5 animate-spin" />}
+              {converting ? `Converting (${progress}%)...` : "Convert to Images"}
+            </button>
+          </div>
         </div>
       )}
       {images.length > 0 && (
         <div className="mt-6">
-          <p className="text-sm text-gray-500 mb-4">{images.length} page{images.length !== 1 ? "s" : ""} converted</p>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+          <div className="flex items-center justify-between mb-4">
+            <p className="text-sm text-gray-500">{images.length} page{images.length !== 1 ? "s" : ""} converted</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {images.map((img) => (
-              <div key={img.page} className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
-                <img src={img.src} alt={`Page ${img.page}`} className="w-full h-auto" />
-                <div className="flex items-center justify-between px-3 py-2 bg-gray-50 dark:bg-gray-800">
-                  <span className="text-xs text-gray-500">Page {img.page}</span>
-                  <button onClick={() => download(img.src, img.page)} className="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded transition-colors">
+              <div key={img.page} className="border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden bg-surface">
+                <img src={img.src} alt={`Page ${img.page}`} className="w-full h-auto object-contain max-h-72" />
+                <div className="flex items-center justify-between px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/80 border-t border-gray-200 dark:border-gray-700">
+                  <span className="text-xs font-medium text-gray-600 dark:text-gray-400">Page {img.page}</span>
+                  <button
+                    onClick={() => download(img.src, img.page)}
+                    aria-label={`Download Page ${img.page}`}
+                    className="w-10 h-10 sm:w-8 sm:h-8 flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                  >
                     <Download className="w-4 h-4" />
                   </button>
                 </div>

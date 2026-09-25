@@ -30,18 +30,18 @@ export function ShortcutCheatSheet() {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4"
       onClick={() => setOpen(false)}
     >
       <div
-        className="bg-surface-raised rounded-xl shadow-xl border border-border p-5 w-full max-w-sm"
+        className="bg-surface-raised rounded-2xl shadow-2xl border border-border p-5 w-full max-w-sm mx-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-sm font-heading font-semibold">Keyboard Shortcuts</h2>
           <button
             onClick={() => setOpen(false)}
-            className="text-text-secondary hover:text-text-primary"
+            className="p-2 min-w-[40px] min-h-[40px] flex items-center justify-center rounded-lg text-text-secondary hover:text-text-primary hover:bg-surface-hover transition-colors cursor-pointer"
             aria-label="Close shortcuts"
           >
             <LucideIcons.X className="w-4 h-4" />

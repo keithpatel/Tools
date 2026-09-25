@@ -40,10 +40,10 @@ function HeroSearch() {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         onFocus={() => setFocused(true)}
-        className="w-full pl-12 pr-4 py-4 text-sm sm:text-base rounded-full border border-border-soft bg-surface text-text-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-accent/25 focus:border-accent/40 transition-all placeholder:text-text-secondary/60"
+        className="w-full pl-12 pr-4 py-3.5 sm:py-4 text-base rounded-full border border-border-soft bg-surface text-text-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-accent/25 focus:border-accent/40 transition-all placeholder:text-text-secondary/60"
       />
       {focused && filtered.length > 0 && (
-        <div className="absolute top-full left-0 right-0 mt-1.5 bg-surface-raised rounded-xl shadow-xl border border-border p-2 max-h-72 overflow-y-auto z-10">
+        <div className="absolute top-full left-0 right-0 mt-1.5 bg-surface-raised rounded-2xl shadow-xl border border-border p-2 max-h-72 overflow-y-auto z-20">
           {filtered.map((tool) => {
             const cat = categories.find((c) => c.id === tool.category);
             const Icon = (LucideIcons as any)[tool.icon] || LucideIcons.File;
@@ -51,14 +51,14 @@ function HeroSearch() {
               <button
                 key={tool.id}
                 onClick={() => { setQuery(""); setFocused(false); router.push(`/tools/${tool.slug}`); }}
-                className="flex items-center gap-3 w-full px-3 py-2 rounded-lg text-sm hover:bg-surface-hover transition-colors text-left"
+                className="flex items-center gap-3 w-full px-3.5 py-3 rounded-xl text-sm hover:bg-surface-hover transition-colors text-left min-h-[44px] cursor-pointer"
               >
                 <Icon className="w-4 h-4 shrink-0" style={{ color: cat?.color }} />
                 <div className="min-w-0 flex-1">
                   <div className="text-sm font-medium truncate">{tool.name}</div>
                 </div>
                 {cat && (
-                  <span className="text-[10px] uppercase tracking-wider opacity-50 shrink-0" style={{ color: cat.color }}>
+                  <span className="text-[10px] uppercase tracking-wider opacity-60 shrink-0" style={{ color: cat.color }}>
                     {cat.label}
                   </span>
                 )}
@@ -85,27 +85,27 @@ export default function HomePage() {
 
   return (
     <div className="hero-mesh">
-      <div className="max-w-7xl mx-auto px-4">
-        <section className="text-center pt-12 pb-8 md:pt-20 md:pb-10">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-tight animate-fade-up">
+      <div className="max-w-7xl mx-auto px-4 pb-24 md:pb-12">
+        <section className="text-center pt-8 pb-6 sm:pt-16 sm:pb-8 md:pt-20 md:pb-10">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-tight animate-fade-up">
             <span className="text-accent">{tools.length} Free</span> Online Tools
           </h1>
-          <p className="text-text-secondary text-base max-w-lg mx-auto mb-6 animate-fade-up animate-fade-up-d1">
+          <p className="text-text-secondary text-sm sm:text-base max-w-lg mx-auto mt-2 mb-5 sm:mb-6 animate-fade-up animate-fade-up-d1 leading-relaxed">
             Privacy-first tools for PDF, images, text, video, development, and everyday tasks.
-            <br />All processing happens in your browser — nothing is ever uploaded.
+            <br className="hidden sm:inline" /> All processing happens in your browser — nothing is ever uploaded.
           </p>
           <div className="animate-fade-up animate-fade-up-d2">
             <HeroSearch />
           </div>
-          <div className="flex items-center justify-center gap-2 mt-5 animate-fade-up animate-fade-up-d3 flex-wrap">
-            <span className="inline-flex items-center gap-1.5 text-xs text-text-secondary bg-surface px-3 py-1.5 rounded-full border border-border-soft shadow-xs">
-              <LucideIcons.Grid3x3 className="w-3 h-3" /> {tools.length} Tools
+          <div className="flex items-center justify-center gap-1.5 sm:gap-2 mt-4 sm:mt-5 animate-fade-up animate-fade-up-d3 flex-wrap">
+            <span className="inline-flex items-center gap-1.5 text-xs text-text-secondary bg-surface px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full border border-border-soft shadow-xs">
+              <LucideIcons.Grid3x3 className="w-3 h-3 text-accent" /> {tools.length} Tools
             </span>
-            <span className="inline-flex items-center gap-1.5 text-xs text-text-secondary bg-surface px-3 py-1.5 rounded-full border border-border-soft shadow-xs">
-              <LucideIcons.Lock className="w-3 h-3" /> Zero Uploads
+            <span className="inline-flex items-center gap-1.5 text-xs text-text-secondary bg-surface px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full border border-border-soft shadow-xs">
+              <LucideIcons.Lock className="w-3 h-3 text-emerald-500" /> Zero Uploads
             </span>
-            <span className="inline-flex items-center gap-1.5 text-xs text-text-secondary bg-surface px-3 py-1.5 rounded-full border border-border-soft shadow-xs">
-              <LucideIcons.Heart className="w-3 h-3" /> 100% Free
+            <span className="inline-flex items-center gap-1.5 text-xs text-text-secondary bg-surface px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full border border-border-soft shadow-xs">
+              <LucideIcons.Heart className="w-3 h-3 text-rose-500" /> 100% Free
             </span>
           </div>
         </section>
@@ -115,7 +115,7 @@ export default function HomePage() {
             <h2 className="text-sm font-heading font-semibold flex items-center gap-2 text-amber-500 mb-3">
               <LucideIcons.Star className="w-4 h-4 fill-amber-400 text-amber-400" /> Favorites
             </h2>
-            <div className="flex overflow-x-auto gap-2 pb-1 -mx-4 px-4 snap-x md:flex-wrap md:overflow-visible md:mx-0 md:px-0">
+            <div className="flex overflow-x-auto gap-2 pb-1.5 -mx-4 px-4 snap-x md:flex-wrap md:overflow-visible md:mx-0 md:px-0">
               {favTools.map((tool) => {
                 const cat = categories.find((c) => c.id === tool.category)!;
                 const Icon = (LucideIcons as any)[tool.icon] || LucideIcons.File;
@@ -123,7 +123,7 @@ export default function HomePage() {
                   <Link
                     key={tool.id}
                     href={`/tools/${tool.slug}`}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-soft text-xs hover:border-accent/40 hover:bg-accent/5 transition-all"
+                    className="flex items-center gap-1.5 px-3 py-2 sm:py-1.5 rounded-full border border-border-soft bg-surface text-xs hover:border-accent/40 hover:bg-accent/5 transition-all whitespace-nowrap snap-start shrink-0 min-h-[36px] sm:min-h-0"
                   >
                     <Icon className="w-3.5 h-3.5" style={{ color: cat.color }} />
                     {tool.name}
@@ -137,9 +137,9 @@ export default function HomePage() {
         {recentTools.length > 0 && (
           <section className="mb-6">
             <h2 className="text-sm font-heading font-semibold flex items-center gap-2 text-text-secondary mb-3">
-              <LucideIcons.Clock className="w-4 h-4" /> Recently Used
+              <LucideIcons.Clock className="w-4 h-4 text-accent" /> Recently Used
             </h2>
-            <div className="flex overflow-x-auto gap-2 pb-1 -mx-4 px-4 snap-x">
+            <div className="flex overflow-x-auto gap-2 pb-1.5 -mx-4 px-4 snap-x">
               {recentTools.map((tool) => {
                 const cat = categories.find((c) => c.id === tool.category)!;
                 const Icon = (LucideIcons as any)[tool.icon] || LucideIcons.File;
@@ -147,7 +147,7 @@ export default function HomePage() {
                   <Link
                     key={tool.id}
                     href={`/tools/${tool.slug}`}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-soft text-xs hover:border-accent/40 hover:bg-accent/5 transition-all whitespace-nowrap snap-start shrink-0"
+                    className="flex items-center gap-1.5 px-3 py-2 sm:py-1.5 rounded-full border border-border-soft bg-surface text-xs hover:border-accent/40 hover:bg-accent/5 transition-all whitespace-nowrap snap-start shrink-0 min-h-[36px] sm:min-h-0"
                   >
                     <Icon className="w-3.5 h-3.5" style={{ color: cat.color }} />
                     {tool.name}
@@ -160,20 +160,20 @@ export default function HomePage() {
 
         {grouped.map((cat) =>
           cat.items.length > 0 ? (
-            <section key={cat.id} className="mb-12">
-              <div className="flex items-center justify-between mb-4">
+            <section key={cat.id} className="mb-8 sm:mb-12">
+              <div className="flex items-center justify-between mb-3 sm:mb-4">
                 <h2 className="text-base font-heading font-semibold flex items-center gap-2" style={{ color: cat.color }}>
                   <span>{cat.label}</span>
                   <span className="text-xs font-normal opacity-60">({cat.items.length})</span>
                 </h2>
                 <Link
                   href={`/category/${cat.id}`}
-                  className="text-xs text-text-secondary hover:text-accent flex items-center gap-1 transition-colors"
+                  className="text-xs text-text-secondary hover:text-accent flex items-center gap-1 py-1.5 px-2 -mr-2 min-h-[36px] transition-colors"
                 >
                   View all <LucideIcons.ChevronRight className="w-3 h-3" />
                 </Link>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
                 {cat.items.map((tool) => (
                   <ToolCard key={tool.id} tool={tool} />
                 ))}

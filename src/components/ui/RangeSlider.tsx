@@ -23,7 +23,7 @@ export function RangeSlider({
 
   return (
     <div
-      className={cn("relative h-5 flex items-center select-none touch-none", className)}
+      className={cn("relative h-7 sm:h-5 flex items-center select-none touch-none", className)}
       aria-hidden="true"
     >
       {/* Track */}
@@ -36,7 +36,7 @@ export function RangeSlider({
       {/* Thumb */}
       <div
         className={cn(
-          "absolute w-4 h-4 -ml-2 rounded-full bg-surface border border-border shadow-sm transition-transform duration-150 hover:scale-110",
+          "absolute w-5 h-5 -ml-2.5 rounded-full bg-surface border-2 border-accent shadow-sm transition-transform duration-150 hover:scale-110",
           disabled && "opacity-40"
         )}
         style={{ left: `${pct}%` }}

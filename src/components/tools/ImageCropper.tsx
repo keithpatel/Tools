@@ -99,7 +99,7 @@ export default function ImageCropper() {
         <DropZone onFiles={handleFiles} accept="image/*" enableCamera />
       ) : (
         <div className="space-y-4">
-          <div className="relative w-full h-80 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
+          <div className="relative w-full h-64 sm:h-80 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden touch-none">
             {Cropper ? (
               <Cropper
                 image={imageUrl}
@@ -118,12 +118,12 @@ export default function ImageCropper() {
           </div>
 
           <div className="flex flex-wrap gap-2">
-            <span className="text-xs font-medium self-center mr-1">Aspect:</span>
+            <span className="text-xs font-medium self-center mr-1 w-full sm:w-auto">Aspect:</span>
             {ASPECTS.map((a) => (
               <button
                 key={a.label}
                 onClick={() => { setAspect(a.value); setAspectLabel(a.label); }}
-                className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors ${
+                className={`px-3 py-2 sm:py-1 rounded-lg text-xs font-medium transition-colors min-h-[38px] sm:min-h-0 flex items-center justify-center ${
                   aspectLabel === a.label
                     ? "bg-accent text-white"
                     : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
@@ -143,21 +143,21 @@ export default function ImageCropper() {
               step={0.1}
               value={zoom}
               onChange={(e) => setZoom(Number(e.target.value))}
-              className="w-full mt-1"
+              className="w-full h-7 sm:h-5 mt-1"
             />
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2">
             <button
               onClick={handleCropImage}
               disabled={cropping}
-              className="px-5 py-2 bg-accent text-white rounded-lg hover:opacity-90 disabled:opacity-50 text-sm font-medium transition-all"
+              className="w-full sm:w-auto px-5 py-3 sm:py-2 bg-accent text-white rounded-lg hover:opacity-90 disabled:opacity-50 text-base sm:text-sm font-medium transition-all min-h-[44px] flex items-center justify-center shadow-sm"
             >
               {cropping ? "Cropping..." : "Crop"}
             </button>
             <button
               onClick={() => { setFile(null); setImageUrl(""); setResultUrl(""); }}
-              className="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 text-sm transition-colors"
+              className="w-full sm:w-auto px-4 py-3 sm:py-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 text-base sm:text-sm transition-colors min-h-[44px] flex items-center justify-center"
             >
               Reset
             </button>
@@ -166,16 +166,40 @@ export default function ImageCropper() {
           {resultUrl && (
             <div>
               <p className="text-xs text-gray-500 mb-1">Cropped Result</p>
-              <img src={resultUrl} alt="Cropped" className="max-h-48 rounded-lg object-contain bg-gray-100 dark:bg-gray-800 mb-2" />
+              <img src={resultUrl} alt="Cropped" className="max-w-full max-h-56 sm:max-h-48 rounded-lg object-contain bg-gray-100 dark:bg-gray-800 mb-3 mx-auto sm:mx-0" />
               <a
                 href={resultUrl}
                 download={`cropped-${file.name}`}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium transition-colors"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 sm:py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-base sm:text-sm font-medium transition-colors min-h-[44px]"
               >
                 <Download className="w-4 h-4" /> Download
               </a>
             </div>
           )}
+
+          {/* Mobile sticky action bar */}
+          <div
+            className="sm:hidden fixed bottom-0 left-0 right-0 p-3 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-t border-gray-200 dark:border-gray-800 z-50 flex gap-2"
+            style={{ paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }}
+          >
+            {resultUrl ? (
+              <a
+                href={resultUrl}
+                download={`cropped-${file.name}`}
+                className="w-full h-12 inline-flex items-center justify-center gap-2 bg-green-600 text-white rounded-xl font-medium text-base active:bg-green-700 transition-colors shadow-lg"
+              >
+                <Download className="w-5 h-5" /> Download
+              </a>
+            ) : (
+              <button
+                onClick={handleCropImage}
+                disabled={cropping}
+                className="w-full h-12 inline-flex items-center justify-center gap-2 bg-accent text-white rounded-xl font-medium text-base active:opacity-90 disabled:opacity-50 transition-colors shadow-lg"
+              >
+                {cropping ? "Cropping..." : "Crop Image"}
+              </button>
+            )}
+          </div>
         </div>
       )}
     </ToolLayout>

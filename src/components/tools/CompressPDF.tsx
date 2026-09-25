@@ -85,18 +85,18 @@ export default function CompressPDF() {
           <p className="text-sm text-gray-500">
             <span className="font-medium text-gray-700 dark:text-gray-300">{file.name}</span> &mdash; {(originalSize / 1024).toFixed(1)} KB
           </p>
-          <div className="flex gap-4">
-            <label className="flex items-center gap-2 text-sm">
-              <input type="radio" name="mode" checked={mode === "rewrite"} onChange={() => setMode("rewrite")} className="accent-green-600" />
-              Rewrite (remove metadata)
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
+            <label className="flex items-center gap-2.5 text-sm p-2 sm:p-0 rounded-lg hover:bg-surface-hover sm:hover:bg-transparent cursor-pointer min-h-[40px] sm:min-h-0">
+              <input type="radio" name="mode" checked={mode === "rewrite"} onChange={() => setMode("rewrite")} className="accent-green-600 w-4 h-4" />
+              <span>Rewrite (remove metadata)</span>
             </label>
-            <label className="flex items-center gap-2 text-sm">
-              <input type="radio" name="mode" checked={mode === "rerender"} onChange={() => setMode("rerender")} className="accent-green-600" />
-              Re-render as images (better compression)
+            <label className="flex items-center gap-2.5 text-sm p-2 sm:p-0 rounded-lg hover:bg-surface-hover sm:hover:bg-transparent cursor-pointer min-h-[40px] sm:min-h-0">
+              <input type="radio" name="mode" checked={mode === "rerender"} onChange={() => setMode("rerender")} className="accent-green-600 w-4 h-4" />
+              <span>Re-render as images (better compression)</span>
             </label>
           </div>
           {mode === "rewrite" && (
-            <div className="flex items-start gap-2 p-3 bg-blue-50 dark:bg-blue-950/30 rounded-lg text-xs text-blue-700 dark:text-blue-300">
+            <div className="flex items-start gap-2 p-3 bg-blue-50 dark:bg-blue-950/30 rounded-xl text-xs text-blue-700 dark:text-blue-300">
               <Info className="w-4 h-4 shrink-0 mt-0.5" />
               <span>Rewriting only removes metadata and recompresses internal streams. For true size reduction, use the re-render option which converts pages to images.</span>
             </div>
@@ -104,20 +104,35 @@ export default function CompressPDF() {
           <button
             onClick={compress}
             disabled={compressing}
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium transition-colors"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-semibold transition-all min-h-[48px] cursor-pointer"
           >
             <Download className="w-4 h-4" />
             {compressing ? "Compressing..." : "Compress & Download"}
           </button>
           {newSize !== null && (
-            <div className="text-sm space-y-1">
+            <div className="text-sm space-y-1 bg-surface p-3 rounded-xl border border-border-soft">
               <p>Original: <span className="font-medium">{(originalSize / 1024).toFixed(1)} KB</span></p>
               <p>New: <span className="font-medium">{(newSize / 1024).toFixed(1)} KB</span></p>
-              <p className={newSize < originalSize ? "text-green-600" : "text-red-500"}>
+              <p className={newSize < originalSize ? "text-green-600 font-semibold" : "text-red-500 font-semibold"}>
                 {((1 - newSize / originalSize) * 100).toFixed(1)}% reduction
               </p>
             </div>
           )}
+
+          {/* Mobile Sticky Action Bar */}
+          <div
+            className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-surface/95 backdrop-blur-md border-t border-border px-4 py-2.5 shadow-2xl"
+            style={{ paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 0.6rem)" }}
+          >
+            <button
+              onClick={compress}
+              disabled={compressing}
+              className="w-full flex items-center justify-center gap-2 px-5 py-3.5 bg-green-600 text-white rounded-xl hover:opacity-90 active:scale-[0.98] text-sm font-semibold transition-all shadow-md min-h-[48px] disabled:opacity-50 cursor-pointer"
+            >
+              <Download className="w-4 h-4" />
+              {compressing ? "Compressing..." : "Compress & Download"}
+            </button>
+          </div>
         </div>
       )}
     </ToolLayout>

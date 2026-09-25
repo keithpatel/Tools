@@ -98,10 +98,10 @@ export default function SplitPDF() {
             <span className="font-medium text-gray-700 dark:text-gray-300">{file.name}</span> &mdash; {pageCount} page{pageCount !== 1 ? "s" : ""}
           </p>
           <div>
-            <label className="block text-xs text-gray-500 mb-1">Page ranges (e.g. 1-3,5,7-9)</label>
-            <div className="flex gap-2">
+            <label className="block text-xs text-text-secondary font-medium mb-1.5">Page ranges (e.g. 1-3,5,7-9)</label>
+            <div className="flex flex-col sm:flex-row gap-2">
               <input
-                className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-accent"
+                className="flex-1 px-3.5 py-2.5 border border-border rounded-xl bg-surface text-text-primary text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-accent"
                 placeholder="1-3,5,7-9"
                 value={rangeInput}
                 onChange={(e) => setRangeInput(e.target.value)}
@@ -109,20 +109,35 @@ export default function SplitPDF() {
               <button
                 onClick={extractRange}
                 disabled={splitting || !rangeInput}
-                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium transition-colors"
+                className="px-5 py-2.5 bg-green-600 text-white rounded-xl hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-semibold transition-colors min-h-[44px] cursor-pointer"
               >
-                {splitting ? "..." : "Extract"}
+                {splitting ? "Extracting..." : "Extract Pages"}
               </button>
             </div>
           </div>
-          <div className="border-t border-gray-200 dark:border-gray-800 pt-4">
+          <div className="border-t border-border-soft pt-4">
             <button
               onClick={splitAll}
               disabled={splitting}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 text-sm font-medium transition-colors"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-3 bg-surface-hover border border-border text-text-primary rounded-xl hover:bg-border text-sm font-medium transition-colors min-h-[44px] cursor-pointer"
             >
               <Split className="w-4 h-4" />
               Split all pages (download each individually)
+            </button>
+          </div>
+
+          {/* Mobile Sticky Action Bar */}
+          <div
+            className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-surface/95 backdrop-blur-md border-t border-border px-4 py-2.5 shadow-2xl"
+            style={{ paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 0.6rem)" }}
+          >
+            <button
+              onClick={rangeInput ? extractRange : splitAll}
+              disabled={splitting}
+              className="w-full flex items-center justify-center gap-2 px-5 py-3.5 bg-green-600 text-white rounded-xl hover:opacity-90 active:scale-[0.98] text-sm font-semibold transition-all shadow-md min-h-[48px] disabled:opacity-50 cursor-pointer"
+            >
+              <Split className="w-4 h-4" />
+              {splitting ? "Splitting..." : rangeInput ? "Extract Specified Pages" : "Split All Pages"}
             </button>
           </div>
         </div>

@@ -104,38 +104,38 @@ export default function CollageMaker() {
           </div>
 
           <div className="flex flex-wrap gap-2">
-            <span className="text-xs font-medium self-center mr-1">Layout:</span>
+            <span className="text-xs font-medium self-center mr-1 w-full sm:w-auto">Layout:</span>
             {LAYOUTS.map((l) => (
               <button
                 key={l.label}
                 onClick={() => setLayout(l)}
-                className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                className={`inline-flex items-center justify-center gap-1.5 px-3 py-2 sm:py-1.5 rounded-lg text-xs font-medium transition-colors min-h-[38px] sm:min-h-0 ${
                   layout.label === l.label
                     ? "bg-accent text-white"
                     : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
                 }`}
               >
-                <LayoutGrid className="w-3 h-3" /> {l.label}
+                <LayoutGrid className="w-3.5 h-3.5" /> {l.label}
               </button>
             ))}
           </div>
 
           <div>
             <label className="text-xs font-medium">Gap: {gap}px</label>
-            <input type="range" min={0} max={20} value={gap} onChange={(e) => setGap(Number(e.target.value))} className="w-full mt-1" />
+            <input type="range" min={0} max={20} value={gap} onChange={(e) => setGap(Number(e.target.value))} className="w-full h-7 sm:h-5 mt-1" />
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2">
             <button
               onClick={renderCollage}
               disabled={rendering}
-              className="px-5 py-2 bg-accent text-white rounded-lg hover:opacity-90 disabled:opacity-50 text-sm font-medium transition-all"
+              className="w-full sm:w-auto px-5 py-3 sm:py-2 bg-accent text-white rounded-lg hover:opacity-90 disabled:opacity-50 text-base sm:text-sm font-medium transition-all min-h-[44px] flex items-center justify-center"
             >
               {rendering ? "Generating..." : "Generate Collage"}
             </button>
             <button
               onClick={() => { setFiles([]); setUrls([]); setResultUrl(""); imagesRef.current = []; }}
-              className="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 text-sm transition-colors"
+              className="w-full sm:w-auto px-4 py-3 sm:py-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 text-base sm:text-sm transition-colors min-h-[44px] flex items-center justify-center"
             >
               Reset
             </button>
@@ -144,11 +144,11 @@ export default function CollageMaker() {
           {resultUrl && (
             <div>
               <p className="text-xs text-gray-500 mb-1">Collage ({layout.label})</p>
-              <img src={resultUrl} alt="Collage" className="max-h-64 rounded-lg object-contain bg-gray-100 dark:bg-gray-800 mb-2" />
+              <img src={resultUrl} alt="Collage" className="max-w-full max-h-64 rounded-lg object-contain bg-gray-100 dark:bg-gray-800 mb-3 mx-auto sm:mx-0" />
               <a
                 href={resultUrl}
                 download="collage.png"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium transition-colors"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 sm:py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-base sm:text-sm font-medium transition-colors min-h-[44px]"
               >
                 <Download className="w-4 h-4" /> Download Collage
               </a>

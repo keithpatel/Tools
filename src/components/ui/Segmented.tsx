@@ -27,7 +27,7 @@ export function Segmented<T extends string>({
     <div
       role="tablist"
       className={cn(
-        "inline-flex items-center gap-0.5 p-1 rounded-full bg-surface-hover border border-border-soft",
+        "inline-flex items-center gap-0.5 p-1 rounded-full bg-surface-hover border border-border-soft max-w-full overflow-x-auto",
         className
       )}
     >
@@ -41,8 +41,8 @@ export function Segmented<T extends string>({
             aria-selected={active}
             onClick={() => onChange(opt.value)}
             className={cn(
-              "inline-flex items-center gap-1.5 rounded-full font-medium transition-all duration-150",
-              size === "sm" ? "px-2.5 py-1 text-xs" : "px-3.5 py-1.5 text-sm",
+              "inline-flex items-center gap-1.5 rounded-full font-medium transition-all duration-150 min-h-[36px] sm:min-h-0 shrink-0 cursor-pointer",
+              size === "sm" ? "px-3 py-1 text-xs" : "px-3.5 py-1.5 text-sm",
               active
                 ? "bg-surface text-text-primary shadow-sm"
                 : "text-text-secondary hover:text-text-primary"

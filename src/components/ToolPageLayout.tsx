@@ -146,29 +146,29 @@ export function ToolPageLayout({ slug, children }: { slug: string; children: Rea
       <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
         <CategorySidebar currentSlug={slug} />
 
-        <div className="flex-1 min-w-0 pb-20 md:pb-0">
-          <div className="hidden md:flex items-center gap-4 mb-2">
-            <div className="p-2.5 rounded-2xl shrink-0 shadow-xs bg-surface" style={{ boxShadow: `0 0 0 1px ${cat?.color}22, 0 4px 16px 0 ${cat?.color}14` }}>
+        <div className="flex-1 min-w-0 pb-28 md:pb-8">
+          <div className="flex items-center gap-3 sm:gap-4 mb-2.5 sm:mb-2">
+            <div className="p-2 sm:p-2.5 rounded-2xl shrink-0 shadow-xs bg-surface" style={{ boxShadow: `0 0 0 1px ${cat?.color}22, 0 4px 16px 0 ${cat?.color}14` }}>
               <Icon className="w-5 h-5" style={{ color: cat?.color }} />
             </div>
-            <div className="flex-1">
+            <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
-                <h1 className="text-2xl font-heading font-bold tracking-tight" id="tool-top">{tool.name}</h1>
+                <h1 className="text-xl sm:text-2xl font-heading font-bold tracking-tight truncate" id="tool-top">{tool.name}</h1>
                 <button
                   onClick={() =>
                     setFavorites((prev: string[]) =>
                       isFav ? prev.filter((s) => s !== slug) : [...prev, slug]
                     )
                   }
-                  className="p-1 rounded hover:bg-surface-hover transition-colors"
+                  className="p-2 min-w-[40px] min-h-[40px] flex items-center justify-center rounded-lg hover:bg-surface-hover transition-colors cursor-pointer"
                   aria-label={isFav ? "Remove from favorites" : "Add to favorites"}
                 >
                   <LucideIcons.Star
-                    className={`w-4 h-4 ${isFav ? "fill-amber-400 text-amber-400" : "text-text-secondary/40"}`}
+                    className={`w-4 h-4 ${isFav ? "fill-amber-400 text-amber-400" : "text-text-secondary/40 hover:text-amber-400"}`}
                   />
                 </button>
               </div>
-              <p className="text-sm text-text-secondary mt-0.5">{tool.description}</p>
+              <p className="text-xs sm:text-sm text-text-secondary mt-0.5 line-clamp-2">{tool.description}</p>
             </div>
           </div>
 
@@ -186,7 +186,7 @@ export function ToolPageLayout({ slug, children }: { slug: string; children: Rea
           {showBackLink && (
             <a
               href="#tool-top"
-              className="fixed bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 px-4 py-2 bg-surface-raised border border-border rounded-full shadow-lg text-sm text-text-primary hover:text-accent transition-all"
+              className="fixed bottom-20 md:bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 px-4 py-2 bg-surface-raised border border-border rounded-full shadow-lg text-sm text-text-primary hover:text-accent transition-all min-h-[44px]"
             >
               <LucideIcons.ArrowUp className="w-4 h-4" />
               Back to tool

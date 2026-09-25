@@ -456,12 +456,12 @@ export default function FillAndSignPDF() {
           {!resultBlob && (
             <div className="space-y-4">
               {/* Interactive Toolbar */}
-              <div className="flex items-center justify-between p-3 rounded-xl border border-border-soft bg-surface flex-wrap gap-2">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-xl border border-border-soft bg-surface gap-3">
                 <div className="flex items-center gap-2 flex-wrap">
                   {/* Add Signature */}
                   <button
                     onClick={() => setShowSigModal(true)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent text-white text-xs font-medium hover:opacity-90 transition-opacity"
+                    className="inline-flex items-center gap-1.5 px-3 py-2 sm:py-1.5 rounded-lg bg-accent text-white text-xs font-medium hover:opacity-90 transition-opacity min-h-[38px] sm:min-h-0"
                   >
                     <PenTool className="w-3.5 h-3.5" />
                     Add Signature
@@ -470,7 +470,7 @@ export default function FillAndSignPDF() {
                   {savedSig && (
                     <button
                       onClick={() => addSignatureToDoc(savedSig)}
-                      className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-accent/30 bg-accent/5 text-accent text-xs font-medium hover:bg-accent/10 transition-colors"
+                      className="inline-flex items-center gap-1.5 px-2.5 py-2 sm:py-1.5 rounded-lg border border-accent/30 bg-accent/5 text-accent text-xs font-medium hover:bg-accent/10 transition-colors min-h-[38px] sm:min-h-0"
                       title="Quick insert your saved signature"
                     >
                       Insert Saved Signature
@@ -480,7 +480,7 @@ export default function FillAndSignPDF() {
                   {/* Add Text */}
                   <button
                     onClick={() => setActiveTool(activeTool === "text" ? "select" : "text")}
-                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
+                    className={`inline-flex items-center gap-1.5 px-3 py-2 sm:py-1.5 rounded-lg text-xs font-medium border transition-colors min-h-[38px] sm:min-h-0 ${
                       activeTool === "text"
                         ? "border-accent bg-accent/10 text-accent"
                         : "border-border-soft hover:bg-surface-hover text-text-secondary"
@@ -493,7 +493,7 @@ export default function FillAndSignPDF() {
                   {/* Quick Date Stamp */}
                   <button
                     onClick={addTodayDate}
-                    className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-border-soft hover:bg-surface-hover text-text-secondary text-xs"
+                    className="inline-flex items-center gap-1.5 px-2.5 py-2 sm:py-1.5 rounded-lg border border-border-soft hover:bg-surface-hover text-text-secondary text-xs min-h-[38px] sm:min-h-0"
                   >
                     <Calendar className="w-3.5 h-3.5" />
                     Today&apos;s Date
@@ -502,7 +502,7 @@ export default function FillAndSignPDF() {
                   {/* Checkmark Stamp */}
                   <button
                     onClick={() => setActiveTool(activeTool === "check" ? "select" : "check")}
-                    className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
+                    className={`inline-flex items-center gap-1 px-2.5 py-2 sm:py-1.5 rounded-lg text-xs font-medium border transition-colors min-h-[38px] sm:min-h-0 ${
                       activeTool === "check"
                         ? "border-emerald-500 bg-emerald-500/10 text-emerald-600"
                         : "border-border-soft hover:bg-surface-hover text-text-secondary"
@@ -515,7 +515,7 @@ export default function FillAndSignPDF() {
                   {/* Cross Stamp */}
                   <button
                     onClick={() => setActiveTool(activeTool === "cross" ? "select" : "cross")}
-                    className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
+                    className={`inline-flex items-center gap-1 px-2.5 py-2 sm:py-1.5 rounded-lg text-xs font-medium border transition-colors min-h-[38px] sm:min-h-0 ${
                       activeTool === "cross"
                         ? "border-red-500 bg-red-500/10 text-red-600"
                         : "border-border-soft hover:bg-surface-hover text-text-secondary"
@@ -527,29 +527,33 @@ export default function FillAndSignPDF() {
                 </div>
 
                 {/* Page Navigation */}
-                <div className="flex items-center gap-2">
-                  <button
-                    disabled={currentPage <= 1}
-                    onClick={() => changePage(currentPage - 1)}
-                    className="p-1.5 rounded-lg border border-border-soft hover:bg-surface-hover disabled:opacity-30"
-                  >
-                    <ChevronLeft className="w-4 h-4" />
-                  </button>
+                <div className="flex items-center justify-between sm:justify-end gap-2 pt-2 sm:pt-0 border-t sm:border-t-0 border-border-soft">
                   <span className="text-xs text-text-secondary font-medium">
-                    {currentPage} / {totalPages}
+                    Page {currentPage} of {totalPages}
                   </span>
-                  <button
-                    disabled={currentPage >= totalPages}
-                    onClick={() => changePage(currentPage + 1)}
-                    className="p-1.5 rounded-lg border border-border-soft hover:bg-surface-hover disabled:opacity-30"
-                  >
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
+                  <div className="flex items-center gap-1">
+                    <button
+                      disabled={currentPage <= 1}
+                      onClick={() => changePage(currentPage - 1)}
+                      aria-label="Previous page"
+                      className="w-9 h-9 sm:w-8 sm:h-8 flex items-center justify-center rounded-lg border border-border-soft hover:bg-surface-hover disabled:opacity-30"
+                    >
+                      <ChevronLeft className="w-4 h-4" />
+                    </button>
+                    <button
+                      disabled={currentPage >= totalPages}
+                      onClick={() => changePage(currentPage + 1)}
+                      aria-label="Next page"
+                      className="w-9 h-9 sm:w-8 sm:h-8 flex items-center justify-center rounded-lg border border-border-soft hover:bg-surface-hover disabled:opacity-30"
+                    >
+                      <ChevronRight className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
               </div>
 
               {/* Document Page Canvas Container */}
-              <div className="flex justify-center p-6 bg-surface border border-border-soft rounded-2xl overflow-auto">
+              <div className="flex justify-center p-2 sm:p-6 bg-surface border border-border-soft rounded-2xl overflow-x-auto max-w-full">
                 <div
                   ref={pageContainerRef}
                   onClick={handlePageClick}
@@ -644,14 +648,15 @@ export default function FillAndSignPDF() {
           {/* Signature Creation Modal */}
           {showSigModal && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs">
-              <div className="bg-surface rounded-2xl border border-border shadow-2xl w-full max-w-lg overflow-hidden p-6 space-y-4">
+              <div className="bg-surface rounded-2xl border border-border shadow-2xl w-full max-w-lg max-h-[92vh] overflow-y-auto p-4 sm:p-6 space-y-4">
                 <div className="flex items-center justify-between pb-3 border-b border-border-soft">
                   <h3 className="text-base font-heading font-semibold">Create Your Signature</h3>
                   <button
                     onClick={() => setShowSigModal(false)}
-                    className="text-text-secondary hover:text-text-primary"
+                    aria-label="Close modal"
+                    className="w-10 h-10 -mr-2 flex items-center justify-center text-text-secondary hover:text-text-primary"
                   >
-                    <X className="w-4 h-4" />
+                    <X className="w-5 h-5 sm:w-4 sm:h-4" />
                   </button>
                 </div>
 
@@ -661,7 +666,7 @@ export default function FillAndSignPDF() {
                     <button
                       key={m}
                       onClick={() => setSigMode(m)}
-                      className={`flex-1 py-1.5 text-xs font-medium rounded-md capitalize transition-colors ${
+                      className={`flex-1 py-2 sm:py-1.5 min-h-[38px] sm:min-h-0 text-xs font-medium rounded-md capitalize transition-colors ${
                         sigMode === m
                           ? "bg-surface text-accent shadow-xs"
                           : "text-text-secondary hover:text-text-primary"
@@ -692,9 +697,9 @@ export default function FillAndSignPDF() {
                       <button
                         type="button"
                         onClick={clearCanvas}
-                        className="absolute bottom-2 right-2 flex items-center gap-1 text-[11px] px-2 py-1 rounded bg-black/10 hover:bg-black/20 text-black/70"
+                        className="absolute bottom-2 right-2 flex items-center gap-1 text-[11px] px-2.5 py-1.5 rounded-lg bg-black/10 hover:bg-black/20 text-black/70 min-h-[32px]"
                       >
-                        <RotateCcw className="w-3 h-3" />
+                        <RotateCcw className="w-3.5 h-3.5" />
                         Clear
                       </button>
                     </div>
@@ -706,7 +711,8 @@ export default function FillAndSignPDF() {
                           <button
                             key={c}
                             onClick={() => setSigColor(c)}
-                            className={`w-5 h-5 rounded-full border-2 ${
+                            aria-label={`Select color ${c}`}
+                            className={`w-7 h-7 sm:w-5 sm:h-5 rounded-full border-2 ${
                               sigColor === c ? "border-accent scale-110" : "border-transparent"
                             }`}
                             style={{ backgroundColor: c }}
@@ -725,13 +731,13 @@ export default function FillAndSignPDF() {
                       value={typedName}
                       onChange={(e) => setTypedName(e.target.value)}
                       placeholder="Type your full name"
-                      className="w-full px-3 py-2 text-sm rounded-lg border border-border-soft bg-surface-raised text-text-primary focus:outline-none focus:ring-2 focus:ring-accent/25"
+                      className="w-full px-3 py-2 text-base sm:text-sm rounded-lg border border-border-soft bg-surface-raised text-text-primary focus:outline-none focus:ring-2 focus:ring-accent/25"
                     />
 
                     {typedName && (
-                      <div className="h-28 rounded-xl border border-border bg-white flex items-center justify-center">
+                      <div className="h-28 rounded-xl border border-border bg-white flex items-center justify-center overflow-hidden px-2">
                         <span
-                          className="text-4xl text-black font-cursive italic"
+                          className="text-3xl sm:text-4xl text-black font-cursive italic truncate"
                           style={{
                             fontFamily: "'Brush Script MT', 'Dancing Script', 'Caveat', cursive",
                             color: sigColor,
@@ -746,7 +752,7 @@ export default function FillAndSignPDF() {
 
                 {/* Upload Mode */}
                 {sigMode === "upload" && (
-                  <div className="p-8 border-2 border-dashed border-border-soft rounded-xl text-center space-y-2">
+                  <div className="p-6 sm:p-8 border-2 border-dashed border-border-soft rounded-xl text-center space-y-2">
                     <Upload className="w-8 h-8 text-accent mx-auto" />
                     <label className="block text-xs font-medium text-accent hover:underline cursor-pointer">
                       Upload an image of your signature (PNG or JPG)
@@ -764,13 +770,13 @@ export default function FillAndSignPDF() {
                 )}
 
                 {/* Save locally option */}
-                <div className="flex items-center justify-between pt-2">
-                  <label className="flex items-center gap-2 text-xs text-text-secondary cursor-pointer">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-2">
+                  <label className="flex items-center gap-2 text-xs text-text-secondary cursor-pointer min-h-[32px]">
                     <input
                       type="checkbox"
                       checked={rememberSig}
                       onChange={(e) => setRememberSig(e.target.checked)}
-                      className="rounded border-border-soft text-accent"
+                      className="w-4 h-4 rounded border-border-soft text-accent"
                     />
                     <span>Remember signature on this device</span>
                   </label>
@@ -778,7 +784,7 @@ export default function FillAndSignPDF() {
                   {savedSig && (
                     <button
                       onClick={clearSavedSignature}
-                      className="text-[11px] text-red-500 hover:underline"
+                      className="text-[11px] text-red-500 hover:underline text-left sm:text-right py-1"
                     >
                       Delete saved signature
                     </button>
@@ -788,14 +794,14 @@ export default function FillAndSignPDF() {
                 <div className="flex items-center justify-end gap-3 pt-3 border-t border-border-soft">
                   <button
                     onClick={() => setShowSigModal(false)}
-                    className="px-4 py-2 text-xs rounded-lg border border-border-soft hover:bg-surface-hover text-text-secondary"
+                    className="px-4 py-2.5 sm:py-2 text-sm sm:text-xs rounded-lg border border-border-soft hover:bg-surface-hover text-text-secondary min-h-[44px] sm:min-h-0"
                   >
                     Cancel
                   </button>
                   {sigMode !== "upload" && (
                     <button
                       onClick={handleApplySignature}
-                      className="px-4 py-2 text-xs font-medium rounded-lg bg-accent text-white hover:opacity-90"
+                      className="px-5 py-2.5 sm:py-2 text-sm sm:text-xs font-medium rounded-lg bg-accent text-white hover:opacity-90 min-h-[44px] sm:min-h-0"
                     >
                       Apply Signature
                     </button>

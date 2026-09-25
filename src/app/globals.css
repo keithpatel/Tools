@@ -71,10 +71,39 @@
 }
 
 /* ─── Base ─── */
+html {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
 body {
   @apply bg-canvas text-text-primary font-body antialiased;
   font-size: 16px;
   line-height: 1.6;
+  overflow-x: hidden;
+  max-width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* Ensure no media element causes horizontal overflow on mobile */
+img, video, canvas {
+  max-width: 100%;
+}
+
+/* Prevent iOS Safari auto-zoom on input focus */
+@media (max-width: 767px) {
+  input[type="text"],
+  input[type="search"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  input[type="url"],
+  input[type="tel"],
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
 }
 
 h1, h2, h3, h4, h5, h6,
@@ -82,6 +111,8 @@ h1, h2, h3, h4, h5, h6,
   font-family: var(--font-heading);
   letter-spacing: -0.022em;
   line-height: 1.18;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 /* Accessibility: refined focus ring */

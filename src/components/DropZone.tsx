@@ -64,16 +64,18 @@ export function DropZone({
       <button
         type="button"
         onClick={() => inputRef.current?.click()}
-        className="md:hidden w-full active:scale-[0.98] transition-transform"
-        aria-label={label || "Tap to choose files"}
+        className="md:hidden w-full active:scale-[0.98] transition-transform cursor-pointer"
+        aria-label="Tap to upload files from device"
       >
-        <div className="border border-dashed border-border rounded-2xl bg-surface p-8 flex flex-col items-center justify-center text-center min-h-[170px]">
-          <div className="w-14 h-14 rounded-full bg-accent/10 flex items-center justify-center mb-3">
+        <div className="border-2 border-dashed border-accent/30 rounded-2xl bg-surface p-6 flex flex-col items-center justify-center text-center min-h-[140px] hover:border-accent/60">
+          <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center mb-2.5">
             <IconGlyph className="w-6 h-6 text-accent" />
           </div>
-          <p className="font-medium text-text-primary text-sm">{label || "Choose files"}</p>
-          <p className="text-xs text-text-secondary/70 mt-1">
-            {accept ? `Accepts ${accept.replace(/,/g, ", ")}` : "From your device"}
+          <p className="font-semibold text-text-primary text-base">
+            Tap to upload {accept?.includes("pdf") ? "PDF" : accept?.includes("image") ? "image" : multiple ? "files" : "file"}
+          </p>
+          <p className="text-xs text-text-secondary mt-1">
+            {accept ? `Accepts ${accept.replace(/,/g, ", ")}` : "Select from your device"}
           </p>
         </div>
       </button>

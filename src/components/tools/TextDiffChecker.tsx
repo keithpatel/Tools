@@ -20,13 +20,13 @@ export default function TextDiffChecker() {
     >
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <textarea
-          className="w-full h-64 p-4 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 resize-y focus:outline-none focus:ring-2 focus:ring-accent"
+          className="w-full h-44 sm:h-64 p-3.5 sm:p-4 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 resize-y text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-accent"
           placeholder="Original text..."
           value={left}
           onChange={(e) => setLeft(e.target.value)}
         />
         <textarea
-          className="w-full h-64 p-4 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 resize-y focus:outline-none focus:ring-2 focus:ring-accent"
+          className="w-full h-44 sm:h-64 p-3.5 sm:p-4 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 resize-y text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-accent"
           placeholder="Modified text..."
           value={right}
           onChange={(e) => setRight(e.target.value)}

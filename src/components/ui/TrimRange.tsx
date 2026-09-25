@@ -76,13 +76,13 @@ export function TrimRange({
       />
       {/* Start handle */}
       <div
-        className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-surface border border-border shadow-sm transition-shadow hover:shadow-md cursor-ew-resize"
+        className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-surface border-2 border-accent shadow-md transition-shadow hover:shadow-lg cursor-ew-resize after:content-[''] after:absolute after:-inset-3 after:rounded-full"
         style={{ left: `${startPct}%` }}
         aria-hidden="true"
       />
       {/* End handle */}
       <div
-        className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-surface border border-border shadow-sm transition-shadow hover:shadow-md cursor-ew-resize"
+        className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-surface border-2 border-accent shadow-md transition-shadow hover:shadow-lg cursor-ew-resize after:content-[''] after:absolute after:-inset-3 after:rounded-full"
         style={{ left: `${endPct}%` }}
         aria-hidden="true"
       />
