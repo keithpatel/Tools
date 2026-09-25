@@ -339,7 +339,7 @@ export default function ScreenRecorder() {
   };
 
   return (
-    <ToolLayout>
+    <ToolLayout title="" description="">
       <div className="space-y-6">
         {error && (
           <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-sm flex items-center gap-3">

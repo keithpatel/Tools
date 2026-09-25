@@ -8,8 +8,8 @@ export function ToolLayout({
   children,
   faq,
 }: {
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
   children: ReactNode;
   faq?: { q: string; a: string }[];
 }) {
