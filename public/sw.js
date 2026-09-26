@@ -1,8 +1,9 @@
 // Service Worker for MultiTool / Mahant Tools
-const CACHE_NAME = "multitool-cache-v1";
+const CACHE_NAME = "multitool-cache-v2";
 
 const STATIC_ASSETS = [
   "/",
+  "/guides",
   "/manifest.json",
   "/favicon.ico",
   "/icon-192.svg",

@@ -42,6 +42,21 @@ function HeroSearch() {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         onFocus={() => setFocused(true)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && filtered.length > 0) {
+            const first = filtered[0];
+            setQuery("");
+            setFocused(false);
+            router.push(`/tools/${first.slug}`);
+          }
+          if (e.key === "Escape") {
+            setQuery("");
+            setFocused(false);
+          }
+        }}
+        autoComplete="off"
+        spellCheck={false}
+        aria-label="Search tools"
         className="w-full pl-12 pr-4 py-3.5 sm:py-4 text-base rounded-full border border-border-soft bg-surface text-text-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-accent/25 focus:border-accent/40 transition-all placeholder:text-text-secondary/60"
       />
       {focused && filtered.length > 0 && (

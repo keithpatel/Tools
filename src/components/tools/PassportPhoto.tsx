@@ -5,7 +5,8 @@ import { ToolLayout } from "@/components/ToolLayout";
 import { DropZone } from "@/components/DropZone";
 import { ResultPanel } from "@/components/ResultPanel";
 import { Button } from "@/components/ui/Button";
-import { Download, Eye, EyeOff } from "lucide-react";
+import { checkFiles } from "@/lib/fileLimits";
+import { Download, Eye, EyeOff, Move, RotateCcw, ZoomIn, ZoomOut } from "lucide-react";
 
 interface SizePreset {
   id: string;
@@ -62,8 +63,19 @@ export default function PassportPhoto() {
   const [guides, setGuides] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  // Pan/zoom framing in output-pixel space. zoom=1 is cover-fit.
+  const [zoom, setZoom] = useState(1);
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
   const baseCanvasRef = useRef<HTMLCanvasElement>(null);
   const guideCanvasRef = useRef<HTMLCanvasElement>(null);
+  const frameRef = useRef<HTMLDivElement>(null);
+  const dragRef = useRef<{ startX: number; startY: number; origX: number; origY: number; active: boolean }>({
+    startX: 0,
+    startY: 0,
+    origX: 0,
+    origY: 0,
+    active: false,
+  });
 
   const preset = PRESETS.find((p) => p.id === presetId) ?? PRESETS[0];
   const bg = BACKGROUNDS.find((b) => b.id === bgId) ?? BACKGROUNDS[0];
@@ -79,10 +91,15 @@ export default function PassportPhoto() {
     if (!ctx) return;
     ctx.fillStyle = bg.color;
     ctx.fillRect(0, 0, base.width, base.height);
-    const scale = Math.max(base.width / image.naturalWidth, base.height / image.naturalHeight);
+    const cover = Math.max(base.width / image.naturalWidth, base.height / image.naturalHeight);
+    const scale = cover * zoom;
     const w = image.naturalWidth * scale;
     const h = image.naturalHeight * scale;
-    ctx.drawImage(image, (base.width - w) / 2, (base.height - h) / 2, w, h);
+    // Clamp so the photo always covers the frame; if zoomed out smaller
+    // than the frame, center it so the background fill shows as margin.
+    const cx = w < base.width ? (base.width - w) / 2 : Math.min(0, Math.max(base.width - w, (base.width - w) / 2 + offset.x));
+    const cy = h < base.height ? (base.height - h) / 2 : Math.min(0, Math.max(base.height - h, (base.height - h) / 2 + offset.y));
+    ctx.drawImage(image, cx, cy, w, h);
 
     if (overlay) {
       overlay.width = preset.width;
@@ -115,14 +132,21 @@ export default function PassportPhoto() {
         }
       }
     }
-  }, [image, preset, bg, guides]);
+  }, [image, preset, bg, guides, zoom, offset]);
 
   const handleFiles = useCallback((files: File[]) => {
     const f = files[0];
     if (!f) return;
+    const limitError = checkFiles([f]);
+    if (limitError) {
+      setError(limitError);
+      return;
+    }
     setFile(f);
     setError("");
     setLoading(true);
+    setZoom(1);
+    setOffset({ x: 0, y: 0 });
     const url = URL.createObjectURL(f);
     const img = new Image();
     img.onload = () => {
@@ -134,6 +158,41 @@ export default function PassportPhoto() {
       setLoading(false);
     };
     img.src = url;
+  }, []);
+
+  const resetFraming = useCallback(() => {
+    setZoom(1);
+    setOffset({ x: 0, y: 0 });
+  }, []);
+
+  // Drag-to-pan on the preview. Converts CSS pixels to canvas pixels.
+  const onPointerDown = useCallback(
+    (e: React.PointerEvent) => {
+      if (!image) return;
+      const canvas = baseCanvasRef.current;
+      if (!canvas) return;
+      (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
+      dragRef.current = { startX: e.clientX, startY: e.clientY, origX: offset.x, origY: offset.y, active: true };
+    },
+    [image, offset]
+  );
+
+  const onPointerMove = useCallback((e: React.PointerEvent) => {
+    const d = dragRef.current;
+    if (!d.active) return;
+    const canvas = baseCanvasRef.current;
+    if (!canvas) return;
+    const rect = canvas.getBoundingClientRect();
+    const kx = canvas.width / rect.width;
+    const ky = canvas.height / rect.height;
+    setOffset({
+      x: d.origX + (e.clientX - d.startX) * kx,
+      y: d.origY + (e.clientY - d.startY) * ky,
+    });
+  }, []);
+
+  const endDrag = useCallback(() => {
+    dragRef.current.active = false;
   }, []);
 
   const handleDownload = () => {
@@ -176,7 +235,10 @@ export default function PassportPhoto() {
               <select
                 id="size-preset"
                 value={presetId}
-                onChange={(e) => setPresetId(e.target.value)}
+                onChange={(e) => {
+                  setPresetId(e.target.value);
+                  setOffset({ x: 0, y: 0 });
+                }}
                 className="mt-1 w-full min-h-[44px] rounded-xl border border-border-soft bg-surface px-3 py-2 text-sm text-text-primary"
               >
                 {PRESETS.map((p) => (
@@ -205,7 +267,7 @@ export default function PassportPhoto() {
             </div>
           </div>
 
-          <div>
+          <div className="flex flex-wrap gap-2">
             <Button
               variant={guides ? "primary" : "outline"}
               size="sm"
@@ -215,10 +277,59 @@ export default function PassportPhoto() {
               {guides ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
               {guides ? "Hide alignment guides" : "Show alignment guides"}
             </Button>
+            <Button variant="outline" size="sm" onClick={resetFraming} className="min-h-[44px] sm:min-h-0">
+              <RotateCcw className="w-4 h-4" />
+              Reset framing
+            </Button>
+          </div>
+
+          <div className="rounded-[18px] border border-border-soft bg-surface p-4 space-y-2">
+            <div className="flex items-center gap-2 text-sm font-medium">
+              <Move className="w-4 h-4 text-accent" aria-hidden="true" />
+              Adjust framing
+              <span className="ml-auto text-xs font-normal text-text-secondary">{Math.round(zoom * 100)}%</span>
+            </div>
+            <p className="text-xs text-text-secondary">Drag the photo to move it. Zoom out to fit your whole head inside the oval guide.</p>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setZoom((z) => Math.max(0.3, +(z - 0.1).toFixed(2)))}
+                aria-label="Zoom out"
+                className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl border border-border-soft hover:bg-surface-hover transition-colors cursor-pointer"
+              >
+                <ZoomOut className="w-4 h-4" />
+              </button>
+              <input
+                type="range"
+                min={0.3}
+                max={3}
+                step={0.05}
+                value={zoom}
+                onChange={(e) => setZoom(Number(e.target.value))}
+                aria-label="Zoom"
+                className="flex-1 accent-accent min-h-[44px]"
+              />
+              <button
+                type="button"
+                onClick={() => setZoom((z) => Math.min(3, +(z + 0.1).toFixed(2)))}
+                aria-label="Zoom in"
+                className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl border border-border-soft hover:bg-surface-hover transition-colors cursor-pointer"
+              >
+                <ZoomIn className="w-4 h-4" />
+              </button>
+            </div>
           </div>
 
           <div className="flex justify-center">
-            <div className="relative inline-block rounded-xl overflow-hidden border border-border-soft bg-surface">
+            <div
+              ref={frameRef}
+              onPointerDown={onPointerDown}
+              onPointerMove={onPointerMove}
+              onPointerUp={endDrag}
+              onPointerCancel={endDrag}
+              onPointerLeave={endDrag}
+              className="relative inline-block rounded-xl overflow-hidden border border-border-soft bg-surface touch-none select-none cursor-move"
+            >
               <canvas
                 ref={baseCanvasRef}
                 className="block w-auto max-w-full max-h-[420px] sm:max-h-[520px]"

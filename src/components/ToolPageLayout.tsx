@@ -154,8 +154,13 @@ export function ToolPageLayout({ slug, children }: { slug: string; children: Rea
 
   useEffect(() => {
     const incoming = consumeOutput();
-    if (incoming) setChainInput(incoming);
-  }, [consumeOutput]);
+    if (incoming) {
+      setChainInput(incoming);
+    } else {
+      // Fresh tool open (no chained output) — start at the top.
+      window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
+    }
+  }, [slug]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!tool) {
     return <div className="text-center py-12 text-text-secondary">Tool not found</div>;

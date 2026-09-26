@@ -1,8 +1,10 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { Suspense } from "react";
 import { getToolBySlug } from "@/data/tools";
 import { ToolPageLayout } from "@/components/ToolPageLayout";
+import { ToolSkeleton } from "@/components/ToolSkeleton";
 
 const toolComponents: Record<string, any> = {
   "merge-pdf": dynamic(() => import("@/components/tools/MergePDF"), { ssr: false }),
@@ -113,7 +115,9 @@ export function ToolPageClient({ slug }: { slug: string }) {
 
   return (
     <ToolPageLayout slug={slug}>
-      <Component />
+      <Suspense fallback={<ToolSkeleton />}>
+        <Component />
+      </Suspense>
     </ToolPageLayout>
   );
 }
