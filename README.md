@@ -1,6 +1,6 @@
 # Mahant Tools
 
-A free, fast, and powerful collection of 50+ browser-based developer and productivity tools. No uploads required — everything runs locally in your browser.
+A free, fast, and powerful collection of 97+ browser-based developer and productivity tools. No uploads required — everything runs locally in your browser.
 
 🌐 **Live Site:** [https://mahant-tools.vercel.app/](https://mahant-tools.vercel.app/)
 
