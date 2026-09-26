@@ -25,6 +25,8 @@ const chains: Record<WorkflowOutputType, string[]> = {
     "watermark-adder",
     "favicon-generator",
     "image-to-base64",
+    "qr-scanner",
+    "blur-image",
   ],
   pdf: [
     "protect-pdf",
@@ -43,6 +45,8 @@ const chains: Record<WorkflowOutputType, string[]> = {
     "rotate-pdf",
     "extract-text",
     "reorder-pdf",
+    "redact-pdf",
+    "pdf-editor",
   ],
   text: [
     "word-counter",
@@ -57,13 +61,19 @@ const chains: Record<WorkflowOutputType, string[]> = {
     "hash-generator",
     "base64-encoder",
     "url-encoder",
+    "readability-analyzer",
+    "text-to-speech",
+    "jwt-decoder",
+    "timestamp-converter",
   ],
-  json: ["json-to-csv", "json-formatter"],
-  csv: ["json-to-csv"],
+  json: ["json-to-csv", "json-formatter", "yaml-converter"],
+  csv: ["json-to-csv", "csv-viewer"],
   "file-batch": [
     "images-to-pdf",
     "collage-maker",
     "merge-pdf",
+    "zip-creator",
+    "gif-splitter",
   ],
   "video-frames": [
     "collage-maker",
@@ -76,6 +86,8 @@ const chains: Record<WorkflowOutputType, string[]> = {
   ],
   audio: [
     "extract-audio",
+    "audio-trimmer",
+    "audio-converter",
   ],
 };
 

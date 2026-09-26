@@ -3,7 +3,7 @@ export interface Tool {
   name: string;
   slug: string;
   description: string;
-  category: "pdf" | "image" | "text" | "developer" | "utility" | "video";
+  category: "pdf" | "image" | "text" | "developer" | "utility" | "video" | "audio" | "file";
   icon: string;
 }
 
@@ -14,6 +14,8 @@ export const categories = [
   { id: "developer", label: "Developer Tools", icon: "Code", color: "#6d28d9" },
   { id: "utility", label: "Utility Tools", icon: "Wrench", color: "#047857" },
   { id: "video", label: "Video Tools", icon: "Film", color: "#0d9488" },
+  { id: "audio", label: "Audio Tools", icon: "Music", color: "#7c3aed" },
+  { id: "file", label: "File Tools", icon: "FolderOpen", color: "#475569" },
 ] as const;
 
 export type CategoryId = (typeof categories)[number]["id"];
@@ -103,6 +105,44 @@ export const tools: Tool[] = [
   { id: 52, name: "Screen & Webcam Recorder", slug: "screen-recorder", description: "Record screen, webcam, or picture-in-picture with audio directly in browser", category: "video", icon: "Video" },
   { id: 53, name: "Video Trimmer", slug: "video-trimmer", description: "Cut and trim videos to exact timestamps without uploading", category: "video", icon: "Scissors" },
   { id: 54, name: "Extract Audio", slug: "extract-audio", description: "Extract audio track from video files into studio-quality WAV format", category: "video", icon: "Volume2" },
+
+  // Developer Tools — batch 2
+  { id: 75, name: "JWT Decoder", slug: "jwt-decoder", description: "Decode JWT header and payload instantly in your browser", category: "developer", icon: "KeyRound" },
+  { id: 76, name: "Timestamp Converter", slug: "timestamp-converter", description: "Convert Unix timestamps to dates and back", category: "developer", icon: "Clock" },
+  { id: 77, name: "Cron Explainer", slug: "cron-explainer", description: "Explain cron expressions in plain English with next runs", category: "developer", icon: "Timer" },
+  { id: 78, name: "YAML to JSON", slug: "yaml-converter", description: "Convert between YAML and JSON formats", category: "developer", icon: "FileCode2" },
+  { id: 79, name: "XML Formatter", slug: "xml-formatter", description: "Format, validate, and minify XML documents", category: "developer", icon: "Braces" },
+  { id: 87, name: "CSS Gradient Generator", slug: "css-gradient-generator", description: "Create CSS gradients and box-shadows visually", category: "developer", icon: "Palette" },
+
+  // Text Tools — batch 2
+  { id: 80, name: "Readability Analyzer", slug: "readability-analyzer", description: "Check reading level, grade, and reading time", category: "text", icon: "BookOpen" },
+  { id: 81, name: "CSV Viewer", slug: "csv-viewer", description: "View, search, and sort CSV files as a table", category: "text", icon: "Table" },
+  { id: 82, name: "Text to Speech", slug: "text-to-speech", description: "Read text aloud with natural voices", category: "text", icon: "Volume2" },
+
+  // Utility Tools — batch 2
+  { id: 83, name: "Pomodoro Timer", slug: "pomodoro-timer", description: "Focus timer with stopwatch and countdown modes", category: "utility", icon: "AlarmClock" },
+  { id: 84, name: "Date Calculator", slug: "date-calculator", description: "Date difference, business days, and timezone converter", category: "utility", icon: "CalendarDays" },
+  { id: 85, name: "Loan Calculator", slug: "loan-calculator", description: "EMI, interest, tip, and percentage calculators", category: "utility", icon: "Calculator" },
+  { id: 86, name: "Invoice Generator", slug: "invoice-generator", description: "Create and print professional invoices as PDF", category: "utility", icon: "Receipt" },
+
+  // Image Tools — batch 2
+  { id: 88, name: "QR Scanner", slug: "qr-scanner", description: "Scan and decode QR codes from images", category: "image", icon: "ScanLine" },
+  { id: 89, name: "HEIC Converter", slug: "heic-converter", description: "Convert iPhone HEIC photos to JPG, PNG, or WebP", category: "image", icon: "Repeat" },
+  { id: 90, name: "GIF Splitter", slug: "gif-splitter", description: "Split animated GIFs into individual frames", category: "image", icon: "Images" },
+  { id: 91, name: "SVG Optimizer", slug: "svg-optimizer", description: "Minify and optimize SVG files", category: "image", icon: "Shapes" },
+  { id: 92, name: "Blur Image", slug: "blur-image", description: "Blur or pixelate parts of an image for privacy", category: "image", icon: "Sparkles" },
+
+  // PDF Tools — batch 2
+  { id: 93, name: "Redact PDF", slug: "redact-pdf", description: "Black out sensitive text in PDFs permanently", category: "pdf", icon: "Eraser" },
+  { id: 98, name: "PDF Editor", slug: "pdf-editor", description: "Edit PDF text, draw, highlight, add images, rotate and delete pages", category: "pdf", icon: "PenTool" },
+
+  // File Tools (new)
+  { id: 94, name: "ZIP Creator", slug: "zip-creator", description: "Create and extract ZIP archives in your browser", category: "file", icon: "Archive" },
+
+  // Audio Tools (new)
+  { id: 95, name: "Audio Trimmer", slug: "audio-trimmer", description: "Trim audio files to exact timestamps", category: "audio", icon: "Scissors" },
+  { id: 96, name: "Voice Recorder", slug: "voice-recorder", description: "Record voice notes with your microphone", category: "audio", icon: "Mic" },
+  { id: 97, name: "Audio Converter", slug: "audio-converter", description: "Convert audio files to WAV format", category: "audio", icon: "Repeat" },
 ];
 
 export function getToolsByCategory(category: CategoryId) {

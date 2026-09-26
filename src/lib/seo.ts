@@ -21,6 +21,8 @@ const CATEGORY_BLURB: Record<string, string> = {
   developer: "Format JSON, encode data, generate QR codes and test regex online.",
   utility: "Generate passwords, convert units, calculate age and BMI online.",
   video: "Trim video, extract frames and audio, and record your screen online.",
+  audio: "Trim, record, and convert audio files online.",
+  file: "Create and extract ZIP archives online.",
 };
 
 export function categoryMeta(id: string) {
@@ -41,7 +43,9 @@ const ADJACENT: Record<string, string[]> = {
   text: ["developer", "utility"],
   developer: ["text", "utility"],
   utility: ["text", "developer"],
-  video: ["image", "utility"],
+  video: ["image", "utility", "audio"],
+  audio: ["video", "utility"],
+  file: ["pdf", "image"],
 };
 
 /**
