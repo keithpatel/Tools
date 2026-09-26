@@ -5,11 +5,26 @@ import { ToolLayout } from "@/components/ToolLayout";
 import { DropZone } from "@/components/DropZone";
 import { ResultPanel } from "@/components/ResultPanel";
 import { Button } from "@/components/ui/Button";
-import { Download, ImagePlus, Move, Type } from "lucide-react";
+import { Download, ImagePlus, Move, Type, Share2, Check } from "lucide-react";
 
 interface TextPos {
   x: number;
   y: number;
+}
+
+function initialMemeParams() {
+  const d = { top: "TOP TEXT", bottom: "BOTTOM TEXT", size: 48 };
+  if (typeof window === "undefined") return d;
+  try {
+    const sp = new URLSearchParams(window.location.search);
+    const t = sp.get("top");
+    const b = sp.get("bottom");
+    const s = Number(sp.get("size"));
+    if (t) d.top = t.slice(0, 80);
+    if (b) d.bottom = b.slice(0, 80);
+    if (!isNaN(s)) d.size = Math.min(120, Math.max(20, s));
+  } catch {}
+  return d;
 }
 
 const SAMPLE_W = 800;
@@ -50,13 +65,27 @@ function drawMemeText(
 export default function MemeGenerator() {
   const [image, setImage] = useState<HTMLImageElement | null>(null);
   const [isSample, setIsSample] = useState(false);
-  const [topText, setTopText] = useState("TOP TEXT");
-  const [bottomText, setBottomText] = useState("BOTTOM TEXT");
-  const [fontSize, setFontSize] = useState(48);
+  const [initMeme] = useState(initialMemeParams);
+  const [topText, setTopText] = useState(initMeme.top);
+  const [bottomText, setBottomText] = useState(initMeme.bottom);
+  const [fontSize, setFontSize] = useState(initMeme.size);
   const [topPos, setTopPos] = useState<TextPos>({ x: 0.5, y: 0.12 });
   const [bottomPos, setBottomPos] = useState<TextPos>({ x: 0.5, y: 0.88 });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [copiedLink, setCopiedLink] = useState(false);
+
+  const sharePreset = async () => {
+    try {
+      const url = new URL(window.location.href);
+      url.searchParams.set("top", topText);
+      url.searchParams.set("bottom", bottomText);
+      url.searchParams.set("size", String(fontSize));
+      await navigator.clipboard.writeText(url.toString());
+      setCopiedLink(true);
+      setTimeout(() => setCopiedLink(false), 2000);
+    } catch {}
+  };
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const dragRef = useRef<"top" | "bottom" | null>(null);
 
@@ -278,6 +307,10 @@ export default function MemeGenerator() {
           <div className="flex flex-col sm:flex-row gap-2">
             <Button variant="outline" size="sm" onClick={reset} className="min-h-[44px] sm:min-h-0">
               New Meme
+            </Button>
+            <Button variant="secondary" size="sm" onClick={sharePreset} className="min-h-[44px] sm:min-h-0">
+              {copiedLink ? <Check className="w-4 h-4" /> : <Share2 className="w-4 h-4" />}
+              {copiedLink ? "Link copied" : "Share preset"}
             </Button>
           </div>
         </div>

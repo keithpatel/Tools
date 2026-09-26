@@ -13,6 +13,8 @@ import { toolMeta } from "./ToolMeta";
 import type { PendingOutput } from "@/data/workflow";
 import { StructuredData } from "./StructuredData";
 import { getRelatedTools } from "@/lib/seo";
+import { ToolErrorBoundary } from "./ToolErrorBoundary";
+import { OfflineBadge } from "./OfflineBadge";
 
 const ChainInputContext = createContext<PendingOutput | null>(null);
 export const useChainInput = () => useContext(ChainInputContext);
@@ -218,17 +220,18 @@ export function ToolPageLayout({ slug, children }: { slug: string; children: Rea
                 <p className="text-xs sm:text-sm text-text-secondary mt-0.5 line-clamp-2">{tool.description}</p>
               </div>
             </div>
-            <div className="mt-3 pt-3 border-t border-border-soft flex items-center gap-2 text-xs">
+            <div className="mt-3 pt-3 border-t border-border-soft flex flex-wrap items-center gap-2 text-xs">
               <span className="inline-flex items-center gap-1.5 font-semibold text-success-text bg-success-soft border border-success-border rounded-full px-3 py-1.5">
                 <LucideIcons.Lock className="w-3.5 h-3.5" aria-hidden="true" />
                 Processed locally — your files never leave your device
               </span>
+              <OfflineBadge slug={slug} />
             </div>
           </div>
 
           <div ref={toolRef} className="rounded-[18px] border border-border-soft bg-surface-raised shadow-resting p-4 sm:p-6">
             <ChainInputContext.Provider value={chainInput}>
-              {children}
+              <ToolErrorBoundary toolName={tool.name}>{children}</ToolErrorBoundary>
             </ChainInputContext.Provider>
           </div>
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useCallback, type ReactNode, type Dispatch, type SetStateAction } from "react";
+import { createContext, useContext, useState, useCallback, useRef, type ReactNode, type Dispatch, type SetStateAction } from "react";
 import type { PendingOutput } from "@/data/workflow";
 
 interface WorkflowContextValue {
@@ -13,23 +13,39 @@ interface WorkflowContextValue {
 
 const WorkflowContext = createContext<WorkflowContextValue | null>(null);
 
-export function WorkflowProvider({ children }: { children: ReactNode }) {
-  const [pending, setPending] = useState<PendingOutput | null>(null);
+function readSessionMeta(): PendingOutput | null {
+  return null; // Blobs can't survive reload; session-only by design (privacy)
+}
 
-  const sendOutput = useCallback((output: PendingOutput) => {
-    setPending(output);
+export function WorkflowProvider({ children }: { children: ReactNode }) {
+  const [pending, setPendingState] = useState<PendingOutput | null>(null);
+  const ref = useRef<PendingOutput | null>(null);
+
+  const setPending: WorkflowContextValue["setPending"] = useCallback((next) => {
+    setPendingState((prev) => {
+      const resolved = typeof next === "function" ? (next as (p: PendingOutput | null) => PendingOutput | null)(prev) : next;
+      ref.current = resolved;
+      return resolved;
+    });
   }, []);
 
+  const sendOutput = useCallback((output: PendingOutput) => {
+    ref.current = output;
+    setPendingState(output);
+  }, []);
+
+  // Synchronous consume: returns ref value immediately, then clears.
   const consumeOutput = useCallback(() => {
-    let val: PendingOutput | null = null;
-    setPending((prev) => {
-      val = prev;
-      return null;
-    });
+    const val = ref.current ?? readSessionMeta();
+    ref.current = null;
+    setPendingState(null);
     return val;
   }, []);
 
-  const clear = useCallback(() => setPending(null), []);
+  const clear = useCallback(() => {
+    ref.current = null;
+    setPendingState(null);
+  }, []);
 
   return (
     <WorkflowContext.Provider value={{ pending, setPending, sendOutput, consumeOutput, clear }}>

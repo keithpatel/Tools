@@ -6,7 +6,8 @@
     "dev": "next dev --webpack -p 3456",
     "build": "next build && next-sitemap --config next-sitemap.config.js",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "vitest run"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -42,6 +43,7 @@
     "marked": "^18.0.6",
     "next": "16.2.10",
     "next-sitemap": "^4.2.3",
+    "onnxruntime-web": "^1.21.0",
     "papaparse": "^5.5.4",
     "pdf-lib": "^1.17.1",
     "pdfjs-dist": "^6.1.200",
@@ -67,7 +69,9 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.10",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vite": "^8.3.1",
+    "vitest": "^5.0.2"
   },
   "description": "This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).",
   "main": "index.js",

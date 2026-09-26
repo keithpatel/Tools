@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { tools, categories } from "@/data/tools";
+import { collections } from "@/data/workflow";
 import { ToolCard } from "@/components/ToolCard";
 import { useFavorites } from "@/lib/useFavorites";
 import { useHistory } from "@/lib/useHistory";
@@ -149,6 +150,40 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Collections — curated bundles for common jobs */}
+        <section aria-label="Tool collections" className="mb-8 sm:mb-10">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-base font-heading font-semibold tracking-tight flex items-center gap-2 text-text-primary">
+              <span className="flex items-center justify-center w-7 h-7 rounded-[10px] bg-brand-50 dark:bg-brand-950 border border-brand-200/60 dark:border-brand-800/60">
+                <LucideIcons.Layers className="w-4 h-4 text-accent" aria-hidden="true" />
+              </span>
+              Collections
+            </h2>
+            <Link href="/guides" className="text-[11px] font-medium uppercase tracking-wider text-text-secondary hover:text-accent transition-colors">
+              Guides →
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+            {collections.map((c) => (
+              <div key={c.slug} className="rounded-[18px] border border-border-soft bg-surface shadow-resting p-4">
+                <h3 className="text-sm font-bold">{c.title}</h3>
+                <p className="text-xs text-text-secondary mt-0.5 mb-3">{c.description}</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {c.tools.map((slug) => {
+                    const t = tools.find((x) => x.slug === slug);
+                    if (!t) return null;
+                    return (
+                      <Link key={slug} href={`/tools/${slug}`} className="text-xs px-3 py-1.5 rounded-full bg-surface-hover border border-border-soft hover:border-accent/40 hover:text-accent transition-all min-h-[32px] inline-flex items-center">
+                        {t.name}
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {favTools.length > 0 && (
           <section className="mb-6">
             <h2 className="text-sm font-heading font-semibold flex items-center gap-2 text-amber-500 mb-3">
@@ -199,7 +234,7 @@ export default function HomePage() {
 
         {grouped.map((cat) =>
           cat.items.length > 0 ? (
-            <section key={cat.id} className="mb-8 sm:mb-12">
+            <section key={cat.id} className="mb-8 sm:mb-12" style={{ contentVisibility: "auto", containIntrinsicSize: "auto 600px" }}>
               <div className="flex items-center justify-between mb-3 sm:mb-4">
                 <h2 className="text-base font-heading font-semibold tracking-tight flex items-center gap-2.5">
                   <span

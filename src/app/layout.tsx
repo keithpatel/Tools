@@ -9,8 +9,11 @@ import { OnboardingTooltip } from "@/components/OnboardingTooltip";
 import { InstallPrompt } from "@/components/InstallPrompt";
 import { PageTransition } from "@/components/PageTransition";
 import { WorkflowProvider } from "@/lib/useWorkflowStore";
+import { DropQueueProvider } from "@/lib/useDropQueue";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 import { GlobalPasteHandler } from "@/components/GlobalPasteHandler";
+import { GlobalDropHandler } from "@/components/GlobalDropHandler";
+import { RecentOutputDock } from "@/components/RecentOutputDock";
 import { ToastProvider } from "@/components/Toast";
 
 const headingFont = Geist({
@@ -62,6 +65,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-screen flex flex-col" suppressHydrationWarning>
         <ThemeProvider>
           <WorkflowProvider>
+            <DropQueueProvider>
             <ToastProvider>
               <GlobalNav />
               <main className="flex-1">
@@ -73,7 +77,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <OnboardingTooltip />
               <ServiceWorkerRegister />
               <GlobalPasteHandler />
+              <GlobalDropHandler />
+              <RecentOutputDock />
             </ToastProvider>
+            </DropQueueProvider>
           </WorkflowProvider>
         </ThemeProvider>
       </body>

@@ -33,11 +33,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       type: "website",
       url,
       siteName: "MultiTool",
+      images: [{ url: "/icon-512.svg", width: 512, height: 512, alt: tool.name }],
     },
     twitter: {
       card: "summary_large_image",
       title: meta?.ogTitle || title,
       description: meta?.ogDesc || description,
+      images: ["/icon-512.svg"],
     },
   };
 }

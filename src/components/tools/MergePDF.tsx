@@ -5,7 +5,8 @@ import { ToolLayout } from "@/components/ToolLayout";
 import { DropZone } from "@/components/DropZone";
 import { FilePreview } from "@/components/FilePreview";
 import { ResultPanel } from "@/components/ResultPanel";
-import { PDFDocument } from "pdf-lib";
+import { loadPdfLib } from "@/lib/pdf";
+import { checkFiles } from "@/lib/fileLimits";
 import { useWorkflowStore } from "@/lib/useWorkflowStore";
 
 export default function MergePDF() {
@@ -30,9 +31,15 @@ export default function MergePDF() {
 
   const merge = async () => {
     if (files.length < 2) return;
+    const limitError = checkFiles(files);
+    if (limitError) {
+      setError(limitError);
+      return;
+    }
     setMerging(true);
     setError("");
     try {
+      const { PDFDocument } = await loadPdfLib();
       const mergedPdf = await PDFDocument.create();
       for (const file of files) {
         const bytes = await file.arrayBuffer();

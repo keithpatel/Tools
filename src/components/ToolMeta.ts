@@ -21,6 +21,8 @@ function make(slug: string, overrides: Partial<ToolMeta>): ToolMeta {
     faq: [
       { q: "Is this tool free?", a: "Yes, completely free with no sign-up required." },
       { q: "Are my files uploaded to a server?", a: "No. Everything runs in your browser. Files never leave your device." },
+      { q: "Does this work offline?", a: "Yes. After the page loads once, the tool keeps working without an internet connection." },
+      { q: "Is there a file size limit?", a: "Large files (50MB+ PDFs, 25MB+ images) may be slow on low-memory devices. Try smaller files or compress them first." },
     ],
   };
   return { ...defaults, ...overrides };
@@ -47,6 +49,7 @@ export const toolMeta: Record<string, ToolMeta> = {
       { q: "Is there a limit on how many PDFs I can merge?", a: "There is no hard limit, but very large files or many files (20+) may cause slower performance since everything runs in your browser's memory." },
       { q: "Are my files uploaded to a server?", a: "No. All processing happens locally in your browser using WebAssembly. Your files never leave your device." },
       { q: "What happens to the original file order?", a: "You can reorder files before merging using the move buttons next to each file." },
+      { q: "What can I do after merging?", a: "Use Compress PDF to shrink the result, or Split PDF / Reorder PDF to fine-tune pages — use Send to… without re-uploading." },
     ],
   },
   "split-pdf": {
@@ -89,6 +92,8 @@ export const toolMeta: Record<string, ToolMeta> = {
     faq: [
       { q: "How much can I compress a PDF?", a: "Results vary. Standard mode removes metadata and tightens the structure. Maximum mode re-renders pages as images, which can reduce size by 50-80% but may affect text selectability." },
       { q: "Is this safe for confidential documents?", a: "Yes. All processing is done in your browser using WebAssembly. No data is ever transmitted over the network." },
+      { q: "What if my PDF is still too big?", a: "Try Maximum mode, or convert pages with PDF to Images then back with Images to PDF at lower quality. Then use Send to… to chain tools." },
+      { q: "Does compression work offline?", a: "Yes, after the page loads once. Everything runs locally." },
     ],
   },
   "pdf-to-images": make("PDF to Images", {

@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { ToolLayout } from "@/components/ToolLayout";
+import { Share2, Check } from "lucide-react";
 
 function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
   const m = hex.replace("#", "").match(/^([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/);
@@ -52,10 +53,36 @@ function parseHsl(input: string): { h: number; s: number; l: number } | null {
 }
 
 export default function ColorConverter() {
-  const [hex, setHex] = useState("#3498db");
-  const [rgb, setRgb] = useState("rgb(52,152,219)");
-  const [hsl, setHsl] = useState("hsl(210,70%,53%)");
-  const [preview, setPreview] = useState("#3498db");
+  const [hex, setHex] = useState(() => {
+    if (typeof window === "undefined") return "#3498db";
+    try {
+      const h = new URLSearchParams(window.location.search).get("hex");
+      if (h && /^#[0-9a-fA-F]{6}$/.test(h)) return h;
+    } catch {}
+    return "#3498db";
+  });
+  const [rgb, setRgb] = useState(() => {
+    const c = hexToRgb(hex);
+    return c ? `rgb(${c.r},${c.g},${c.b})` : "rgb(52,152,219)";
+  });
+  const [hsl, setHsl] = useState(() => {
+    const c = hexToRgb(hex);
+    if (!c) return "hsl(210,70%,53%)";
+    const h = rgbToHsl(c.r, c.g, c.b);
+    return `hsl(${h.h},${h.s}%,${h.l}%)`;
+  });
+  const [preview, setPreview] = useState(hex);
+  const [copiedLink, setCopiedLink] = useState(false);
+
+  const share = async () => {
+    try {
+      const url = new URL(window.location.href);
+      url.searchParams.set("hex", hex);
+      await navigator.clipboard.writeText(url.toString());
+      setCopiedLink(true);
+      setTimeout(() => setCopiedLink(false), 2000);
+    } catch {}
+  };
 
   const fromHex = useCallback((value: string) => {
     setHex(value);
@@ -102,6 +129,10 @@ export default function ColorConverter() {
       <div className="flex items-center gap-4 mb-6">
         <div className="w-16 h-16 rounded-lg border border-border shrink-0" style={{ backgroundColor: preview }} />
         <div className="text-xs text-text-secondary font-mono">{preview}</div>
+        <button onClick={share} className="ml-auto inline-flex items-center gap-1.5 px-3 py-2 text-xs font-medium border border-border rounded-lg hover:bg-surface-hover transition-colors min-h-[36px] cursor-pointer">
+          {copiedLink ? <Check className="w-3.5 h-3.5 text-success" /> : <Share2 className="w-3.5 h-3.5" />}
+          {copiedLink ? "Copied" : "Share"}
+        </button>
       </div>
       <div className="space-y-4">
         <div>

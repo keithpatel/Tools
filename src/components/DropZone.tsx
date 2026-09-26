@@ -33,8 +33,27 @@ export function DropZone({
         onFiles(customEvent.detail.files);
       }
     };
+    const handleDropQueue = () => {
+      // GlobalDropHandler staged files via useDropQueue; tools consume through
+      // the same paste channel is not possible (File objects can't go through
+      // CustomEvent detail reliably across routes), so DropZone also checks
+      // session queue through a lightweight window hook set by the provider.
+      try {
+        const q = (window as unknown as { __dropQueue?: File[] }).__dropQueue;
+        if (q?.length) {
+          onFiles([...q]);
+          (window as unknown as { __dropQueue?: File[] }).__dropQueue = [];
+        }
+      } catch {}
+    };
     window.addEventListener("tool-paste-files", handlePasteFiles);
-    return () => window.removeEventListener("tool-paste-files", handlePasteFiles);
+    window.addEventListener("tool-drop-queue", handleDropQueue);
+    // consume immediately on mount (arrived via router.push after global drop)
+    handleDropQueue();
+    return () => {
+      window.removeEventListener("tool-paste-files", handlePasteFiles);
+      window.removeEventListener("tool-drop-queue", handleDropQueue);
+    };
   }, [onFiles]);
 
   const flashAccepted = useCallback(() => {
@@ -75,6 +94,7 @@ export function DropZone({
       {/* Mobile-Native Upload Card (hidden on md+) */}
       <button
         type="button"
+        data-dropzone="true"
         onClick={() => inputRef.current?.click()}
         className="md:hidden w-full active:scale-[0.98] transition-all duration-200 ease-out cursor-pointer"
         aria-label="Tap to upload files from device"
@@ -111,6 +131,7 @@ export function DropZone({
       <div
         role="button"
         tabIndex={0}
+        data-dropzone="true"
         aria-label={label || "Drop files here or click to browse"}
         onKeyDown={(e) => {
           if (e.key === "Enter" || e.key === " ") {

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { tools } from "@/data/tools";
 import { ShieldCheck } from "lucide-react";
 import { Wordmark } from "./Wordmark";
+import { DataExport } from "./DataExport";
 
 export function Footer() {
   return (
@@ -10,9 +11,10 @@ export function Footer() {
         <div className="pt-2">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <Wordmark />
-            <nav className="flex items-center gap-1 text-xs" aria-label="Footer">
+            <nav className="flex flex-wrap items-center justify-center gap-1 text-xs" aria-label="Footer">
               {[
                 { label: "All Tools", href: "/" },
+                { label: "Guides", href: "/guides" },
                 { label: "About", href: "/about" },
                 { label: "Privacy", href: "/about" },
                 { label: "Contact", href: "/about" },
@@ -33,6 +35,9 @@ export function Footer() {
               All processing happens locally in your browser. No files are uploaded to any server.
             </p>
             <p className="text-xs text-text-secondary/60">{tools.length} free, privacy-first online tools.</p>
+            <div className="flex justify-center">
+              <DataExport />
+            </div>
           </div>
         </div>
       </div>

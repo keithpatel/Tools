@@ -3,8 +3,9 @@
 import { type ReactNode, useState, useRef, useEffect } from "react";
 import { Download, Copy, Check, CheckCircle2, Loader2, RotateCcw, Send, ChevronRight, AlertTriangle, Inbox } from "lucide-react";
 import { useWorkflowStore } from "@/lib/useWorkflowStore";
-import { getCompatibleTargets, getToolSuggestions, type WorkflowOutputType } from "@/data/workflow";
+import { getCompatibleTargets, type WorkflowOutputType } from "@/data/workflow";
 import { tools } from "@/data/tools";
+import { ContinueWithShelf } from "@/components/ContinueWithShelf";
 import { Button } from "@/components/ui/Button";
 import { useToast } from "@/components/Toast";
 import Link from "next/link";
@@ -94,7 +95,6 @@ export function ResultPanel({
   };
 
   const targets = sourceToolSlug && outputType ? getCompatibleTargets(outputType).filter((s) => s !== sourceToolSlug) : [];
-  const suggestions = sourceToolSlug && outputType ? getToolSuggestions(sourceToolSlug, outputType, 3) : [];
 
   // Determine the current primary action for the mobile sticky bottom bar
   const stickAction = onDownload
@@ -215,27 +215,8 @@ export function ResultPanel({
             </div>
           </div>
 
-          {suggestions.length > 0 && (
-            <div className="text-sm text-text-secondary">
-              <span className="mr-2 text-xs">Suggested next:</span>
-              <div className="inline-flex flex-wrap gap-1.5 mt-1">
-                {suggestions.map((slug) => {
-                  const t = tools.find((tool) => tool.slug === slug);
-                  if (!t) return null;
-                  return (
-                    <Link
-                      key={slug}
-                      href={`/tools/${slug}`}
-                      onClick={handleSendOutput}
-                      className="inline-flex items-center gap-1 px-3 py-1.5 bg-surface-hover rounded-full hover:bg-border text-xs text-text-secondary transition-colors min-h-[32px]"
-                    >
-                      {t.name}
-                      <Send className="w-3 h-3" />
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
+          {sourceToolSlug && outputType && (
+            <ContinueWithShelf sourceSlug={sourceToolSlug} outputType={outputType} compact />
           )}
         </div>
       )}
