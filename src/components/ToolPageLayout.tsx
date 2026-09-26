@@ -127,10 +127,18 @@ export function ToolPageLayout({ slug, children }: { slug: string; children: Rea
   const [chainInput, setChainInput] = useState<PendingOutput | null>(null);
 
   useEffect(() => {
-    const raw = localStorage.getItem("multitool-history");
-    const arr: { slug: string; ts: number }[] = raw ? JSON.parse(raw) : [];
-    const next = [{ slug, ts: Date.now() }, ...arr.filter((e) => e.slug !== slug)].slice(0, 10);
-    localStorage.setItem("multitool-history", JSON.stringify(next));
+    try {
+      const raw = localStorage.getItem("multitool-history");
+      const parsed = raw ? JSON.parse(raw) : [];
+      const arr: { slug: string; ts: number }[] = Array.isArray(parsed) ? parsed : [];
+      const next = [{ slug, ts: Date.now() }, ...arr.filter((e) => e.slug !== slug)].slice(0, 10);
+      localStorage.setItem("multitool-history", JSON.stringify(next));
+    } catch {
+      // Corrupted history — reset it rather than crash the page
+      try {
+        localStorage.setItem("multitool-history", JSON.stringify([{ slug, ts: Date.now() }]));
+      } catch {}
+    }
   }, [slug]);
 
   useEffect(() => {

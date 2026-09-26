@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "./ThemeProvider";
@@ -10,7 +9,6 @@ import { Wordmark } from "./Wordmark";
 import * as LucideIcons from "lucide-react";
 import { tools, categories } from "@/data/tools";
 import { cn } from "@/lib/utils";
-import { motion, AnimatePresence } from "framer-motion";
 import { useFavorites } from "@/lib/useFavorites";
 import { useHistory } from "@/lib/useHistory";
 
@@ -68,6 +66,16 @@ export function GlobalNav() {
     return () => {
       document.body.style.overflow = "";
     };
+  }, [mobileNavOpen]);
+
+  // Close drawer on Escape
+  useEffect(() => {
+    if (!mobileNavOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMobileNavOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
   }, [mobileNavOpen]);
 
   // Determine current context for Mobile Title & Back Button navigation
@@ -239,7 +247,9 @@ export function GlobalNav() {
 
             {/* Mobile menu trigger */}
             <button
+              type="button"
               onClick={() => openDrawer("menu")}
+              aria-expanded={mobileNavOpen}
               className="p-2.5 rounded-xl text-text-secondary hover:text-text-primary hover:bg-surface-hover active:scale-90 transition-all min-w-[44px] min-h-[44px] flex items-center justify-center cursor-pointer"
               aria-label="Open mobile menu"
             >
@@ -248,34 +258,35 @@ export function GlobalNav() {
           </div>
         </div>
 
-        {/* Mobile-Native Overflow Slide-In Drawer.
-            Portaled to document.body: the header's backdrop-blur makes it a
-            containing block for `fixed` descendants, which would squash the
-            drawer into the 56px header box instead of the viewport. */}
-        <AnimatePresence>
-          {mobileNavOpen &&
-            typeof document !== "undefined" &&
-            createPortal(
-              <>
-              {/* Dark blur overlay */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={() => setMobileNavOpen(false)}
-                className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs md:hidden"
-              />
+      </header>
 
-              {/* Menu Drawer */}
-              <motion.div
-                ref={mobileMenuRef}
-                initial={{ x: "100%" }}
-                animate={{ x: 0 }}
-                exit={{ x: "100%" }}
-                transition={{ type: "spring", damping: 26, stiffness: 240 }}
-                className="fixed top-0 right-0 bottom-0 w-[90%] max-w-[360px] z-50 bg-surface-raised border-l border-border shadow-2xl p-4 flex flex-col md:hidden overflow-hidden"
-                style={{ paddingTop: "calc(env(safe-area-inset-top, 0px) + 0.75rem)" }}
-              >
+      {/* Mobile drawer overlay — sibling of <header> (not inside it) so the
+          header's backdrop-blur containing block can't squash the fixed
+          positioning. CSS transition instead of framer-motion so the drawer
+          can never get stuck off-screen if animation fails to run. */}
+      <div
+        onClick={() => setMobileNavOpen(false)}
+        aria-hidden={!mobileNavOpen}
+        className={cn(
+          "fixed inset-0 z-[60] bg-black/60 backdrop-blur-xs md:hidden transition-opacity duration-200",
+          mobileNavOpen ? "opacity-100" : "pointer-events-none opacity-0"
+        )}
+      />
+
+      {/* Menu Drawer */}
+      <div
+        ref={mobileMenuRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Mobile menu"
+        aria-hidden={!mobileNavOpen}
+        inert={!mobileNavOpen}
+        className={cn(
+          "fixed top-0 right-0 bottom-0 w-[90%] max-w-[360px] z-[70] bg-surface-raised border-l border-border shadow-2xl p-4 flex flex-col md:hidden overflow-hidden transition-transform duration-300 ease-out",
+          mobileNavOpen ? "translate-x-0" : "translate-x-full"
+        )}
+        style={{ paddingTop: "calc(env(safe-area-inset-top, 0px) + 0.75rem)" }}
+      >
                 {/* Drawer Header */}
                 <div className="flex items-center justify-between pb-3 border-b border-border mb-3 shrink-0">
                   <Wordmark />
@@ -528,12 +539,7 @@ export function GlobalNav() {
                     </>
                   )}
                 </div>
-              </motion.div>
-              </>,
-              document.body
-            )}
-        </AnimatePresence>
-      </header>
+      </div>
 
       {/* Mobile Bottom Tab Navigation — floating pill, safe-area aware */}
       <nav
@@ -545,6 +551,7 @@ export function GlobalNav() {
           <Link
             href="/"
             aria-label="Home"
+            onClick={() => setMobileNavOpen(false)}
             aria-current={pathname === "/" && !mobileNavOpen ? "page" : undefined}
             className={`flex flex-col items-center justify-center gap-0.5 flex-1 min-w-0 min-h-[52px] rounded-xl transition-colors ${
               pathname === "/" && !mobileNavOpen
@@ -557,6 +564,7 @@ export function GlobalNav() {
           </Link>
 
           <button
+            type="button"
             onClick={openSearch}
             className="flex flex-col items-center justify-center gap-0.5 flex-1 min-w-0 min-h-[52px] rounded-xl text-text-secondary hover:text-text-primary active:bg-surface-hover transition-colors cursor-pointer"
             aria-label="Search tools"
@@ -566,7 +574,9 @@ export function GlobalNav() {
           </button>
 
           <button
+            type="button"
             onClick={() => openDrawer("favorites")}
+            aria-expanded={mobileNavOpen && drawerIntent === "favorites"}
             className={`flex flex-col items-center justify-center gap-0.5 flex-1 min-w-0 min-h-[52px] rounded-xl transition-colors cursor-pointer ${
               mobileNavOpen && drawerIntent === "favorites"
                 ? "bg-accent/10 text-accent font-semibold"
@@ -586,7 +596,9 @@ export function GlobalNav() {
           </button>
 
           <button
+            type="button"
             onClick={() => openDrawer("recent")}
+            aria-expanded={mobileNavOpen && drawerIntent === "recent"}
             className={`flex flex-col items-center justify-center gap-0.5 flex-1 min-w-0 min-h-[52px] rounded-xl transition-colors cursor-pointer ${
               mobileNavOpen && drawerIntent === "recent"
                 ? "bg-accent/10 text-accent font-semibold"
@@ -599,9 +611,11 @@ export function GlobalNav() {
           </button>
 
           <button
+            type="button"
             onClick={() => openDrawer("menu")}
+            aria-expanded={mobileNavOpen && drawerIntent === "menu"}
             className={`flex flex-col items-center justify-center gap-0.5 flex-1 min-w-0 min-h-[52px] rounded-xl transition-colors cursor-pointer ${
-              mobileNavOpen && drawerIntent === "menu"
+              mobileNavOpen && drawerIntent === "menu"}
                 ? "bg-accent/10 text-accent font-semibold"
                 : "text-text-secondary hover:text-text-primary active:bg-surface-hover"
             }`}

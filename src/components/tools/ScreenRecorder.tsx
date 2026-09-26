@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/Button";
 import { Segmented } from "@/components/ui/Segmented";
 import { ResultPanel } from "@/components/ResultPanel";
 import { useWorkflowStore } from "@/lib/useWorkflowStore";
+import { ZoomEditor } from "./screen-recorder/ZoomEditor";
+import type { ZoomKeyframe } from "./screen-recorder/zoomTypes";
 import {
   Video,
   Monitor,
@@ -17,6 +19,7 @@ import {
   RotateCcw,
   Download,
   Sparkles,
+  ZoomIn,
   AlertCircle,
 } from "lucide-react";
 
@@ -31,6 +34,10 @@ export default function ScreenRecorder() {
   const [recordTime, setRecordTime] = useState(0);
   const [recordedBlob, setRecordedBlob] = useState<Blob | null>(null);
   const [recordedUrl, setRecordedUrl] = useState<string | null>(null);
+  const [showZoomEditor, setShowZoomEditor] = useState(false);
+  const [zoomKeyframes, setZoomKeyframes] = useState<ZoomKeyframe[]>([]);
+  const [zoomedBlob, setZoomedBlob] = useState<Blob | null>(null);
+  const [zoomedUrl, setZoomedUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -77,8 +84,9 @@ export default function ScreenRecorder() {
     return () => {
       stopAllStreams();
       if (recordedUrl) URL.revokeObjectURL(recordedUrl);
+      if (zoomedUrl) URL.revokeObjectURL(zoomedUrl);
     };
-  }, [stopAllStreams, recordedUrl]);
+  }, [stopAllStreams, recordedUrl, zoomedUrl]);
 
   // Format seconds to HH:MM:SS
   const formatTime = (secs: number) => {
@@ -96,6 +104,13 @@ export default function ScreenRecorder() {
     setError(null);
     recordedChunksRef.current = [];
     setRecordedBlob(null);
+    setShowZoomEditor(false);
+    setZoomKeyframes([]);
+    setZoomedBlob(null);
+    if (zoomedUrl) {
+      URL.revokeObjectURL(zoomedUrl);
+      setZoomedUrl(null);
+    }
     if (recordedUrl) {
       URL.revokeObjectURL(recordedUrl);
       setRecordedUrl(null);
@@ -328,6 +343,13 @@ export default function ScreenRecorder() {
   const resetRecording = () => {
     stopAllStreams();
     setRecordedBlob(null);
+    setShowZoomEditor(false);
+    setZoomKeyframes([]);
+    setZoomedBlob(null);
+    if (zoomedUrl) {
+      URL.revokeObjectURL(zoomedUrl);
+      setZoomedUrl(null);
+    }
     if (recordedUrl) {
       URL.revokeObjectURL(recordedUrl);
       setRecordedUrl(null);
@@ -336,6 +358,32 @@ export default function ScreenRecorder() {
     setIsPaused(false);
     setRecordTime(0);
     setError(null);
+  };
+
+  const handleZoomExported = (result: { blob: Blob; url: string; mimeType: string }) => {
+    if (zoomedUrl) URL.revokeObjectURL(zoomedUrl);
+    setZoomedBlob(result.blob);
+    setZoomedUrl(result.url);
+    setShowZoomEditor(false);
+
+    // Feed zoomed output into workflow store (trim it, extract frames, ...)
+    sendOutput({
+      type: "video",
+      data: result.blob,
+      filename: `recording-zoomed-${Date.now()}.${result.mimeType.includes("mp4") ? "mp4" : "webm"}`,
+      sourceToolSlug: "screen-recorder",
+      createdAt: Date.now(),
+    });
+  };
+
+  const handleZoomedDownload = () => {
+    if (!zoomedUrl || !zoomedBlob) return;
+    const a = document.createElement("a");
+    a.href = zoomedUrl;
+    a.download = `recording-zoomed-${Date.now()}.${zoomedBlob.type.includes("mp4") ? "mp4" : "webm"}`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   };
 
   return (
@@ -482,7 +530,7 @@ export default function ScreenRecorder() {
         )}
 
         {/* Recording Finished Preview & Export */}
-        {recordedBlob && recordedUrl && (
+        {recordedBlob && recordedUrl && !showZoomEditor && (
           <div className="space-y-6">
             <div className="bg-surface border border-border rounded-2xl p-6 shadow-sm space-y-4">
               <div className="flex items-center justify-between">
@@ -507,6 +555,14 @@ export default function ScreenRecorder() {
               <div className="flex flex-wrap items-center gap-3 pt-2">
                 <Button
                   variant="primary"
+                  onClick={() => setShowZoomEditor(true)}
+                  className="flex-1 flex items-center justify-center gap-2"
+                >
+                  <ZoomIn className="w-4 h-4" />
+                  Edit Zoom
+                </Button>
+                <Button
+                  variant="secondary"
                   onClick={handleDownload}
                   className="flex-1 flex items-center justify-center gap-2"
                 >
@@ -533,6 +589,60 @@ export default function ScreenRecorder() {
               sourceToolSlug="screen-recorder"
               outputType="video"
             />
+          </div>
+        )}
+
+        {/* Auto-zoom editor stage */}
+        {recordedBlob && recordedUrl && showZoomEditor && (
+          <ZoomEditor
+            videoUrl={recordedUrl}
+            keyframes={zoomKeyframes}
+            onKeyframesChange={setZoomKeyframes}
+            onExported={handleZoomExported}
+            onBack={() => setShowZoomEditor(false)}
+          />
+        )}
+
+        {/* Zoomed export result */}
+        {zoomedBlob && zoomedUrl && !showZoomEditor && (
+          <div className="bg-surface border border-border rounded-2xl p-6 shadow-sm space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="font-heading font-semibold text-lg flex items-center gap-2">
+                <ZoomIn className="w-5 h-5 text-accent" />
+                Zoomed Video
+              </h3>
+              <div className="text-xs text-text-secondary bg-surface-raised px-2.5 py-1 rounded-full border border-border">
+                {(zoomedBlob.size / (1024 * 1024)).toFixed(2)} MB
+              </div>
+            </div>
+
+            <div className="aspect-video bg-black rounded-xl overflow-hidden shadow-inner">
+              <video
+                src={zoomedUrl}
+                controls
+                playsInline
+                className="w-full h-full object-contain"
+              />
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3 pt-2">
+              <Button
+                variant="primary"
+                onClick={handleZoomedDownload}
+                className="flex-1 flex items-center justify-center gap-2"
+              >
+                <Download className="w-4 h-4" />
+                Download Zoomed Video
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={() => setShowZoomEditor(true)}
+                className="flex items-center gap-2"
+              >
+                <ZoomIn className="w-4 h-4" />
+                Adjust Zooms
+              </Button>
+            </div>
           </div>
         )}
       </div>

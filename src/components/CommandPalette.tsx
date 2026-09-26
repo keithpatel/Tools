@@ -67,27 +67,44 @@ export function CommandPalette({
   const run = useCallback(
     (slug: string) => {
       setOpen(false);
-      const stored = JSON.parse(localStorage.getItem(RECENT_KEY) || "[]") as string[];
-      const next = [slug, ...stored.filter((s) => s !== slug)].slice(0, 5);
-      localStorage.setItem(RECENT_KEY, JSON.stringify(next));
+      try {
+        const stored = JSON.parse(localStorage.getItem(RECENT_KEY) || "[]") as string[];
+        const next = [slug, ...stored.filter((s) => s !== slug)].slice(0, 5);
+        localStorage.setItem(RECENT_KEY, JSON.stringify(next));
+      } catch {
+        // Corrupted storage — navigation still works, recents just reset
+        try {
+          localStorage.setItem(RECENT_KEY, JSON.stringify([slug]));
+        } catch {}
+      }
       router.push(`/tools/${slug}`);
     },
     [router, setOpen]
   );
 
-  const recentSlugs: string[] =
-    typeof window !== "undefined"
-      ? JSON.parse(localStorage.getItem(RECENT_KEY) || "[]")
-      : [];
+  const recentSlugs: string[] = (() => {
+    if (typeof window === "undefined") return [];
+    try {
+      const parsed = JSON.parse(localStorage.getItem(RECENT_KEY) || "[]");
+      return Array.isArray(parsed) ? parsed.filter((s) => typeof s === "string") : [];
+    } catch {
+      return [];
+    }
+  })();
 
   const recentTools = recentSlugs
     .map((s) => tools.find((t) => t.slug === s)!)
     .filter(Boolean);
 
-  const historyRaw: HistoryEntry[] =
-    typeof window !== "undefined"
-      ? JSON.parse(localStorage.getItem("multitool-history") || "[]")
-      : [];
+  const historyRaw: HistoryEntry[] = (() => {
+    if (typeof window === "undefined") return [];
+    try {
+      const parsed = JSON.parse(localStorage.getItem("multitool-history") || "[]");
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  })();
 
   const historyTools = historyRaw
     .map((e) => tools.find((t) => t.slug === e.slug)!)
