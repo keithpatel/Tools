@@ -11,15 +11,17 @@ import * as pdfjsLib from "pdfjs-dist";
 import {
   Type, PenTool, Highlighter, Eraser, ImagePlus, Trash2,
   ChevronLeft, ChevronRight, RotateCw, FileText,
+  MessageSquare, Square, Circle, Minus, PenLine, Move,
 } from "lucide-react";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`;
 
-type Tool = "select" | "text" | "draw" | "highlight" | "whiteout" | "image";
+type Tool = "select" | "text" | "draw" | "shape" | "highlight" | "whiteout" | "image" | "note" | "sign";
+type ShapeKind = "rect" | "ellipse" | "line";
 interface Anno {
-  id: string; page: number; kind: "text" | "drawing" | "highlight" | "whiteout" | "image";
+  id: string; page: number; kind: "text" | "drawing" | "highlight" | "whiteout" | "image" | "note" | "shape" | "signature";
   x: number; y: number; w: number; h: number;
-  content?: string; size?: number; color?: string; width?: number;
+  content?: string; size?: number; color?: string; width?: number; shape?: ShapeKind;
 }
 
 interface PageState { orig: number; rotation: number; deleted: boolean; thumb: string }
@@ -41,6 +43,11 @@ export default function PdfEditor() {
   const [color, setColor] = useState("#111111");
   const [size, setSize] = useState(14);
   const [penWidth, setPenWidth] = useState(3);
+  const [shapeKind, setShapeKind] = useState<ShapeKind>("rect");
+  const [signName, setSignName] = useState("");
+  const [draft, setDraft] = useState<{ x: number; y: number; w: number; h: number } | null>(null);
+  const [pageWpt, setPageWpt] = useState(612);
+  const [boxW, setBoxW] = useState(0);
   const [loading, setLoading] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -52,11 +59,24 @@ export default function PdfEditor() {
   const drawRef = useRef<HTMLCanvasElement | null>(null);
   const drawing = useRef(false);
   const dragRef = useRef<{ id: string; dx: number; dy: number } | null>(null);
+  const draftStart = useRef<{ x: number; y: number } | null>(null);
+  const resizeRef = useRef<{ id: string; sx: number; sy: number; w: number; h: number } | null>(null);
   const { sendOutput } = useWorkflowStore();
+
+  const pagePoint = useCallback((e: React.MouseEvent): { x: number; y: number } => {
+    const box = boxRef.current;
+    if (!box) return { x: 0, y: 0 };
+    const r = box.getBoundingClientRect();
+    return {
+      x: Math.min(100, Math.max(0, ((e.clientX - r.left) / r.width) * 100)),
+      y: Math.min(100, Math.max(0, ((e.clientY - r.top) / r.height) * 100)),
+    };
+  }, []);
 
   const renderPage = useCallback(async (pdf: NonNullable<typeof pdfRef.current>, n: number) => {
     const page = await pdf.getPage(n);
     const vp = page.getViewport({ scale: 1.0 });
+    setPageWpt(vp.width);
     const scale = Math.min(1.5, 640 / vp.width);
     const svp = page.getViewport({ scale });
     const canvas = document.createElement("canvas");
@@ -106,14 +126,10 @@ export default function PdfEditor() {
     setPages((p) => p.map((pg, i) => (i === n - 1 ? { ...pg, deleted: !pg.deleted } : pg)));
   };
 
-  // Click-to-place for text/highlight/whiteout
+  // Click-to-place for text/highlight/whiteout/note/sign
   const onBoxClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (tool === "select" || tool === "draw" || tool === "image") return;
-    const box = boxRef.current;
-    if (!box) return;
-    const r = box.getBoundingClientRect();
-    const x = Math.min(85, Math.max(0, ((e.clientX - r.left) / r.width) * 100));
-    const y = Math.min(90, Math.max(0, ((e.clientY - r.top) / r.height) * 100));
+    if (tool === "select" || tool === "draw" || tool === "image" || tool === "shape") return;
+    const { x, y } = pagePoint(e);
     const id = `${tool}_${Date.now()}`;
     if (tool === "text") {
       setAnnos((a) => [...a, { id, page: current, kind: "text", x, y, w: 32, h: 6, content: "Type here", size, color }]);
@@ -121,7 +137,44 @@ export default function PdfEditor() {
       setAnnos((a) => [...a, { id, page: current, kind: "highlight", x, y, w: 30, h: 4, color: "#facc15" }]);
     } else if (tool === "whiteout") {
       setAnnos((a) => [...a, { id, page: current, kind: "whiteout", x, y, w: 30, h: 5 }]);
+    } else if (tool === "note") {
+      setAnnos((a) => [...a, { id, page: current, kind: "note", x, y, w: 24, h: 14, content: "" }]);
+    } else if (tool === "sign") {
+      if (!signName.trim()) {
+        setError("Type your name in the Sign panel first, then click the page.");
+        return;
+      }
+      setAnnos((a) => [...a, { id, page: current, kind: "signature", x, y, w: 34, h: 8, content: signName.trim(), size: Math.max(20, size), color }]);
     }
+    setSelected(id);
+    setTool("select");
+  };
+
+  // Drag-to-draw for shapes (rectangle / ellipse / line)
+  const onShapeDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (tool !== "shape") return;
+    const p = pagePoint(e);
+    draftStart.current = p;
+    setDraft({ x: p.x, y: p.y, w: 0, h: 0 });
+    e.preventDefault();
+  };
+  const onShapeMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!draftStart.current) return;
+    const p = pagePoint(e);
+    const s = draftStart.current;
+    setDraft({ x: Math.min(s.x, p.x), y: Math.min(s.y, p.y), w: Math.abs(p.x - s.x), h: Math.abs(p.y - s.y) });
+  };
+  const onShapeUp = (e: React.MouseEvent<HTMLDivElement>) => {
+    const s = draftStart.current;
+    draftStart.current = null;
+    setDraft(null);
+    if (!s || tool !== "shape") return;
+    const p = pagePoint(e);
+    const x = Math.min(s.x, p.x), y = Math.min(s.y, p.y);
+    const w = Math.abs(p.x - s.x), h = Math.abs(p.y - s.y);
+    if (w < 1 || h < 1) return;
+    const id = `shape_${Date.now()}`;
+    setAnnos((a) => [...a, { id, page: current, kind: "shape", shape: shapeKind, x, y, w, h, color, width: penWidth }]);
     setSelected(id);
     setTool("select");
   };
@@ -168,6 +221,62 @@ export default function PdfEditor() {
     window.addEventListener("mouseup", up);
     return () => { window.removeEventListener("mousemove", move); window.removeEventListener("mouseup", up); };
   }, []);
+
+  const startResize = (e: React.MouseEvent, id: string) => {
+    const a = annos.find((x) => x.id === id);
+    const box = boxRef.current;
+    if (!a || !box) return;
+    e.stopPropagation();
+    const r = box.getBoundingClientRect();
+    resizeRef.current = {
+      id,
+      sx: ((e.clientX - r.left) / r.width) * 100,
+      sy: ((e.clientY - r.top) / r.height) * 100,
+      w: a.w,
+      h: a.h,
+    };
+    setSelected(id);
+  };
+  useEffect(() => {
+    const move = (e: MouseEvent) => {
+      const rz = resizeRef.current;
+      const box = boxRef.current;
+      if (!rz || !box) return;
+      const r = box.getBoundingClientRect();
+      const px = ((e.clientX - r.left) / r.width) * 100;
+      const py = ((e.clientY - r.top) / r.height) * 100;
+      setAnnos((prev) =>
+        prev.map((a) =>
+          a.id === rz.id
+            ? {
+                ...a,
+                w: Math.max(6, Math.min(100 - a.x, rz.w + (px - rz.sx))),
+                h: Math.max(4, Math.min(100 - a.y, rz.h + (py - rz.sy))),
+              }
+            : a
+        )
+      );
+    };
+    const up = () => { resizeRef.current = null; };
+    window.addEventListener("mousemove", move);
+    window.addEventListener("mouseup", up);
+    return () => { window.removeEventListener("mousemove", move); window.removeEventListener("mouseup", up); };
+  }, []);
+
+  useEffect(() => {
+    const el = boxRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver((entries) => {
+      const w = entries[0]?.contentRect.width;
+      if (w) setBoxW(w);
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [preview]);
+
+  useEffect(() => {
+    setResultUrl((u) => (u ? null : u));
+  }, [annos, pages]);
 
   // Freehand drawing overlay
   const drawPos = (e: React.MouseEvent | React.TouchEvent) => {
@@ -229,6 +338,7 @@ export default function PdfEditor() {
       const src = await PDFDocument.load(srcRef.current);
       const out = await PDFDocument.create();
       const font = await out.embedFont(StandardFonts.Helvetica);
+      const oblique = await out.embedFont(StandardFonts.HelveticaOblique);
       const kept = pages.map((p, i) => ({ ...p, idx: i })).filter((p) => !p.deleted);
       if (!kept.length) throw new Error("All pages deleted — restore at least one page.");
       const copied = await out.copyPages(src, kept.map((k) => pages[k.idx].orig - 1));
@@ -249,11 +359,35 @@ export default function PdfEditor() {
         const py = H - (a.y / 100) * H - ph;
         if (a.kind === "text" && a.content) {
           const c = hexToRgb(a.color || "#111111");
-          pg.drawText(a.content, { x: px, y: py + 2, size: a.size || 14, font, color: rgb(c.r, c.g, c.b) });
+          const size = a.size || 14;
+          const top = H - (a.y / 100) * H;
+          const textY = top - ph / 2 - size * 0.26;
+          pg.drawText(a.content, { x: px + 2, y: textY, size, font, color: rgb(c.r, c.g, c.b) });
         } else if (a.kind === "highlight") {
           pg.drawRectangle({ x: px, y: py, width: pw, height: ph, color: rgb(0.98, 0.8, 0.08), opacity: 0.45 });
         } else if (a.kind === "whiteout") {
           pg.drawRectangle({ x: px, y: py, width: pw, height: ph, color: rgb(1, 1, 1), opacity: 1 });
+        } else if (a.kind === "note") {
+          pg.drawRectangle({ x: px, y: py, width: pw, height: ph, color: rgb(0.996, 0.953, 0.78), borderColor: rgb(0.85, 0.68, 0.1), borderWidth: 0.8 });
+          if (a.content) {
+            pg.drawText(a.content.slice(0, 200), { x: px + 3, y: py + ph - 10, size: 7, font, color: rgb(0.32, 0.22, 0) });
+          }
+        } else if (a.kind === "shape") {
+          const c = hexToRgb(a.color || "#111111");
+          const stroke = rgb(c.r, c.g, c.b);
+          const t = a.width || 2;
+          if (a.shape === "line") {
+            pg.drawLine({ start: { x: px, y: py }, end: { x: px + pw, y: py + ph }, thickness: t, color: stroke });
+          } else if (a.shape === "ellipse") {
+            pg.drawEllipse({ x: px + pw / 2, y: py + ph / 2, xScale: pw / 2, yScale: ph / 2, borderColor: stroke, borderWidth: t });
+          } else {
+            pg.drawRectangle({ x: px, y: py, width: pw, height: ph, borderColor: stroke, borderWidth: t });
+          }
+        } else if (a.kind === "signature" && a.content) {
+          const c = hexToRgb(a.color || "#111111");
+          const size = a.size || 24;
+          const top = H - (a.y / 100) * H;
+          pg.drawText(a.content, { x: px + 2, y: top - size * 0.82, size, font: oblique, color: rgb(c.r, c.g, c.b) });
         } else if ((a.kind === "image" || a.kind === "drawing") && a.content) {
           const bytes = await fetch(a.content).then((r) => r.arrayBuffer());
           let img;
@@ -280,13 +414,17 @@ export default function PdfEditor() {
     a.click();
   };
 
+  const pxPerPt = boxW > 0 && pageWpt > 0 ? boxW / pageWpt : 0.8;
   const cur = annos.filter((a) => a.page === current);
   const tools: { id: Tool; label: string; icon: React.ReactNode }[] = [
     { id: "select", label: "Select", icon: null },
     { id: "text", label: "Text", icon: <Type className="w-3.5 h-3.5" /> },
+    { id: "note", label: "Comment", icon: <MessageSquare className="w-3.5 h-3.5" /> },
     { id: "draw", label: "Draw", icon: <PenTool className="w-3.5 h-3.5" /> },
+    { id: "shape", label: "Shape", icon: <Square className="w-3.5 h-3.5" /> },
     { id: "highlight", label: "Highlight", icon: <Highlighter className="w-3.5 h-3.5" /> },
     { id: "whiteout", label: "Whiteout", icon: <Eraser className="w-3.5 h-3.5" /> },
+    { id: "sign", label: "Sign", icon: <PenLine className="w-3.5 h-3.5" /> },
     { id: "image", label: "Image", icon: <ImagePlus className="w-3.5 h-3.5" /> },
   ];
 
@@ -337,8 +475,41 @@ export default function PdfEditor() {
               <Button size="sm" variant="secondary" onClick={clearDraw}>Clear strokes</Button>
             </div>
           )}
+          {tool === "shape" && (
+            <div className="flex flex-wrap items-center gap-1.5">
+              <span className="text-xs text-text-secondary mr-1">Shape:</span>
+              {([
+                { id: "rect" as ShapeKind, label: "Rectangle", icon: <Square className="w-3.5 h-3.5" /> },
+                { id: "ellipse" as ShapeKind, label: "Ellipse", icon: <Circle className="w-3.5 h-3.5" /> },
+                { id: "line" as ShapeKind, label: "Line", icon: <Minus className="w-3.5 h-3.5" /> },
+              ]).map((s) => (
+                <button key={s.id} onClick={() => setShapeKind(s.id)}
+                  className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium border min-h-[38px] ${shapeKind === s.id ? "border-accent bg-accent/10 text-accent" : "border-transparent text-text-secondary hover:bg-surface-hover"}`}>
+                  {s.icon}{s.label}
+                </button>
+              ))}
+            </div>
+          )}
+          {tool === "sign" && (
+            <div className="flex flex-wrap items-center gap-2 p-2.5 rounded-xl border border-border-soft bg-surface">
+              <PenLine className="w-4 h-4 text-accent shrink-0" />
+              <label className="text-xs text-text-secondary" htmlFor="pdf-sign-name">Your name</label>
+              <input id="pdf-sign-name" value={signName} onChange={(e) => setSignName(e.target.value)}
+                placeholder="e.g. Alex Morgan" autoComplete="name"
+                className="flex-1 min-w-[160px] px-3 py-2 rounded-lg border border-border bg-surface text-sm text-text-primary outline-none focus:border-accent" />
+              <span className="text-xs text-text-secondary">then click the page to place it</span>
+            </div>
+          )}
           {tool !== "select" && tool !== "draw" && (
-            <p className="text-xs text-accent font-medium">Click on the page to place {tool}. Drag items to move, click to select.</p>
+            <p className="text-xs text-accent font-medium">
+              {tool === "shape"
+                ? "Drag on the page to draw the shape. Drag items to move, click to select."
+                : tool === "note"
+                  ? "Click the page to drop a comment. Drag its header to move it, or the corner to resize."
+                  : tool === "sign"
+                    ? "Type your name above, then click the page to place your signature."
+                    : `Click on the page to place ${tool}. Drag items to move, click to select.`}
+            </p>
           )}
 
           <div className="grid md:grid-cols-[120px_1fr] gap-3">
@@ -375,9 +546,21 @@ export default function PdfEditor() {
               </div>
               <div className="flex justify-center p-2 sm:p-4 bg-surface border border-border-soft rounded-2xl overflow-x-auto">
                 <div ref={boxRef} onClick={onBoxClick}
-                  className={`relative shadow-lg border border-border rounded-lg bg-white overflow-hidden select-none ${tool === "text" || tool === "highlight" || tool === "whiteout" ? "cursor-crosshair" : ""}`}
+                  onMouseDown={onShapeDown} onMouseMove={onShapeMove} onMouseUp={onShapeUp}
+                  className={`relative shadow-lg border border-border rounded-lg bg-white overflow-hidden select-none ${["text", "highlight", "whiteout", "note", "sign", "shape"].includes(tool) ? "cursor-crosshair" : ""}`}
                   style={{ width: "fit-content", maxWidth: "100%" }}>
                   {preview && <img src={preview} alt={`Page ${current}`} className="block max-h-[640px] w-auto pointer-events-none" draggable={false} />}
+                  {draft && (
+                    <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                      {shapeKind === "ellipse" ? (
+                        <ellipse cx={draft.x + draft.w / 2} cy={draft.y + draft.h / 2} rx={draft.w / 2} ry={draft.h / 2} fill="none" stroke={color} strokeWidth={penWidth} vectorEffect="non-scaling-stroke" />
+                      ) : shapeKind === "line" ? (
+                        <line x1={draft.x} y1={draft.y} x2={draft.x + draft.w} y2={draft.y + draft.h} stroke={color} strokeWidth={penWidth} vectorEffect="non-scaling-stroke" />
+                      ) : (
+                        <rect x={draft.x} y={draft.y} width={draft.w} height={draft.h} fill="none" stroke={color} strokeWidth={penWidth} vectorEffect="non-scaling-stroke" />
+                      )}
+                    </svg>
+                  )}
                   {tool === "draw" && (
                     <canvas ref={drawRef} width={800} height={1000}
                       onMouseDown={startDraw} onMouseMove={moveDraw} onMouseUp={endDraw} onMouseLeave={endDraw}
@@ -391,9 +574,56 @@ export default function PdfEditor() {
                       {a.kind === "text" && (
                         <input value={a.content || ""} onChange={(e) => setAnnos((p) => p.map((x) => (x.id === a.id ? { ...x, content: e.target.value } : x)))}
                           onClick={(e) => e.stopPropagation()}
-                          className="w-full h-full bg-transparent outline-none px-1" style={{ fontSize: `${a.size || 14}px`, color: a.color || "#111" }} />
+                          className="w-full h-full bg-transparent outline-none"
+                          style={{
+                            fontSize: `${(a.size || 14) * pxPerPt}px`,
+                            fontFamily: "Helvetica, Arial, sans-serif",
+                            paddingLeft: `${2 * pxPerPt}px`,
+                            paddingRight: `${2 * pxPerPt}px`,
+                            paddingTop: 0,
+                            paddingBottom: 0,
+                            color: a.color || "#111",
+                          }} />
+                      )}
+                      {a.kind === "note" && (
+                        <div className="flex h-full w-full flex-col overflow-hidden rounded border border-yellow-300 bg-yellow-100">
+                          <div className={`flex items-center gap-1 px-1 py-0.5 bg-yellow-200/80 border-b border-yellow-300 select-none ${tool === "select" ? "cursor-move" : ""}`}>
+                            <Move className="w-2.5 h-2.5 text-yellow-800 shrink-0" aria-hidden="true" />
+                            <span className="text-[9px] font-semibold uppercase tracking-wide text-yellow-900">Note</span>
+                          </div>
+                          <textarea value={a.content || ""} placeholder="Add a comment…"
+                            onChange={(e) => setAnnos((p) => p.map((x) => (x.id === a.id ? { ...x, content: e.target.value } : x)))}
+                            onFocus={() => setSelected(a.id)}
+                            onClick={(e) => e.stopPropagation()} onMouseDown={(e) => e.stopPropagation()}
+                            className="flex-1 w-full resize-none bg-transparent p-1 text-[10px] leading-tight text-yellow-900 outline-none placeholder:text-yellow-700/60" />
+                        </div>
+                      )}
+                      {a.kind === "shape" && (
+                        <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                          {a.shape === "ellipse" ? (
+                            <ellipse cx={50} cy={50} rx={50} ry={50} fill="none" stroke={a.color || "#111111"} strokeWidth={a.width || 2} vectorEffect="non-scaling-stroke" />
+                          ) : a.shape === "line" ? (
+                            <line x1={0} y1={0} x2={100} y2={100} stroke={a.color || "#111111"} strokeWidth={a.width || 2} vectorEffect="non-scaling-stroke" />
+                          ) : (
+                            <rect x={0} y={0} width={100} height={100} fill="none" stroke={a.color || "#111111"} strokeWidth={a.width || 2} vectorEffect="non-scaling-stroke" />
+                          )}
+                        </svg>
+                      )}
+                      {a.kind === "signature" && a.content && (
+                        <span className="block leading-none whitespace-nowrap"
+                          style={{
+                            fontFamily: "cursive",
+                            fontSize: `${(a.size || 24) * pxPerPt}px`,
+                            paddingLeft: `${2 * pxPerPt}px`,
+                            color: a.color || "#111",
+                          }}>{a.content}</span>
                       )}
                       {(a.kind === "image" || a.kind === "drawing") && a.content && <img src={a.content} alt="" className="w-full h-full object-contain pointer-events-none" draggable={false} />}
+                      {selected === a.id && (
+                        <span role="button" aria-label="Resize" title="Drag to resize"
+                          onMouseDown={(e) => startResize(e, a.id)}
+                          className="absolute -bottom-1.5 -right-1.5 w-4 h-4 rounded-sm bg-accent border-2 border-white shadow cursor-nwse-resize" />
+                      )}
                       {selected === a.id && (
                         <button onClick={(e) => { e.stopPropagation(); setAnnos((p) => p.filter((x) => x.id !== a.id)); setSelected(null); }}
                           className="absolute -top-2.5 -right-2.5 w-6 h-6 rounded-full bg-red-600 text-white flex items-center justify-center shadow">×</button>
